@@ -6,8 +6,8 @@ import 'package:flutter/widgets.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
-class Register extends StatelessWidget {
-  const Register({super.key});
+class VerifiedCode extends StatelessWidget {
+  const VerifiedCode({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,7 @@ class Register extends StatelessWidget {
             ),
             const Gap(24),
             CustomTextField(
-              hintText: 'Masukan email',
+              hintText: 'Masukan code verifikasi',
               icon: Icon(
                 Icons.email_outlined,
                 color: AppColors.greyColor,
@@ -32,33 +32,24 @@ class Register extends StatelessWidget {
             ),
             const Gap(24),
             PrimaryButton(
-                ontap: () => Get.toNamed('/verified-code'), title: 'Lanjut'),
-            const Spacer(),
-            Center(
-              child: Text(
-                'Sudah punya akun?',
-                style: AppTextStyle.paragraphL.copyWith(
-                  color: AppColors.greyColor,
-                ),
-              ),
-            ),
-            const Gap(14),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                GestureDetector(
-                  onTap: () => Get.offAndToNamed('/login'),
-                  child: Text(
-                    'Login ',
+                ontap: () => Get.toNamed('/create-password'), title: 'Lanjut'),
+            const Gap(24),
+            RichText(
+              text: TextSpan(
+                style: AppTextStyle.paragraphL
+                    .copyWith(color: AppColors.greyColor),
+                children: <TextSpan>[
+                  const TextSpan(
+                    text: 'Kode verifikasi belum dikirim? ',
+                  ),
+                  TextSpan(
+                    text: 'Kirim ulang',
                     style: AppTextStyle.paragraphL.copyWith(
                       color: AppColors.primary1,
                     ),
                   ),
-                ),
-                const Gap(8),
-                Icon(Icons.arrow_forward_rounded,
-                    color: AppColors.primary1, size: 24)
-              ],
+                ],
+              ),
             ),
             const Gap(40),
           ],
