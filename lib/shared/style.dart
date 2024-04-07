@@ -18,14 +18,14 @@ class AppTextStyle {
   static TextStyle titlePrimary = GoogleFonts.playfair().copyWith(
       fontSize: 48,
       fontWeight: AppWeightFont.medium,
+      letterSpacing: -2,
       color: AppColors.primary1);
 
   static TextStyle h1 = GoogleFonts.playfair()
       .copyWith(fontSize: 32, fontWeight: AppWeightFont.bold);
   static TextStyle h2 = GoogleFonts.playfair()
       .copyWith(fontSize: 24, fontWeight: AppWeightFont.bold);
-  static TextStyle h3 = GoogleFonts.inter()
-      .copyWith(fontSize: 20, fontWeight: AppWeightFont.bold);
+  static TextStyle h3 = GoogleFonts.inter().copyWith(fontSize: 20);
 
   static TextStyle paragraphL = GoogleFonts.inter()
       .copyWith(fontSize: 16, fontWeight: AppWeightFont.reguler);
