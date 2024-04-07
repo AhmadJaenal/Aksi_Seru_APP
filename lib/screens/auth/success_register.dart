@@ -1,8 +1,5 @@
 import 'package:aksi_seru_app/shared/style.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
 class SuccessRegister extends StatelessWidget {
@@ -10,7 +7,6 @@ class SuccessRegister extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: AppColors.primary1,
       body: Stack(
