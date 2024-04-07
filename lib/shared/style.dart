@@ -17,24 +17,26 @@ class AppColors {
 class AppTextStyle {
   static TextStyle titlePrimary = GoogleFonts.playfair().copyWith(
       fontSize: 48,
-      fontWeight: AppWeightFont.medium,
+      fontWeight: AppFontWeight.medium,
       letterSpacing: -2,
       color: AppColors.primary1);
 
   static TextStyle h1 = GoogleFonts.playfair()
-      .copyWith(fontSize: 32, fontWeight: AppWeightFont.bold);
+      .copyWith(fontSize: 32, fontWeight: AppFontWeight.bold);
   static TextStyle h2 = GoogleFonts.playfair()
-      .copyWith(fontSize: 24, fontWeight: AppWeightFont.bold);
+      .copyWith(fontSize: 24, fontWeight: AppFontWeight.bold);
   static TextStyle h3 = GoogleFonts.inter().copyWith(fontSize: 20);
 
   static TextStyle paragraphL = GoogleFonts.inter()
-      .copyWith(fontSize: 16, fontWeight: AppWeightFont.reguler);
+      .copyWith(fontSize: 16, fontWeight: AppFontWeight.reguler);
+  static TextStyle paragraphM = GoogleFonts.inter()
+      .copyWith(fontSize: 12, fontWeight: AppFontWeight.reguler);
 
   static TextStyle appbarTitle = GoogleFonts.playfair().copyWith(
-      fontSize: 36, fontWeight: AppWeightFont.bold, color: AppColors.primary1);
+      fontSize: 36, fontWeight: AppFontWeight.bold, color: AppColors.primary1);
 }
 
-class AppWeightFont {
+class AppFontWeight {
   static FontWeight extraBold = FontWeight.w800;
   static FontWeight bold = FontWeight.w700;
   static FontWeight semiBold = FontWeight.w600;
