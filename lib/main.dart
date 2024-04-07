@@ -1,4 +1,5 @@
 import 'package:aksi_seru_app/screens/auth/login.dart';
+import 'package:aksi_seru_app/screens/auth/register.dart';
 import 'package:aksi_seru_app/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -23,6 +24,10 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: '/login',
           page: () => const Login(),
+        ),
+        GetPage(
+          name: '/register',
+          page: () => const Register(),
         ),
       ],
     );

@@ -6,8 +6,8 @@ import 'package:flutter/widgets.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
-class Login extends StatelessWidget {
-  const Login({super.key});
+class Register extends StatelessWidget {
+  const Register({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,7 @@ class Login extends StatelessWidget {
           children: [
             const Gap(160),
             Text(
-              'Login',
+              'Register',
               style: AppTextStyle.titlePrimary,
             ),
             const Gap(24),
@@ -30,14 +30,12 @@ class Login extends StatelessWidget {
                 color: AppColors.greyColor,
               ),
             ),
-            const Gap(12),
-            const CustomTextFieldPassword(hintText: 'Masukan kata sandi'),
             const Gap(24),
             PrimaryButton(ontap: () {}, title: 'Lanjut'),
             const Spacer(),
             Center(
               child: Text(
-                'Belum punya akun?',
+                'Sudah punya akun?',
                 style: AppTextStyle.paragraphL.copyWith(
                   color: AppColors.greyColor,
                 ),
@@ -48,9 +46,9 @@ class Login extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 GestureDetector(
-                  onTap: () => Get.offAndToNamed('/register'),
+                  onTap: () => Get.offAndToNamed('/login'),
                   child: Text(
-                    'Daftar ',
+                    'Login ',
                     style: AppTextStyle.paragraphL.copyWith(
                       color: AppColors.primary1,
                     ),
