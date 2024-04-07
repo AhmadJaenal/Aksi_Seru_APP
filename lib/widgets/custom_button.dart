@@ -41,3 +41,69 @@ class PrimaryButton extends StatelessWidget {
     );
   }
 }
+
+class MiniButton extends StatelessWidget {
+  final String icon;
+  final String title;
+  final Function() ontap;
+  const MiniButton(
+      {super.key,
+      required this.icon,
+      required this.title,
+      required this.ontap});
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton.icon(
+      onPressed: ontap,
+      icon: Image.asset('assets/$icon', width: 24),
+      style: ElevatedButton.styleFrom(
+        elevation: 0,
+        backgroundColor: AppColors.greyColor.withOpacity(.2),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      ),
+      label: Text(
+        title,
+        style: AppTextStyle.paragraphL.copyWith(
+          color: AppColors.blackColor,
+        ),
+      ),
+    );
+  }
+}
+
+class DangerMiniButton extends StatelessWidget {
+  final String icon;
+  final String title;
+  final Function() ontap;
+  const DangerMiniButton(
+      {super.key,
+      required this.icon,
+      required this.title,
+      required this.ontap});
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton.icon(
+      onPressed: ontap,
+      icon: Image.asset('assets/$icon', width: 24),
+      style: ElevatedButton.styleFrom(
+        elevation: 0,
+        backgroundColor: AppColors.roseColor,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      ),
+      label: Text(
+        title,
+        style: AppTextStyle.paragraphL.copyWith(
+          color: AppColors.redColor,
+        ),
+      ),
+    );
+  }
+}
