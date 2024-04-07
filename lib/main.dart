@@ -1,6 +1,8 @@
 import 'package:aksi_seru_app/screens/auth/create_password.dart';
+import 'package:aksi_seru_app/screens/auth/create_username.dart';
 import 'package:aksi_seru_app/screens/auth/login.dart';
 import 'package:aksi_seru_app/screens/auth/register.dart';
+import 'package:aksi_seru_app/screens/auth/success_register.dart';
 import 'package:aksi_seru_app/screens/auth/verified_code_register.dart';
 import 'package:aksi_seru_app/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
@@ -38,6 +40,14 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: '/create-password',
           page: () => const CreatePassword(),
+        ),
+        GetPage(
+          name: '/success-register',
+          page: () => const SuccessRegister(),
+        ),
+        GetPage(
+          name: '/create-username',
+          page: () => const CreateUsername(),
         ),
       ],
     );
