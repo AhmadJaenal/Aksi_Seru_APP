@@ -3,6 +3,7 @@ import 'package:aksi_seru_app/widgets/custom_button.dart';
 import 'package:aksi_seru_app/widgets/custom_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get.dart';
 
 class CreateUsername extends StatelessWidget {
   const CreateUsername({super.key});
@@ -29,7 +30,9 @@ class CreateUsername extends StatelessWidget {
               ),
             ),
             const Gap(24),
-            PrimaryButton(ontap: () {}, title: 'Lanjut'),
+            PrimaryButton(
+                ontap: () => Get.toNamed('/recommendation-page'),
+                title: 'Lanjut'),
           ],
         ),
       ),

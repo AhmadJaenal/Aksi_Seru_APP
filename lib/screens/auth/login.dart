@@ -33,7 +33,9 @@ class Login extends StatelessWidget {
             const Gap(12),
             const CustomTextFieldPassword(hintText: 'Masukan kata sandi'),
             const Gap(24),
-            PrimaryButton(ontap: () {}, title: 'Lanjut'),
+            PrimaryButton(
+                ontap: () => Get.offAndToNamed('/recommendation-page'),
+                title: 'Lanjut'),
             const Spacer(),
             Center(
               child: Text(
