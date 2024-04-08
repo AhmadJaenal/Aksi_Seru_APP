@@ -8,6 +8,7 @@ import 'package:aksi_seru_app/screens/home/feed/create_post.dart';
 import 'package:aksi_seru_app/screens/home/feed/feed_page.dart';
 import 'package:aksi_seru_app/screens/home/feed/review_post.dart';
 import 'package:aksi_seru_app/screens/home/feed/story.dart';
+import 'package:aksi_seru_app/screens/home/notification/notif_page.dart';
 import 'package:aksi_seru_app/screens/home/recommendation_page.dart';
 import 'package:aksi_seru_app/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
@@ -73,6 +74,10 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: '/review-post',
           page: () => const ReviewPost(),
+        ),
+        GetPage(
+          name: '/notification-page',
+          page: () => const NotificationPage(),
         ),
       ],
     );

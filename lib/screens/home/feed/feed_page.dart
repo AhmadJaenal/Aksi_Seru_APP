@@ -42,9 +42,16 @@ class FeedPage extends StatelessWidget {
                           ),
                         ),
                         const Spacer(),
-                        Image.asset('assets/icon_notification.png', width: 24),
-                        const Gap(16),
-                        Image.asset('assets/icon_chat_2.png', width: 24),
+                        IconButton(
+                          onPressed: () => Get.toNamed('/notification-page'),
+                          icon: Image.asset('assets/icon_notification.png',
+                              width: 24),
+                        ),
+                        IconButton(
+                          onPressed: () {},
+                          icon:
+                              Image.asset('assets/icon_chat_2.png', width: 24),
+                        ),
                       ],
                     ),
                     const Gap(24),
