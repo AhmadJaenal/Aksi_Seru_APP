@@ -2,7 +2,10 @@ import 'package:aksi_seru_app/shared/style.dart';
 import 'package:aksi_seru_app/widgets/custom_button.dart';
 import 'package:aksi_seru_app/widgets/custom_textfield.dart';
 import 'package:aksi_seru_app/widgets/user_profile.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/widgets.dart';
 import 'package:gap/gap.dart';
 
 class CardPost extends StatelessWidget {
@@ -11,6 +14,7 @@ class CardPost extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double height = MediaQuery.of(context).size.height;
+    final double width = MediaQuery.of(context).size.width;
     return Container(
       width: double.infinity,
       padding: EdgeInsets.symmetric(horizontal: AppMargin.defaultMargin),
@@ -184,7 +188,11 @@ class CardPost extends StatelessWidget {
             children: [
               Image.asset('assets/icon_liked.png', width: 24),
               const Gap(16),
-              Image.asset('assets/icon_comment.png', width: 24),
+              GestureDetector(
+                  onTap: () {
+                    SectionCommentPost(context, height, width);
+                  },
+                  child: Image.asset('assets/icon_comment.png', width: 24)),
               const Gap(16),
               Image.asset('assets/icon_share.png', width: 24),
             ],
@@ -252,6 +260,215 @@ class CardPost extends StatelessWidget {
           const Gap(24)
         ],
       ),
+    );
+  }
+
+  Future<dynamic> SectionCommentPost(
+      BuildContext context, double height, double width) {
+    return showModalBottomSheet(
+      isScrollControlled: true,
+      context: context,
+      builder: (context) {
+        return ClipRRect(
+          borderRadius: const BorderRadiusDirectional.vertical(
+            top: Radius.circular(12),
+          ),
+          child: SizedBox(
+            height: height * .8,
+            child: CustomScrollView(
+              slivers: [
+                SliverAppBar(
+                  expandedHeight: 100,
+                  collapsedHeight: 100,
+                  pinned: true,
+                  automaticallyImplyLeading: false,
+                  backgroundColor: AppColors.whiteColor,
+                  flexibleSpace: Container(
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadiusDirectional.vertical(
+                        top: Radius.circular(12),
+                      ),
+                    ),
+                    child: Column(
+                      children: [
+                        const Gap(16),
+                        Center(
+                          child: Container(
+                            width: 60,
+                            height: 5,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12),
+                              color: AppColors.greyColor,
+                            ),
+                          ),
+                        ),
+                        const Gap(24),
+                        Center(
+                          child: Text(
+                            'Postingan Mavropanos',
+                            style: AppTextStyle.paragraphL.copyWith(
+                              color: AppColors.blackColor,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                // NOTE :: START CODE SECTION CAPTION POST
+                SliverToBoxAdapter(
+                  child: Container(
+                    padding: EdgeInsets.all(
+                      AppMargin.defaultMargin,
+                    ),
+                    decoration: BoxDecoration(
+                      color: AppColors.whiteColor,
+                      border: Border.symmetric(
+                        horizontal: BorderSide(
+                          color: AppColors.greyColor.withOpacity(.2),
+                          width: 1,
+                        ),
+                      ),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Image.asset('assets/user_profile.png', width: 48),
+                            const Gap(8),
+                            RichText(
+                              text: TextSpan(
+                                style: AppTextStyle.paragraphL.copyWith(
+                                  color: AppColors.blackColor,
+                                ),
+                                children: <TextSpan>[
+                                  const TextSpan(
+                                    text: 'Mavropanos\n',
+                                  ),
+                                  TextSpan(
+                                    text: 'Artikel kreator',
+                                    style: AppTextStyle.paragraphM.copyWith(
+                                      color: AppColors.blackColor,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const Gap(4),
+                            const Padding(
+                              padding: EdgeInsets.only(bottom: 15),
+                              child: Verified(),
+                            ),
+                            const Gap(12),
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 15),
+                              child: Text(
+                                '4 jam yang lalu',
+                                style: AppTextStyle.paragraphL.copyWith(
+                                  color: AppColors.greyColor,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const Gap(12),
+                        Text(
+                          'Ruangan ini sangat nyaman dan terang. Saya menyukai desainnya yang minimalis dan modern. Pencahayaan alami yang masuk melalui jendela membuat ruangan terasa segar dan terbuka. Furnitur yang dipilih dengan baik memberikan kesan bersih dan rapi. Saya juga menghargai ruang kosong yang menciptakan perasaan lapang dan tenang. Secara keseluruhan, ruangan ini memberikan suasana yang menyenangkan untuk bekerja atau bersantai.🍀🍂🥀🌻🌷',
+                          style: AppTextStyle.paragraphL.copyWith(
+                            color: AppColors.blackColor,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                // NOTE :: END CODE SECTION CAPTION POST,
+
+                // NOTE :: STAR CODE SECTION COMMENT POST
+                SliverList(
+                    delegate: SliverChildBuilderDelegate(childCount: 10,
+                        (context, index) {
+                  return Container(
+                    color: AppColors.whiteColor,
+                    padding: EdgeInsets.all(AppMargin.defaultMargin),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Image.asset('assets/user_profile.png', width: 48),
+                        const Gap(8),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'Gionna Van Den Berg',
+                                  style: AppTextStyle.paragraphL.copyWith(
+                                      color: AppColors.blackColor,
+                                      fontWeight: AppFontWeight.medium),
+                                ),
+                                const Gap(4),
+                                const Verified(width: 12),
+                                const Gap(10),
+                                Text(
+                                  '3 jam',
+                                  style: AppTextStyle.paragraphL.copyWith(
+                                    color: AppColors.greyColor,
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ],
+                            ),
+                            const Gap(2),
+                            SizedBox(
+                              width: width * .6,
+                              child: Text(
+                                'Ruangan ini sangat nyaman dan terang. Saya menyukai desainnya yang minimalis dan modern. Pencahayaan alami yang masuk melalui jendela membuat ruangan terasa segar dan terbuka. Furnitur yang dipilih dengan baik memberikan kesan bersih dan rapi. Saya juga menghargai ruang kosong yang menciptakan perasaan lapang dan tenang. Secara keseluruhan, ruangan ini memberikan suasana yang menyenangkan untuk bekerja atau bersantai.🍀🍂🥀🌻🌷',
+                                style: AppTextStyle.paragraphL.copyWith(
+                                    color: AppColors.blackColor,
+                                    fontWeight: AppFontWeight.reguler),
+                              ),
+                            ),
+                            const Gap(8),
+                            Row(
+                              children: [
+                                Text(
+                                  'Suka',
+                                  style: AppTextStyle.paragraphL
+                                      .copyWith(color: AppColors.greyColor),
+                                ),
+                                const Gap(16),
+                                Text(
+                                  'Balas',
+                                  style: AppTextStyle.paragraphL
+                                      .copyWith(color: AppColors.greyColor),
+                                )
+                              ],
+                            ),
+                            const Gap(8),
+                            Text(
+                              'Lihat 1 balasan',
+                              style: AppTextStyle.paragraphL
+                                  .copyWith(color: AppColors.blackColor),
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
+                  );
+                }))
+
+                // NOTE :: END CODE SECTION COMMENT POST
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }
