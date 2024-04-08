@@ -45,21 +45,28 @@ class PrimaryButton extends StatelessWidget {
 class MiniButton extends StatelessWidget {
   final String icon;
   final String title;
+  final Color iconColor;
+  final Color titleColor;
   final Function() ontap;
-  const MiniButton(
-      {super.key,
-      required this.icon,
-      required this.title,
-      required this.ontap});
+  final Color color;
+  const MiniButton({
+    super.key,
+    required this.icon,
+    required this.title,
+    this.iconColor = AppColors.greyColor,
+    this.titleColor = AppColors.greyColor,
+    required this.ontap,
+    this.color = AppColors.greyColor,
+  });
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton.icon(
       onPressed: ontap,
-      icon: Image.asset('assets/$icon', width: 24),
+      icon: Image.asset('assets/$icon', width: 24, color: iconColor),
       style: ElevatedButton.styleFrom(
         elevation: 0,
-        backgroundColor: AppColors.greyColor.withOpacity(.2),
+        backgroundColor: color.withOpacity(.2),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
         ),
@@ -68,7 +75,7 @@ class MiniButton extends StatelessWidget {
       label: Text(
         title,
         style: AppTextStyle.paragraphL.copyWith(
-          color: AppColors.blackColor,
+          color: titleColor,
         ),
       ),
     );

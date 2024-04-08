@@ -4,6 +4,7 @@ import 'package:aksi_seru_app/widgets/custom_textfield.dart';
 import 'package:aksi_seru_app/widgets/user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get.dart';
 
 class FeedPage extends StatelessWidget {
   const FeedPage({super.key});
@@ -68,7 +69,7 @@ class FeedPage extends StatelessWidget {
                             padding: const MaterialStatePropertyAll(
                                 EdgeInsets.all(12)),
                           ),
-                          onPressed: () {},
+                          onPressed: () => Get.toNamed('/create-post'),
                           icon: Image.asset('assets/icon_image.png', width: 24),
                         )
                       ],
