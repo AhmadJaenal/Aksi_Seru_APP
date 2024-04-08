@@ -1,4 +1,5 @@
 import 'package:aksi_seru_app/shared/style.dart';
+import 'package:aksi_seru_app/widgets/custom_button.dart';
 import 'package:aksi_seru_app/widgets/user_profile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +12,7 @@ class NotificationPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double height = MediaQuery.of(context).size.height;
     return SafeArea(
       child: Scaffold(
         appBar: PreferredSize(
@@ -53,7 +55,76 @@ class NotificationPage extends StatelessWidget {
                 ),
                 const Spacer(),
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    showModalBottomSheet(
+                      isScrollControlled: true,
+                      context: context,
+                      builder: (context) {
+                        return SizedBox(
+                          width: double.infinity,
+                          height: 280,
+                          child: Column(
+                            children: [
+                              const Gap(16),
+                              Container(
+                                width: 60,
+                                height: 5,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                  color: AppColors.greyColor,
+                                ),
+                              ),
+                              const Gap(24),
+                              Text(
+                                'Opsi',
+                                style: AppTextStyle.paragraphL.copyWith(
+                                  color: AppColors.blackColor,
+                                ),
+                              ),
+                              const Gap(24),
+                              Container(
+                                width: double.infinity,
+                                padding:
+                                    EdgeInsets.all(AppMargin.defaultMargin),
+                                decoration: BoxDecoration(
+                                  border: Border.symmetric(
+                                    horizontal: BorderSide(
+                                      color:
+                                          AppColors.greyColor.withOpacity(.2),
+                                      width: 1,
+                                    ),
+                                  ),
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    MiniButton(
+                                      icon: 'icon_mute.png',
+                                      title: 'Bisukan notifikasi',
+                                      ontap: () {},
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const Gap(12),
+                              Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: AppMargin.defaultMargin),
+                                child: Align(
+                                  alignment: Alignment.bottomLeft,
+                                  child: DangerMiniButton(
+                                    icon: 'icon_close.png',
+                                    title: 'Hapus notifikasi',
+                                    ontap: () {},
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    );
+                  },
                   icon: Image.asset('assets/icon_option.png'),
                 ),
               ],
