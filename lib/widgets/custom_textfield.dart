@@ -1,10 +1,10 @@
 import 'package:aksi_seru_app/shared/style.dart';
 import 'package:flutter/material.dart';
 
-class CustomTextField extends StatelessWidget {
+class CustomTextFieldIcon extends StatelessWidget {
   final String hintText;
   final Icon icon;
-  const CustomTextField(
+  const CustomTextFieldIcon(
       {super.key, required this.hintText, required this.icon});
 
   @override
@@ -23,6 +23,39 @@ class CustomTextField extends StatelessWidget {
         prefixIcon: icon,
         contentPadding:
             const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: AppColors.primary1, width: 1.5),
+          borderRadius: BorderRadius.circular(8),
+        ),
+        hintText: hintText,
+        hintStyle: AppTextStyle.paragraphL.copyWith(color: AppColors.greyColor),
+      ),
+    );
+  }
+}
+
+class CustomTextField extends StatelessWidget {
+  final String hintText;
+  const CustomTextField({super.key, required this.hintText});
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      validator: (value) {
+        if (value!.isEmpty) {
+          return 'DATA TIDAK BOLEH KOSONG';
+        }
+        return null;
+      },
+      style: AppTextStyle.paragraphL.copyWith(color: AppColors.greyColor),
+      textAlignVertical: TextAlignVertical.bottom,
+      cursorColor: AppColors.primary1,
+      decoration: InputDecoration(
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
         ),
