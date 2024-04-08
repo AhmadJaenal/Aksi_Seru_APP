@@ -6,6 +6,7 @@ import 'package:aksi_seru_app/screens/auth/success_register.dart';
 import 'package:aksi_seru_app/screens/auth/verified_code_register.dart';
 import 'package:aksi_seru_app/screens/home/feed/create_post.dart';
 import 'package:aksi_seru_app/screens/home/feed/feed_page.dart';
+import 'package:aksi_seru_app/screens/home/feed/review_post.dart';
 import 'package:aksi_seru_app/screens/home/feed/story.dart';
 import 'package:aksi_seru_app/screens/home/recommendation_page.dart';
 import 'package:aksi_seru_app/screens/splash_screen.dart';
@@ -68,6 +69,10 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: '/story',
           page: () => const StoryView(),
+        ),
+        GetPage(
+          name: '/review-post',
+          page: () => const ReviewPost(),
         ),
       ],
     );
