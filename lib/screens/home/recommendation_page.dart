@@ -1,8 +1,10 @@
 import 'package:aksi_seru_app/shared/style.dart';
 import 'package:aksi_seru_app/widgets/card_article.dart';
 import 'package:aksi_seru_app/widgets/user_profile.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get.dart';
 
 class RecommendationPage extends StatelessWidget {
   const RecommendationPage({super.key});
@@ -37,10 +39,13 @@ class RecommendationPage extends StatelessWidget {
                         color: AppColors.primary1,
                       ),
                     ),
-                    Text(
-                      'Nanti aja',
-                      style: AppTextStyle.paragraphL.copyWith(
-                        color: AppColors.primary1,
+                    GestureDetector(
+                      onTap: () => Get.offAndToNamed('/feed-page'),
+                      child: Text(
+                        'Nanti aja',
+                        style: AppTextStyle.paragraphL.copyWith(
+                          color: AppColors.primary1,
+                        ),
                       ),
                     )
                   ],
@@ -78,7 +83,8 @@ class RecommendationPage extends StatelessWidget {
                       padding: index == 0
                           ? EdgeInsets.only(left: AppMargin.defaultMargin)
                           : index == 9
-                              ? EdgeInsets.only(right: AppMargin.defaultMargin)
+                              ? EdgeInsets.only(
+                                  left: 8, right: AppMargin.defaultMargin)
                               : const EdgeInsets.only(left: 8),
                       child: const UserProfile(),
                     );

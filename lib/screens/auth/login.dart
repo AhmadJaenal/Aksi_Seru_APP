@@ -23,7 +23,7 @@ class Login extends StatelessWidget {
               style: AppTextStyle.titlePrimary,
             ),
             const Gap(24),
-            CustomTextField(
+            CustomTextFieldIcon(
               hintText: 'Masukan email',
               icon: Icon(
                 Icons.email_outlined,

@@ -23,7 +23,7 @@ class VerifiedCode extends StatelessWidget {
               style: AppTextStyle.titlePrimary,
             ),
             const Gap(24),
-            CustomTextField(
+            CustomTextFieldIcon(
               hintText: 'Masukan code verifikasi',
               icon: Icon(
                 Icons.email_outlined,

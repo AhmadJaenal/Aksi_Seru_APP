@@ -22,7 +22,7 @@ class CreateUsername extends StatelessWidget {
               style: AppTextStyle.titlePrimary,
             ),
             const Gap(24),
-            CustomTextField(
+            CustomTextFieldIcon(
               hintText: 'Masukan nama kamu',
               icon: Icon(
                 Icons.account_circle_outlined,

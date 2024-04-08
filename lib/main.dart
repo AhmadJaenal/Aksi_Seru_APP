@@ -4,6 +4,7 @@ import 'package:aksi_seru_app/screens/auth/login.dart';
 import 'package:aksi_seru_app/screens/auth/register.dart';
 import 'package:aksi_seru_app/screens/auth/success_register.dart';
 import 'package:aksi_seru_app/screens/auth/verified_code_register.dart';
+import 'package:aksi_seru_app/screens/home/feed/feed_page.dart';
 import 'package:aksi_seru_app/screens/home/recommendation_page.dart';
 import 'package:aksi_seru_app/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
@@ -53,6 +54,10 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: '/recommendation-page',
           page: () => const RecommendationPage(),
+        ),
+        GetPage(
+          name: '/feed-page',
+          page: () => const FeedPage(),
         ),
       ],
     );
