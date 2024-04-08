@@ -4,7 +4,9 @@ import 'package:aksi_seru_app/screens/auth/login.dart';
 import 'package:aksi_seru_app/screens/auth/register.dart';
 import 'package:aksi_seru_app/screens/auth/success_register.dart';
 import 'package:aksi_seru_app/screens/auth/verified_code_register.dart';
+import 'package:aksi_seru_app/screens/home/feed/create_post.dart';
 import 'package:aksi_seru_app/screens/home/feed/feed_page.dart';
+import 'package:aksi_seru_app/screens/home/feed/story.dart';
 import 'package:aksi_seru_app/screens/home/recommendation_page.dart';
 import 'package:aksi_seru_app/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
@@ -58,6 +60,14 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: '/feed-page',
           page: () => const FeedPage(),
+        ),
+        GetPage(
+          name: '/create-post',
+          page: () => const CreatePost(),
+        ),
+        GetPage(
+          name: '/story',
+          page: () => const StoryView(),
         ),
       ],
     );

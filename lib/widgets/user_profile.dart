@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get.dart';
 
 class UserProfile extends StatelessWidget {
   const UserProfile({super.key});
@@ -126,35 +127,38 @@ class CardStories extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.end,
-      children: [
-        Container(
-          width: 80,
-          height: 80,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            border: Border.all(
-              color: AppColors.primary40,
-              width: 3,
-            ),
-            image: const DecorationImage(
-              image: AssetImage('assets/user_profile.png'),
-            ),
-          ),
-        ),
-        const Gap(8),
-        SizedBox(
-          width: 80,
-          child: Text(
-            'Willie Tsdsdsdsdsd',
-            style: AppTextStyle.paragraphL.copyWith(
-              color: AppColors.blackColor,
-              overflow: TextOverflow.ellipsis,
+    return GestureDetector(
+      onTap: () => Get.toNamed('/story'),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Container(
+            width: 80,
+            height: 80,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: AppColors.primary40,
+                width: 3,
+              ),
+              image: const DecorationImage(
+                image: AssetImage('assets/user_profile.png'),
+              ),
             ),
           ),
-        )
-      ],
+          const Gap(8),
+          SizedBox(
+            width: 80,
+            child: Text(
+              'Willie Tsdsdsdsdsd',
+              style: AppTextStyle.paragraphL.copyWith(
+                color: AppColors.blackColor,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          )
+        ],
+      ),
     );
   }
 }

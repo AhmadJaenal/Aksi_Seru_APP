@@ -178,7 +178,7 @@ class CardPost extends StatelessWidget {
               image: const DecorationImage(
                 fit: BoxFit.fitHeight,
                 image: AssetImage(
-                  'assets/image_post2.png',
+                  'assets/image_post.png',
                 ),
               ),
             ),

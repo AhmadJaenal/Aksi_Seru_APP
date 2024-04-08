@@ -4,8 +4,12 @@ import 'package:flutter/material.dart';
 class CustomTextFieldIcon extends StatelessWidget {
   final String hintText;
   final Icon icon;
+  final Color color;
   const CustomTextFieldIcon(
-      {super.key, required this.hintText, required this.icon});
+      {super.key,
+      required this.hintText,
+      required this.icon,
+      this.color = AppColors.greyColor});
 
   @override
   Widget build(BuildContext context) {
@@ -16,22 +20,27 @@ class CustomTextFieldIcon extends StatelessWidget {
         }
         return null;
       },
-      style: AppTextStyle.paragraphL.copyWith(color: AppColors.greyColor),
+      style: AppTextStyle.paragraphL.copyWith(color: color),
       textAlignVertical: TextAlignVertical.bottom,
       cursorColor: AppColors.primary1,
       decoration: InputDecoration(
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: color),
+          borderRadius: BorderRadius.circular(8),
+        ),
         prefixIcon: icon,
         contentPadding:
-            const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
         border: OutlineInputBorder(
+          borderSide: BorderSide(color: color, width: 1.5),
           borderRadius: BorderRadius.circular(8),
         ),
         focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: AppColors.primary1, width: 1.5),
+          borderSide: BorderSide(color: color, width: 1.5),
           borderRadius: BorderRadius.circular(8),
         ),
         hintText: hintText,
-        hintStyle: AppTextStyle.paragraphL.copyWith(color: AppColors.greyColor),
+        hintStyle: AppTextStyle.paragraphL.copyWith(color: color),
       ),
     );
   }
