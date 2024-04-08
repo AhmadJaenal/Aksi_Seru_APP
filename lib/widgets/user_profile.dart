@@ -56,13 +56,14 @@ class UserProfile extends StatelessWidget {
 }
 
 class Verified extends StatelessWidget {
-  const Verified({super.key});
+  final double width;
+  const Verified({super.key, this.width = 18});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 18,
-      height: 18,
+      width: width,
+      height: width,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: AppColors.primary1,
@@ -70,7 +71,7 @@ class Verified extends StatelessWidget {
       child: Icon(
         Icons.check,
         color: AppColors.whiteColor,
-        size: 12,
+        size: width * .7,
       ),
     );
   }
