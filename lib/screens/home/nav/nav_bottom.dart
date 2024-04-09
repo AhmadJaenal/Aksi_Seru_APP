@@ -43,6 +43,7 @@ class _CustomNavBottomState extends State<CustomNavBottom> {
             color: AppColors.whiteColor,
             child: BottomNavigationBar(
               type: BottomNavigationBarType.fixed,
+              currentIndex: _selectedIndex,
               onTap: (index) {
                 setState(() {
                   _selectedIndex = index;

@@ -61,35 +61,7 @@ class CreatePost extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                children: [
-                  Image.asset('assets/user_profile.png', width: 48),
-                  const Gap(8),
-                  RichText(
-                    text: TextSpan(
-                      style: AppTextStyle.paragraphL.copyWith(
-                        color: AppColors.blackColor,
-                      ),
-                      children: <TextSpan>[
-                        const TextSpan(
-                          text: 'Mavropanos\n',
-                        ),
-                        TextSpan(
-                          text: 'Artikel kreator',
-                          style: AppTextStyle.paragraphM.copyWith(
-                            color: AppColors.blackColor,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const Gap(4),
-                  const Padding(
-                    padding: EdgeInsets.only(bottom: 15),
-                    child: Verified(),
-                  ),
-                ],
-              ),
+              const ProfileTile(),
               const Gap(12),
               const CustomTextArea(
                   hintText: 'Share hal seru kalian hari ini, yuk!'),

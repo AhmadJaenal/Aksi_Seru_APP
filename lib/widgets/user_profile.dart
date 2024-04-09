@@ -1,4 +1,5 @@
 import 'package:aksi_seru_app/shared/style.dart';
+import 'package:aksi_seru_app/widgets/custom_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -31,25 +32,7 @@ class UserProfile extends StatelessWidget {
             ],
           ),
           const Gap(8),
-          ElevatedButton.icon(
-            onPressed: () {},
-            icon: Icon(Icons.add, color: AppColors.whiteColor),
-            style: ElevatedButton.styleFrom(
-              maximumSize: const Size(97, 40),
-              elevation: 0,
-              backgroundColor: AppColors.primary1,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            ),
-            label: Text(
-              'Ikuti',
-              style: AppTextStyle.paragraphL.copyWith(
-                color: AppColors.whiteColor,
-              ),
-            ),
-          )
+          const FollowButton(),
         ],
       ),
     );
@@ -159,6 +142,44 @@ class CardStories extends StatelessWidget {
           )
         ],
       ),
+    );
+  }
+}
+
+class ProfileTile extends StatelessWidget {
+  const ProfileTile({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Image.asset('assets/user_profile.png', width: 48),
+        const Gap(8),
+        RichText(
+          text: TextSpan(
+            style: AppTextStyle.paragraphL.copyWith(
+              color: AppColors.blackColor,
+              height: 1.2,
+            ),
+            children: <TextSpan>[
+              const TextSpan(
+                text: 'Mavropanos\n',
+              ),
+              TextSpan(
+                text: 'Artikel kreator',
+                style: AppTextStyle.paragraphM.copyWith(
+                  color: AppColors.blackColor,
+                ),
+              ),
+            ],
+          ),
+        ),
+        const Gap(4),
+        const Padding(
+          padding: EdgeInsets.only(bottom: 15),
+          child: Verified(),
+        ),
+      ],
     );
   }
 }
