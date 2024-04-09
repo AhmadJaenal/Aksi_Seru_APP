@@ -4,6 +4,7 @@ import 'package:aksi_seru_app/screens/auth/login.dart';
 import 'package:aksi_seru_app/screens/auth/register.dart';
 import 'package:aksi_seru_app/screens/auth/success_register.dart';
 import 'package:aksi_seru_app/screens/auth/verified_code_register.dart';
+import 'package:aksi_seru_app/screens/home/article/article_page.dart';
 import 'package:aksi_seru_app/screens/home/article/detail_article.dart';
 import 'package:aksi_seru_app/screens/home/feed/create_post.dart';
 import 'package:aksi_seru_app/screens/home/feed/feed_page.dart';
@@ -89,6 +90,10 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: '/search-page',
           page: () => const SearchPage(),
+        ),
+        GetPage(
+          name: '/article-page',
+          page: () => ArticlePage(),
         ),
         GetPage(
           name: '/detail-article',

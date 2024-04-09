@@ -1,7 +1,7 @@
+import 'package:aksi_seru_app/screens/home/article/article_page.dart';
 import 'package:aksi_seru_app/screens/home/feed/feed_page.dart';
 import 'package:aksi_seru_app/screens/home/search/search_page.dart';
 import 'package:aksi_seru_app/shared/style.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CustomNavBottom extends StatefulWidget {
@@ -16,7 +16,7 @@ class _CustomNavBottomState extends State<CustomNavBottom> {
   final List<Widget> _pages = [
     const FeedPage(),
     const SearchPage(),
-    const FeedPage(),
+    ArticlePage(),
     const FeedPage(),
     const FeedPage(),
   ];

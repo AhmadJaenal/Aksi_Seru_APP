@@ -36,8 +36,7 @@ class SearchPage extends StatelessWidget {
                     Text(
                       'Pencarian',
                       style: AppTextStyle.appbarTitle.copyWith(
-                        color: AppColors.primary1,
-                      ),
+                          color: AppColors.primary1, letterSpacing: -2),
                     ),
                     Gap(AppMargin.defaultMargin),
                     const CustomTextFieldIcon(
