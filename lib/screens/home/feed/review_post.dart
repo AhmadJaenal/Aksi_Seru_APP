@@ -47,7 +47,7 @@ class ReviewPost extends StatelessWidget {
                 ),
                 const Gap(16),
                 Text(
-                  'Buat postingan',
+                  'Bagikan postingan',
                   style: AppTextStyle.appbarTitle.copyWith(
                     color: AppColors.primary1,
                   ),
