@@ -114,3 +114,30 @@ class DangerMiniButton extends StatelessWidget {
     );
   }
 }
+
+class FollowButton extends StatelessWidget {
+  const FollowButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton.icon(
+      onPressed: () {},
+      icon: Icon(Icons.add, color: AppColors.whiteColor),
+      style: ElevatedButton.styleFrom(
+        maximumSize: const Size(97, 40),
+        elevation: 0,
+        backgroundColor: AppColors.primary1,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      ),
+      label: Text(
+        'Ikuti',
+        style: AppTextStyle.paragraphL.copyWith(
+          color: AppColors.whiteColor,
+        ),
+      ),
+    );
+  }
+}
