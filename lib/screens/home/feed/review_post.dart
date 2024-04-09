@@ -1,7 +1,6 @@
 import 'package:aksi_seru_app/shared/style.dart';
 import 'package:aksi_seru_app/widgets/custom_button.dart';
 import 'package:aksi_seru_app/widgets/user_profile.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
@@ -102,7 +101,7 @@ class ReviewPost extends StatelessWidget {
               const Gap(12),
               const Spacer(),
               PrimaryButton(
-                  ontap: () => Get.toNamed('/feed-page'), title: 'Bagikan')
+                  ontap: () => Get.offAllNamed('/nav-bar'), title: 'Bagikan')
             ],
           ),
         ),
