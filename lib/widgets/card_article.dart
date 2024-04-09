@@ -1,8 +1,6 @@
 import 'package:aksi_seru_app/shared/style.dart';
 import 'package:aksi_seru_app/widgets/custom_button.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:gap/gap.dart';
 
 class CardArticle extends StatelessWidget {
@@ -28,10 +26,15 @@ class CardArticle extends StatelessWidget {
                 children: [
                   Image.asset('assets/user_profile.png', width: 24),
                   const Gap(4),
-                  Text(
-                    'Alexander K..',
-                    style: AppTextStyle.paragraphL.copyWith(
-                      color: AppColors.blackColor,
+                  SizedBox(
+                    width: width * .3,
+                    child: Text(
+                      'Alexander Keantoa',
+                      style: AppTextStyle.paragraphL.copyWith(
+                        color: AppColors.blackColor,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                   const Gap(7),
