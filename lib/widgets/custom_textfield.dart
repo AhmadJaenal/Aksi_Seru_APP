@@ -32,7 +32,7 @@ class CustomTextFieldIcon extends StatelessWidget {
         contentPadding:
             const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
         border: OutlineInputBorder(
-          borderSide: BorderSide(color: color, width: 1.5),
+          borderSide: const BorderSide(color: AppColors.greyColor, width: 1.5),
           borderRadius: BorderRadius.circular(8),
         ),
         focusedBorder: OutlineInputBorder(

@@ -11,6 +11,7 @@ import 'package:aksi_seru_app/screens/home/feed/story.dart';
 import 'package:aksi_seru_app/screens/home/nav/nav_bottom.dart';
 import 'package:aksi_seru_app/screens/home/notification/notif_page.dart';
 import 'package:aksi_seru_app/screens/home/onboarding/recommendation_page.dart';
+import 'package:aksi_seru_app/screens/home/search/search_page.dart';
 import 'package:aksi_seru_app/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -83,6 +84,10 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: '/nav-bar',
           page: () => const CustomNavBottom(),
+        ),
+        GetPage(
+          name: '/search-page',
+          page: () => const SearchPage(),
         ),
       ],
     );
