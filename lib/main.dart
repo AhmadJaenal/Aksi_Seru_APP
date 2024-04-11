@@ -6,6 +6,9 @@ import 'package:aksi_seru_app/screens/auth/success_register.dart';
 import 'package:aksi_seru_app/screens/auth/verified_code_register.dart';
 import 'package:aksi_seru_app/screens/home/article/article_page.dart';
 import 'package:aksi_seru_app/screens/home/article/detail_article.dart';
+import 'package:aksi_seru_app/screens/home/article/following_page.dart';
+import 'package:aksi_seru_app/screens/home/article/for_you_page.dart';
+import 'package:aksi_seru_app/screens/home/article/trending_page.dart';
 import 'package:aksi_seru_app/screens/home/feed/create_post.dart';
 import 'package:aksi_seru_app/screens/home/feed/feed_page.dart';
 import 'package:aksi_seru_app/screens/home/feed/review_post.dart';
@@ -98,6 +101,18 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: '/detail-article',
           page: () => const DetailArticle(),
+        ),
+        GetPage(
+          name: '/trending-article',
+          page: () => const TrendingPage(),
+        ),
+        GetPage(
+          name: '/for-you-article',
+          page: () => const ForYouPage(),
+        ),
+        GetPage(
+          name: '/following-article',
+          page: () => const FollowingPage(),
         ),
       ],
     );

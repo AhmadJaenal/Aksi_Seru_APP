@@ -1,3 +1,6 @@
+import 'package:aksi_seru_app/screens/home/article/following_page.dart';
+import 'package:aksi_seru_app/screens/home/article/for_you_page.dart';
+import 'package:aksi_seru_app/screens/home/article/trending_page.dart';
 import 'package:aksi_seru_app/shared/style.dart';
 import 'package:aksi_seru_app/widgets/custom_button.dart';
 import 'package:aksi_seru_app/widgets/custom_textfield.dart';
@@ -21,7 +24,7 @@ class ArticlePage extends StatelessWidget {
           children: [
             Image.asset('assets/icon_for_you.png', width: 24),
             const Gap(8),
-            Text('Siswa'),
+            const Text('Siswa'),
           ],
         ),
       ),
@@ -30,7 +33,7 @@ class ArticlePage extends StatelessWidget {
           children: [
             Image.asset('assets/icon_follow.png', width: 24),
             const Gap(8),
-            Text('Siswa'),
+            const Text('Siswa'),
           ],
         ),
       ),
@@ -39,7 +42,7 @@ class ArticlePage extends StatelessWidget {
           children: [
             Image.asset('assets/icon_trend.png', width: 24),
             const Gap(8),
-            Text('Siswa'),
+            const Text('Siswa'),
           ],
         ),
       ),
@@ -137,11 +140,11 @@ class ArticlePage extends StatelessWidget {
             ),
           ),
         ),
-        body: TabBarView(
+        body: const TabBarView(
           children: [
-            Text('Text1'),
-            Text('Text2'),
-            Text('Text3'),
+            TrendingPage(),
+            ForYouPage(),
+            FollowingPage(),
           ],
         ),
       ),
