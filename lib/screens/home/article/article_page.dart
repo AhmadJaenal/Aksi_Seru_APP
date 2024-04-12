@@ -105,8 +105,8 @@ class ArticlePage extends StatelessWidget {
                   child: Row(
                     children: [
                       MiniButton(
-                        icon: 'icon_article.png',
-                        title: 'Artikel saya',
+                        icon: 'icon_update_profile.png',
+                        title: 'Atur profil',
                         ontap: () {},
                         color: AppColors.primary1,
                         iconColor: AppColors.primary1,

@@ -1,5 +1,6 @@
 import 'package:aksi_seru_app/screens/home/article/article_page.dart';
 import 'package:aksi_seru_app/screens/home/feed/feed_page.dart';
+import 'package:aksi_seru_app/screens/home/profile/verified_profile.dart';
 import 'package:aksi_seru_app/screens/home/search/search_page.dart';
 import 'package:aksi_seru_app/shared/style.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +19,7 @@ class _CustomNavBottomState extends State<CustomNavBottom> {
     const SearchPage(),
     ArticlePage(),
     const FeedPage(),
-    const FeedPage(),
+    VerifiedProfile(),
   ];
 
   @override
