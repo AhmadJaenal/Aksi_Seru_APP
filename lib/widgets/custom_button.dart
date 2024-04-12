@@ -141,3 +141,34 @@ class FollowButton extends StatelessWidget {
     );
   }
 }
+
+class CustomIconButton extends StatelessWidget {
+  final Icon icon;
+  final Function() ontap;
+  const CustomIconButton({
+    super.key,
+    required this.icon,
+    required this.ontap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 5),
+      child: IconButton(
+        style: ButtonStyle(
+          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+          ),
+          backgroundColor:
+              MaterialStatePropertyAll(AppColors.greyColor.withOpacity(.3)),
+          padding: const MaterialStatePropertyAll(EdgeInsets.all(12)),
+        ),
+        onPressed: ontap,
+        icon: icon,
+      ),
+    );
+  }
+}

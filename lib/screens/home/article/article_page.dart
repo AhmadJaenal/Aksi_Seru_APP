@@ -6,25 +6,26 @@ import 'package:aksi_seru_app/widgets/custom_button.dart';
 import 'package:aksi_seru_app/widgets/custom_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get.dart';
 
 class ArticlePage extends StatelessWidget {
   ArticlePage({super.key});
 
   TabBar tabBar = TabBar(
-    labelStyle: AppTextStyle.paragraphL.copyWith(color: AppColors.primary1),
-    indicatorSize: TabBarIndicatorSize.tab,
+    labelStyle: AppTextStyle.paragraphM.copyWith(color: AppColors.primary1),
     unselectedLabelColor: AppColors.greyColor,
     indicatorColor: AppColors.primary1,
     indicatorWeight: 3,
+    isScrollable: true,
     unselectedLabelStyle:
-        AppTextStyle.paragraphL.copyWith(color: AppColors.greyColor),
+        AppTextStyle.paragraphM.copyWith(color: AppColors.greyColor),
     tabs: [
       Tab(
         child: Row(
           children: [
             Image.asset('assets/icon_for_you.png', width: 24),
             const Gap(8),
-            const Text('Siswa'),
+            const Text('Untuk kamu'),
           ],
         ),
       ),
@@ -33,7 +34,7 @@ class ArticlePage extends StatelessWidget {
           children: [
             Image.asset('assets/icon_follow.png', width: 24),
             const Gap(8),
-            const Text('Siswa'),
+            const Text('Mengikuti'),
           ],
         ),
       ),
@@ -42,7 +43,7 @@ class ArticlePage extends StatelessWidget {
           children: [
             Image.asset('assets/icon_trend.png', width: 24),
             const Gap(8),
-            const Text('Siswa'),
+            const Text('Trending'),
           ],
         ),
       ),
@@ -115,7 +116,7 @@ class ArticlePage extends StatelessWidget {
                       MiniButton(
                         icon: 'icon_pen.png',
                         title: 'Tulis artikel',
-                        ontap: () {},
+                        ontap: () => Get.toNamed('/create-article'),
                         color: AppColors.primary1,
                         iconColor: AppColors.primary1,
                         titleColor: AppColors.primary1,
@@ -142,83 +143,12 @@ class ArticlePage extends StatelessWidget {
         ),
         body: const TabBarView(
           children: [
-            TrendingPage(),
             ForYouPage(),
             FollowingPage(),
+            TrendingPage(),
           ],
         ),
       ),
     );
   }
 }
-// SliverAppBar(
-//             automaticallyImplyLeading: false,
-//             bottom: PreferredSize(
-//               preferredSize: const Size.fromHeight(120),
-//               child: Container(
-//                 padding: EdgeInsets.all(AppMargin.defaultMargin),
-//                 decoration: BoxDecoration(
-//                   color: AppColors.whiteColor,
-//                   border: Border(
-//                     bottom: BorderSide(
-//                       color: AppColors.greyColor.withOpacity(.2),
-//                       width: 1,
-//                     ),
-//                   ),
-//                 ),
-//                 child: Column(
-//                   crossAxisAlignment: CrossAxisAlignment.start,
-//                   children: [
-//                     Text(
-//                       'Artikel',
-//                       style: AppTextStyle.appbarTitle.copyWith(
-//                           color: AppColors.primary1, letterSpacing: -2),
-//                     ),
-//                     Gap(AppMargin.defaultMargin),
-//                     const CustomTextFieldIcon(
-//                       hintText: 'Cari inspirasi di sini!',
-//                       icon: Icon(
-//                         Icons.search,
-//                         color: AppColors.greyColor,
-//                       ),
-//                     ),
-//                   ],
-//                 ),
-//               ),
-//             ),
-//           ),
-//           SliverToBoxAdapter(
-//             child: Container(
-//               padding: EdgeInsets.all(AppMargin.defaultMargin),
-//               decoration: BoxDecoration(
-//                 color: AppColors.whiteColor,
-//                 border: Border(
-//                   bottom: BorderSide(
-//                     color: AppColors.greyColor.withOpacity(.2),
-//                     width: 1,
-//                   ),
-//                 ),
-//               ),
-//               child: Row(
-//                 children: [
-//                   MiniButton(
-//                     icon: 'icon_article.png',
-//                     title: 'Artikel saya',
-//                     ontap: () {},
-//                     color: AppColors.primary1,
-//                     iconColor: AppColors.primary1,
-//                     titleColor: AppColors.primary1,
-//                   ),
-//                   const Spacer(),
-//                   MiniButton(
-//                     icon: 'icon_pen.png',
-//                     title: 'Tulis artikel',
-//                     ontap: () {},
-//                     color: AppColors.primary1,
-//                     iconColor: AppColors.primary1,
-//                     titleColor: AppColors.primary1,
-//                   ),
-//                 ],
-//               ),
-//             ),
-//           ),
