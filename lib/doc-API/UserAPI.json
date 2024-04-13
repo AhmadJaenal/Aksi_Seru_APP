@@ -260,38 +260,46 @@
                 }
             }
         },
-        "/api/users/list-following/{id}" : {
+        "/api/users/list-following" : {
             "get" : {
-                "description": "Get current user",
+                "description": "Get list following",
                 "parameters": [
                     {
-                        "name" : "Authorization",
+                        "name": "Authorization",
                         "in": "header"
-                    },
-                    {
-                        "name": "id",
-                        "in": "path"
                     }
                 ],
                 "responses": {
                     "200" : {
-                        "description": "Success get current user",
+                        "description": "List following",
                         "content": {
                             "application/json" : {
                                 "schema" : {
                                     "type": "object",
                                     "properties": {
                                         "data" : {
-                                            "type": "object",
-                                            "properties": {
-                                                "id" : {
-                                                    "type": "number"
-                                                },
-                                                "username" : {
-                                                    "type": "string"
-                                                },
-                                                "name" : {
-                                                    "type": "string"
+                                            "type": "array",
+                                            "items" : {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id" : {
+                                                        "type": "number"
+                                                    },
+                                                    "username" : {
+                                                        "type": "string"
+                                                    },
+                                                    "bio" : {
+                                                        "type": "string"
+                                                    },
+                                                    "countpost" : {
+                                                        "type": "number"
+                                                    },
+                                                    "countarticles" : {
+                                                        "type": "number"
+                                                    },
+                                                    "verified" : {
+                                                        "type": "boolean"
+                                                    }
                                                 }
                                             }
                                         },
@@ -306,38 +314,46 @@
                 }
             }
         },
-        "/api/users/list-followers/{id}" : {
+        "/api/users/list-followers" : {
             "get" : {
-                "description": "Get current user",
+                "description": "Get list followers",
                 "parameters": [
                     {
-                        "name" : "Authorization",
+                        "name": "Authorization",
                         "in": "header"
-                    },
-                    {
-                        "name": "id",
-                        "in": "path"
                     }
                 ],
                 "responses": {
                     "200" : {
-                        "description": "Success get current user",
+                        "description": "List followers",
                         "content": {
                             "application/json" : {
                                 "schema" : {
                                     "type": "object",
                                     "properties": {
                                         "data" : {
-                                            "type": "object",
-                                            "properties": {
-                                                "id" : {
-                                                    "type": "number"
-                                                },
-                                                "username" : {
-                                                    "type": "string"
-                                                },
-                                                "name" : {
-                                                    "type": "string"
+                                            "type": "array",
+                                            "items" : {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id" : {
+                                                        "type": "number"
+                                                    },
+                                                    "username" : {
+                                                        "type": "string"
+                                                    },
+                                                    "bio" : {
+                                                        "type": "string"
+                                                    },
+                                                    "countpost" : {
+                                                        "type": "number"
+                                                    },
+                                                    "countarticles" : {
+                                                        "type": "number"
+                                                    },
+                                                    "verified" : {
+                                                        "type": "boolean"
+                                                    }
                                                 }
                                             }
                                         },
@@ -352,17 +368,13 @@
                 }
             }
         },
-        "/api/users/profile/{id}" : {
+        "/api/users/profile" : {
             "put" : {
                 "description": "Update profile",
                 "parameters": [
                     {
                         "name" : "Authorization",
                         "in": "header"
-                    },
-                    {
-                        "name": "id",
-                        "in": "path"
                     }
                 ],
                 "requestBody" : {
