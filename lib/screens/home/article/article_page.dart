@@ -12,16 +12,26 @@ class ArticlePage extends StatelessWidget {
   ArticlePage({super.key});
 
   TabBar tabBar = TabBar(
+    padding: EdgeInsets.zero,
     labelStyle: AppTextStyle.paragraphM.copyWith(color: AppColors.primary1),
     unselectedLabelColor: AppColors.greyColor,
     indicatorColor: AppColors.primary1,
     indicatorWeight: 3,
-    isScrollable: true,
+    indicatorSize: TabBarIndicatorSize.values[1],
+    splashFactory: NoSplash.splashFactory,
+    splashBorderRadius: const BorderRadius.all(Radius.circular(10)),
+    indicator: UnderlineTabIndicator(
+      borderSide: BorderSide(color: AppColors.primary1, width: 4.0),
+      insets: const EdgeInsets.fromLTRB(40.0, 0.0, 10.0, 50.0),
+      borderRadius: const BorderRadius.vertical(bottom: Radius.circular(10)),
+    ),
+    dividerColor: Colors.transparent,
     unselectedLabelStyle:
         AppTextStyle.paragraphM.copyWith(color: AppColors.greyColor),
     tabs: [
       Tab(
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset('assets/icon_for_you.png', width: 24),
             const Gap(8),
@@ -31,6 +41,7 @@ class ArticlePage extends StatelessWidget {
       ),
       Tab(
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset('assets/icon_follow.png', width: 24),
             const Gap(8),
@@ -40,6 +51,7 @@ class ArticlePage extends StatelessWidget {
       ),
       Tab(
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset('assets/icon_trend.png', width: 24),
             const Gap(8),
@@ -52,101 +64,108 @@ class ArticlePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 3,
-      child: Scaffold(
-        appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(340),
-          child: AppBar(
-            automaticallyImplyLeading: false,
-            flexibleSpace: Column(
-              children: [
-                Container(
-                  padding: EdgeInsets.all(AppMargin.defaultMargin),
-                  decoration: BoxDecoration(
-                    color: AppColors.whiteColor,
-                    border: Border(
-                      bottom: BorderSide(
-                        color: AppColors.greyColor.withOpacity(.2),
-                        width: 1,
-                      ),
-                    ),
+    return Scaffold(
+      body: DefaultTabController(
+        length: 3,
+        initialIndex: 1,
+        child: NestedScrollView(
+          headerSliverBuilder: (context, innerBoxIsScrolled) {
+            return [
+              const SliverToBoxAdapter(
+                child: Gap(12),
+              ),
+              SliverAppBar(
+                automaticallyImplyLeading: false,
+                title: Text(
+                  'Artikel',
+                  style: AppTextStyle.appbarTitle.copyWith(
+                    color: AppColors.primary1,
                   ),
+                  overflow: TextOverflow.ellipsis,
+                ),
+                bottom: PreferredSize(
+                  preferredSize: const Size.fromHeight(250),
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        'Artikel',
-                        style: AppTextStyle.appbarTitle.copyWith(
-                            color: AppColors.primary1, letterSpacing: -2),
-                      ),
-                      Gap(AppMargin.defaultMargin),
-                      const CustomTextFieldIcon(
-                        hintText: 'Cari inspirasi di sini!',
-                        icon: Icon(
-                          Icons.search,
-                          color: AppColors.greyColor,
+                      Container(
+                        padding:
+                            EdgeInsetsDirectional.all(AppMargin.defaultMargin),
+                        decoration: BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(
+                              color: AppColors.greyColor.withOpacity(.2),
+                              width: 1,
+                            ),
+                          ),
+                        ),
+                        child: const CustomTextFieldIcon(
+                          hintText: 'Cari inspirasi di sini!',
+                          icon: Icon(
+                            Icons.search,
+                            color: AppColors.greyColor,
+                          ),
                         ),
                       ),
+                      Container(
+                        padding:
+                            EdgeInsetsDirectional.all(AppMargin.defaultMargin),
+                        decoration: BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(
+                              color: AppColors.greyColor.withOpacity(.2),
+                              width: 1,
+                            ),
+                          ),
+                        ),
+                        child: Row(
+                          children: [
+                            MiniButton(
+                              icon: 'icon_article.png',
+                              title: 'Artikel saya',
+                              ontap: () {},
+                              color: AppColors.primary1,
+                              iconColor: AppColors.primary1,
+                              titleColor: AppColors.primary1,
+                            ),
+                            const Spacer(),
+                            MiniButton(
+                              icon: 'icon_pen.png',
+                              title: 'Tulis artikel',
+                              ontap: () => Get.toNamed('/create-article'),
+                              color: AppColors.primary1,
+                              iconColor: AppColors.primary1,
+                              titleColor: AppColors.primary1,
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.only(top: 5, bottom: 10),
+                        decoration: BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(
+                              color: AppColors.greyColor.withOpacity(.2),
+                              width: 1,
+                            ),
+                          ),
+                        ),
+                        child: tabBar,
+                      ),
                     ],
                   ),
                 ),
-                Container(
-                  padding: EdgeInsets.all(AppMargin.defaultMargin),
-                  decoration: BoxDecoration(
-                    color: AppColors.whiteColor,
-                    border: Border(
-                      bottom: BorderSide(
-                        color: AppColors.greyColor.withOpacity(.2),
-                        width: 1,
-                      ),
-                    ),
-                  ),
-                  child: Row(
-                    children: [
-                      MiniButton(
-                        icon: 'icon_update_profile.png',
-                        title: 'Atur profil',
-                        ontap: () {},
-                        color: AppColors.primary1,
-                        iconColor: AppColors.primary1,
-                        titleColor: AppColors.primary1,
-                      ),
-                      const Spacer(),
-                      MiniButton(
-                        icon: 'icon_pen.png',
-                        title: 'Tulis artikel',
-                        ontap: () => Get.toNamed('/create-article'),
-                        color: AppColors.primary1,
-                        iconColor: AppColors.primary1,
-                        titleColor: AppColors.primary1,
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            bottom: PreferredSize(
-              preferredSize: const Size.fromHeight(100),
-              child: Container(
-                width: double.infinity,
-                height: 70,
-                padding:
-                    EdgeInsets.symmetric(horizontal: AppMargin.defaultMargin),
-                decoration: BoxDecoration(
-                  color: AppColors.whiteColor,
-                ),
-                child: tabBar,
               ),
-            ),
+            ];
+          },
+          body: const TabBarView(
+            children: [
+              ForYouPage(),
+              FollowingPage(),
+              TrendingPage(),
+            ],
           ),
-        ),
-        body: const TabBarView(
-          children: [
-            ForYouPage(),
-            FollowingPage(),
-            TrendingPage(),
-          ],
         ),
       ),
     );
