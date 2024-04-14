@@ -1,69 +1,96 @@
 import 'package:aksi_seru_app/shared/style.dart';
 import 'package:aksi_seru_app/widgets/custom_button.dart';
 import 'package:aksi_seru_app/widgets/custom_textfield.dart';
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
 class Login extends StatelessWidget {
-  const Login({super.key});
+  Login({super.key});
+
+  final formKey = GlobalKey<FormState>();
+
+  final TextEditingController _emailC = TextEditingController();
+  final TextEditingController _passwordC = TextEditingController();
+
+  @override
+  void dispose() {
+    _emailC.dispose();
+    _passwordC.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final bool isValidEmail = EmailValidator.validate(_emailC.text);
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: AppMargin.defaultMargin),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Gap(160),
-            Text(
-              'Login',
-              style: AppTextStyle.titlePrimary,
-            ),
-            const Gap(24),
-            const CustomTextFieldIcon(
-              hintText: 'Masukan email',
-              icon: Icon(
-                Icons.email_outlined,
-                color: AppColors.greyColor,
+        child: Form(
+          key: formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Gap(160),
+              Text(
+                'Login',
+                style: AppTextStyle.titlePrimary,
               ),
-            ),
-            const Gap(12),
-            const CustomTextFieldPassword(hintText: 'Masukan kata sandi'),
-            const Gap(24),
-            PrimaryButton(
-                ontap: () => Get.offAndToNamed('/recommendation-page'),
-                title: 'Lanjut'),
-            const Spacer(),
-            Center(
-              child: Text(
-                'Belum punya akun?',
-                style: AppTextStyle.paragraphL.copyWith(
+              const Gap(24),
+              CustomTextFieldIcon(
+                hintText: 'Masukan email',
+                icon: const Icon(
+                  Icons.email_outlined,
                   color: AppColors.greyColor,
                 ),
+                textController: _emailC,
               ),
-            ),
-            const Gap(14),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                GestureDetector(
-                  onTap: () => Get.offAndToNamed('/register'),
-                  child: Text(
-                    'Daftar ',
-                    style: AppTextStyle.paragraphL.copyWith(
-                      color: AppColors.primary1,
-                    ),
+              const Gap(12),
+              CustomTextFieldPassword(
+                hintText: 'Masukan kata sandi',
+                textController: _passwordC,
+              ),
+              const Gap(24),
+              PrimaryButton(
+                title: 'Lanjut',
+                ontap: () {
+                  if (formKey.currentState!.validate() && isValidEmail) {
+                    Get.offAndToNamed('/recommendation-page');
+                  } else {
+                    print('validasi gagal');
+                  }
+                },
+              ),
+              const Spacer(),
+              Center(
+                child: Text(
+                  'Belum punya akun?',
+                  style: AppTextStyle.paragraphL.copyWith(
+                    color: AppColors.greyColor,
                   ),
                 ),
-                const Gap(8),
-                Icon(Icons.arrow_forward_rounded,
-                    color: AppColors.primary1, size: 24)
-              ],
-            ),
-            const Gap(40),
-          ],
+              ),
+              const Gap(14),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  GestureDetector(
+                    onTap: () => Get.offAndToNamed('/register'),
+                    child: Text(
+                      'Daftar ',
+                      style: AppTextStyle.paragraphL.copyWith(
+                        color: AppColors.primary1,
+                      ),
+                    ),
+                  ),
+                  const Gap(8),
+                  Icon(Icons.arrow_forward_rounded,
+                      color: AppColors.primary1, size: 24)
+                ],
+              ),
+              const Gap(40),
+            ],
+          ),
         ),
       ),
     );

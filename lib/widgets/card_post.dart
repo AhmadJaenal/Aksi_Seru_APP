@@ -6,7 +6,16 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
 class CardPost extends StatelessWidget {
-  const CardPost({super.key});
+  CardPost({super.key});
+
+  final TextEditingController _commentPostC = TextEditingController();
+
+  final formKey = GlobalKey<FormState>();
+
+  @override
+  void dispose() {
+    _commentPostC.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -229,21 +238,26 @@ class CardPost extends StatelessWidget {
             ],
           ),
           const Gap(16),
-          Row(
-            children: [
-              const Expanded(
-                child: CustomTextField(hintText: 'Tulis komentarmu di sini..'),
-              ),
-              const Gap(10),
-              Text(
-                'Lihat 2 komentar',
-                style: AppTextStyle.paragraphL.copyWith(
-                  color: AppColors.greyColor,
+          Form(
+            child: Row(
+              children: [
+                Expanded(
+                  child: CustomTextField(
+                    textController: _commentPostC,
+                    hintText: 'Tulis komentarmu di sini..',
+                  ),
                 ),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ],
+                const Gap(10),
+                Text(
+                  'Lihat 2 komentar',
+                  style: AppTextStyle.paragraphL.copyWith(
+                    color: AppColors.greyColor,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ),
           ),
           const Gap(16),
           Text(

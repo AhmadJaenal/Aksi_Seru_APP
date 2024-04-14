@@ -7,7 +7,16 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
 class FeedPage extends StatelessWidget {
-  const FeedPage({super.key});
+  FeedPage({super.key});
+
+  final TextEditingController _captionC = TextEditingController();
+
+  final formKey = GlobalKey<FormState>();
+
+  @override
+  void dispose() {
+    _captionC.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,31 +64,42 @@ class FeedPage extends StatelessWidget {
                       ],
                     ),
                     const Gap(24),
-                    Row(
-                      children: [
-                        SizedBox(
-                          width: width * .7,
-                          child: const CustomTextField(
-                              hintText: 'Share hal seru kalian hari ini, yuk!'),
-                        ),
-                        const Spacer(),
-                        IconButton(
-                          style: ButtonStyle(
-                            shape: MaterialStateProperty.all<
-                                RoundedRectangleBorder>(
-                              RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                            ),
-                            backgroundColor:
-                                MaterialStatePropertyAll(AppColors.primary1),
-                            padding: const MaterialStatePropertyAll(
-                                EdgeInsets.all(12)),
+                    Form(
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            width: width * .7,
+                            child: CustomTextField(
+                                textController: _captionC,
+                                hintText:
+                                    'Share hal seru kalian hari ini, yuk!'),
                           ),
-                          onPressed: () => Get.toNamed('/create-post'),
-                          icon: Image.asset('assets/icon_image.png', width: 24),
-                        )
-                      ],
+                          const Spacer(),
+                          IconButton(
+                            style: ButtonStyle(
+                              shape: MaterialStateProperty.all<
+                                  RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                              ),
+                              backgroundColor:
+                                  MaterialStatePropertyAll(AppColors.primary1),
+                              padding: const MaterialStatePropertyAll(
+                                  EdgeInsets.all(12)),
+                            ),
+                            onPressed: () {
+                              if (formKey.currentState!.validate()) {
+                                Get.toNamed('/create-post');
+                              } else {
+                                print('validasi gagal');
+                              }
+                            },
+                            icon:
+                                Image.asset('assets/icon_image.png', width: 24),
+                          )
+                        ],
+                      ),
                     )
                   ],
                 ),
@@ -125,7 +145,7 @@ class FeedPage extends StatelessWidget {
             ),
             SliverList(
               delegate: SliverChildBuilderDelegate(
-                (context, index) => const CardPost(),
+                (context, index) => CardPost(),
                 childCount: 5,
               ),
             )

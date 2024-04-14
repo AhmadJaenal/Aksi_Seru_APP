@@ -11,6 +11,15 @@ import 'package:get/get.dart';
 class ArticlePage extends StatelessWidget {
   ArticlePage({super.key});
 
+  final TextEditingController _searchC = TextEditingController();
+
+  final formKey = GlobalKey<FormState>();
+
+  @override
+  void dispose() {
+    _searchC.dispose();
+  }
+
   TabBar tabBar = TabBar(
     padding: EdgeInsets.zero,
     labelStyle: AppTextStyle.paragraphM.copyWith(color: AppColors.primary1),
@@ -100,9 +109,10 @@ class ArticlePage extends StatelessWidget {
                             ),
                           ),
                         ),
-                        child: const CustomTextFieldIcon(
+                        child: CustomTextFieldIcon(
+                          textController: _searchC,
                           hintText: 'Cari inspirasi di sini!',
-                          icon: Icon(
+                          icon: const Icon(
                             Icons.search,
                             color: AppColors.greyColor,
                           ),

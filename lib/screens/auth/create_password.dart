@@ -6,7 +6,18 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
 class CreatePassword extends StatelessWidget {
-  const CreatePassword({super.key});
+  CreatePassword({super.key});
+
+  final TextEditingController _passwordC = TextEditingController();
+  final TextEditingController _confirmPasswordC = TextEditingController();
+
+  final formKey = GlobalKey<FormState>();
+
+  @override
+  void dispose() {
+    _passwordC.dispose();
+    _confirmPasswordC.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,13 +33,26 @@ class CreatePassword extends StatelessWidget {
               style: AppTextStyle.titlePrimary,
             ),
             const Gap(24),
-            const CustomTextFieldPassword(hintText: 'Buat kata sandi'),
+            CustomTextFieldPassword(
+              textController: _passwordC,
+              hintText: 'Buat kata sandi',
+            ),
             const Gap(24),
-            const CustomTextFieldPassword(hintText: 'Buat kata sandi'),
+            CustomTextFieldPassword(
+              textController: _confirmPasswordC,
+              hintText: 'Ulangi kata sandi',
+            ),
             const Gap(24),
             PrimaryButton(
-                ontap: () => Get.offAndToNamed('/success-register'),
-                title: 'Lanjut'),
+              ontap: () {
+                if (formKey.currentState!.validate()) {
+                  Get.offAndToNamed('/success-register');
+                } else {
+                  print('validasi gagal');
+                }
+              },
+              title: 'Lanjut',
+            ),
           ],
         ),
       ),

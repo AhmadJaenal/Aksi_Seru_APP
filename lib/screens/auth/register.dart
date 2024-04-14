@@ -1,66 +1,89 @@
 import 'package:aksi_seru_app/shared/style.dart';
 import 'package:aksi_seru_app/widgets/custom_button.dart';
 import 'package:aksi_seru_app/widgets/custom_textfield.dart';
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
 class Register extends StatelessWidget {
-  const Register({super.key});
+  Register({super.key});
+
+  final TextEditingController _emailC = TextEditingController();
+
+  final formKey = GlobalKey<FormState>();
+
+  @override
+  void dispose() {
+    _emailC.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final bool isValidEmail = EmailValidator.validate(_emailC.text);
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: AppMargin.defaultMargin),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Gap(160),
-            Text(
-              'Daftar',
-              style: AppTextStyle.titlePrimary,
-            ),
-            const Gap(24),
-            const CustomTextFieldIcon(
-              hintText: 'Masukan email',
-              icon: Icon(
-                Icons.email_outlined,
-                color: AppColors.greyColor,
+        child: Form(
+          key: formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Gap(160),
+              Text(
+                'Daftar',
+                style: AppTextStyle.titlePrimary,
               ),
-            ),
-            const Gap(24),
-            PrimaryButton(
-                ontap: () => Get.toNamed('/verified-code'), title: 'Lanjut'),
-            const Spacer(),
-            Center(
-              child: Text(
-                'Sudah punya akun?',
-                style: AppTextStyle.paragraphL.copyWith(
+              const Gap(24),
+              CustomTextFieldIcon(
+                textController: _emailC,
+                hintText: 'Masukan email',
+                icon: const Icon(
+                  Icons.email_outlined,
                   color: AppColors.greyColor,
                 ),
               ),
-            ),
-            const Gap(14),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                GestureDetector(
-                  onTap: () => Get.offAndToNamed('/login'),
-                  child: Text(
-                    'Login ',
-                    style: AppTextStyle.paragraphL.copyWith(
-                      color: AppColors.primary1,
-                    ),
+              const Gap(24),
+              PrimaryButton(
+                title: 'Lanjut',
+                ontap: () {
+                  if (formKey.currentState!.validate() && isValidEmail) {
+                    Get.toNamed('/verified-code');
+                  } else {
+                    print('validasi gagal');
+                  }
+                },
+              ),
+              const Spacer(),
+              Center(
+                child: Text(
+                  'Sudah punya akun?',
+                  style: AppTextStyle.paragraphL.copyWith(
+                    color: AppColors.greyColor,
                   ),
                 ),
-                const Gap(8),
-                Icon(Icons.arrow_forward_rounded,
-                    color: AppColors.primary1, size: 24)
-              ],
-            ),
-            const Gap(40),
-          ],
+              ),
+              const Gap(14),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  GestureDetector(
+                    onTap: () => Get.offAndToNamed('/login'),
+                    child: Text(
+                      'Login ',
+                      style: AppTextStyle.paragraphL.copyWith(
+                        color: AppColors.primary1,
+                      ),
+                    ),
+                  ),
+                  const Gap(8),
+                  Icon(Icons.arrow_forward_rounded,
+                      color: AppColors.primary1, size: 24)
+                ],
+              ),
+              const Gap(40),
+            ],
+          ),
         ),
       ),
     );

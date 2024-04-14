@@ -7,7 +7,16 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
 class CreatePost extends StatelessWidget {
-  const CreatePost({super.key});
+  CreatePost({super.key});
+
+  final TextEditingController _captionC = TextEditingController();
+
+  final formKey = GlobalKey<FormState>();
+
+  @override
+  void dispose() {
+    _captionC.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,35 +67,47 @@ class CreatePost extends StatelessWidget {
         ),
         body: Padding(
           padding: EdgeInsets.all(AppMargin.defaultMargin),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const ProfileTile(),
-              const Gap(12),
-              const CustomTextArea(
-                  hintText: 'Share hal seru kalian hari ini, yuk!'),
-              const Gap(24),
-              MiniButton(
-                icon: 'icon_image.png',
-                title: 'Foto / Video',
-                ontap: () {},
-                color: AppColors.primary1,
-                iconColor: AppColors.primary1,
-                titleColor: AppColors.primary1,
-              ),
-              const Gap(8),
-              MiniButton(
-                icon: 'icon_location.png',
-                title: 'Tambahkan lokasi',
-                ontap: () {},
-                color: AppColors.primary1,
-                iconColor: AppColors.primary1,
-                titleColor: AppColors.primary1,
-              ),
-              const Spacer(),
-              PrimaryButton(
-                  ontap: () => Get.toNamed('/review-post'), title: 'Lanjut')
-            ],
+          child: Form(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const ProfileTile(),
+                const Gap(12),
+                CustomTextArea(
+                  textController: _captionC,
+                  hintText: 'Share hal seru kalian hari ini, yuk!',
+                ),
+                const Gap(24),
+                MiniButton(
+                  icon: 'icon_image.png',
+                  title: 'Foto / Video',
+                  ontap: () {},
+                  color: AppColors.primary1,
+                  iconColor: AppColors.primary1,
+                  titleColor: AppColors.primary1,
+                ),
+                const Gap(8),
+                MiniButton(
+                  icon: 'icon_location.png',
+                  title: 'Tambahkan lokasi',
+                  ontap: () {},
+                  color: AppColors.primary1,
+                  iconColor: AppColors.primary1,
+                  titleColor: AppColors.primary1,
+                ),
+                const Spacer(),
+                PrimaryButton(
+                  ontap: () {
+                    if (formKey.currentState!.validate()) {
+                      Get.toNamed('/review-post');
+                    } else {
+                      print('validasi gagal');
+                    }
+                  },
+                  title: 'Lanjut',
+                )
+              ],
+            ),
           ),
         ),
       ),

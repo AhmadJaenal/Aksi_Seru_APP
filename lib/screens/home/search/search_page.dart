@@ -6,7 +6,16 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
 class SearchPage extends StatelessWidget {
-  const SearchPage({super.key});
+  SearchPage({super.key});
+
+  final TextEditingController _searchC = TextEditingController();
+
+  final formKey = GlobalKey<FormState>();
+
+  @override
+  void dispose() {
+    _searchC.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,23 +38,26 @@ class SearchPage extends StatelessWidget {
                     ),
                   ),
                 ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Pencarian',
-                      style: AppTextStyle.appbarTitle.copyWith(
-                          color: AppColors.primary1, letterSpacing: -2),
-                    ),
-                    Gap(AppMargin.defaultMargin),
-                    const CustomTextFieldIcon(
-                      hintText: 'Cari inspirasi di sini!',
-                      icon: Icon(
-                        Icons.search,
-                        color: AppColors.greyColor,
+                child: Form(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Pencarian',
+                        style: AppTextStyle.appbarTitle.copyWith(
+                            color: AppColors.primary1, letterSpacing: -2),
                       ),
-                    ),
-                  ],
+                      Gap(AppMargin.defaultMargin),
+                      CustomTextFieldIcon(
+                        textController: _searchC,
+                        hintText: 'Cari inspirasi di sini!',
+                        icon: const Icon(
+                          Icons.search,
+                          color: AppColors.greyColor,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

@@ -43,19 +43,19 @@ class MyApp extends StatelessWidget {
         ),
         GetPage(
           name: '/login',
-          page: () => const Login(),
+          page: () => Login(),
         ),
         GetPage(
           name: '/register',
-          page: () => const Register(),
+          page: () => Register(),
         ),
         GetPage(
           name: '/verified-code',
-          page: () => const VerifiedCode(),
+          page: () => VerifiedCode(),
         ),
         GetPage(
           name: '/create-password',
-          page: () => const CreatePassword(),
+          page: () => CreatePassword(),
         ),
         GetPage(
           name: '/success-register',
@@ -63,7 +63,7 @@ class MyApp extends StatelessWidget {
         ),
         GetPage(
           name: '/create-username',
-          page: () => const CreateUsername(),
+          page: () => CreateUsername(),
         ),
         GetPage(
           name: '/recommendation-page',
@@ -71,15 +71,15 @@ class MyApp extends StatelessWidget {
         ),
         GetPage(
           name: '/feed-page',
-          page: () => const FeedPage(),
+          page: () => FeedPage(),
         ),
         GetPage(
           name: '/create-post',
-          page: () => const CreatePost(),
+          page: () => CreatePost(),
         ),
         GetPage(
           name: '/story',
-          page: () => const StoryView(),
+          page: () => StoryView(),
         ),
         GetPage(
           name: '/review-post',
@@ -95,7 +95,7 @@ class MyApp extends StatelessWidget {
         ),
         GetPage(
           name: '/search-page',
-          page: () => const SearchPage(),
+          page: () => SearchPage(),
         ),
         GetPage(
           name: '/article-page',
