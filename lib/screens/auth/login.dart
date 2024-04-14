@@ -2,7 +2,6 @@ import 'package:aksi_seru_app/shared/style.dart';
 import 'package:aksi_seru_app/widgets/custom_button.dart';
 import 'package:aksi_seru_app/widgets/custom_textfield.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
@@ -23,7 +22,7 @@ class Login extends StatelessWidget {
               style: AppTextStyle.titlePrimary,
             ),
             const Gap(24),
-            CustomTextFieldIcon(
+            const CustomTextFieldIcon(
               hintText: 'Masukan email',
               icon: Icon(
                 Icons.email_outlined,

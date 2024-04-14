@@ -5,7 +5,7 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
 class CreateArticle extends StatefulWidget {
-  CreateArticle({super.key});
+  const CreateArticle({super.key});
 
   @override
   State<CreateArticle> createState() => _CreateArticleState();
@@ -17,9 +17,9 @@ class _CreateArticleState extends State<CreateArticle> {
   void initState() {
     super.initState();
     articleWidget = [
-      TitleWidget(),
-      SubTitleWidget(),
-      ContentWidget(),
+      const TitleWidget(),
+      const SubTitleWidget(),
+      const ContentWidget(),
     ];
   }
 

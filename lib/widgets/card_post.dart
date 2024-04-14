@@ -190,7 +190,7 @@ class CardPost extends StatelessWidget {
               const Gap(16),
               GestureDetector(
                   onTap: () {
-                    SectionCommentPost(context, height, width);
+                    sectionCommentPost(context, height, width);
                   },
                   child: Image.asset('assets/icon_comment.png', width: 24)),
               const Gap(16),
@@ -263,7 +263,7 @@ class CardPost extends StatelessWidget {
     );
   }
 
-  Future<dynamic> SectionCommentPost(
+  Future<dynamic> sectionCommentPost(
       BuildContext context, double height, double width) {
     return showModalBottomSheet(
       isScrollControlled: true,

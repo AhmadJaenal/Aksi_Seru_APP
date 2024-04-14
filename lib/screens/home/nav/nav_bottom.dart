@@ -19,7 +19,7 @@ class _CustomNavBottomState extends State<CustomNavBottom> {
     const SearchPage(),
     ArticlePage(),
     const FeedPage(),
-    VerifiedProfile(),
+    const VerifiedProfile(),
   ];
 
   @override
