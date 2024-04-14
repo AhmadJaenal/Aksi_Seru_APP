@@ -1,19 +1,13 @@
-import 'package:aksi_seru_app/screens/home/article/following_page.dart';
-import 'package:aksi_seru_app/screens/home/article/for_you_page.dart';
 import 'package:aksi_seru_app/screens/home/profile/list_article.dart';
 import 'package:aksi_seru_app/screens/home/profile/list_post.dart';
 import 'package:aksi_seru_app/shared/style.dart';
 import 'package:aksi_seru_app/widgets/custom_button.dart';
-import 'package:aksi_seru_app/widgets/custom_textfield.dart';
 import 'package:aksi_seru_app/widgets/user_profile.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:gap/gap.dart';
-import 'package:get/get.dart';
 
 class VerifiedProfile extends StatefulWidget {
-  VerifiedProfile({super.key});
+  const VerifiedProfile({super.key});
 
   @override
   State<VerifiedProfile> createState() => _VerifiedProfileState();
@@ -64,7 +58,6 @@ class _VerifiedProfileState extends State<VerifiedProfile> {
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: AppColors.whiteColor,
       body: DefaultTabController(
