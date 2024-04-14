@@ -136,10 +136,10 @@ class Message extends StatelessWidget {
                 ),
               ];
             },
-            body: const TabBarView(
+            body: TabBarView(
               children: [
                 ListPost(),
-                ListArticle(),
+                const ListArticle(),
               ],
             ),
           ),

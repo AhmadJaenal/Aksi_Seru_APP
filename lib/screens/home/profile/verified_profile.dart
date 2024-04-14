@@ -316,10 +316,10 @@ class _VerifiedProfileState extends State<VerifiedProfile> {
               ),
             ];
           },
-          body: const TabBarView(
+          body: TabBarView(
             children: [
               ListPost(),
-              ListArticle(),
+              const ListArticle(),
             ],
           ),
         ),
