@@ -12,7 +12,6 @@ class CreateUsername extends StatelessWidget {
 
   final formKey = GlobalKey<FormState>();
 
-  @override
   void dispose() {
     _usernameC.dispose();
   }

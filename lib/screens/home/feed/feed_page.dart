@@ -13,7 +13,6 @@ class FeedPage extends StatelessWidget {
 
   final formKey = GlobalKey<FormState>();
 
-  @override
   void dispose() {
     _captionC.dispose();
   }

@@ -11,7 +11,6 @@ class StoryView extends StatelessWidget {
 
   final formKey = GlobalKey<FormState>();
 
-  @override
   void dispose() {
     _commentStory.dispose();
   }

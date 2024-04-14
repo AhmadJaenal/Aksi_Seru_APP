@@ -13,7 +13,6 @@ class Register extends StatelessWidget {
 
   final formKey = GlobalKey<FormState>();
 
-  @override
   void dispose() {
     _emailC.dispose();
   }

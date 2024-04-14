@@ -12,7 +12,6 @@ class SearchPage extends StatelessWidget {
 
   final formKey = GlobalKey<FormState>();
 
-  @override
   void dispose() {
     _searchC.dispose();
   }

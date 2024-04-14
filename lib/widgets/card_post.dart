@@ -12,7 +12,6 @@ class CardPost extends StatelessWidget {
 
   final formKey = GlobalKey<FormState>();
 
-  @override
   void dispose() {
     _commentPostC.dispose();
   }

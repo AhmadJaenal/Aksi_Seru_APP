@@ -13,7 +13,6 @@ class CreatePassword extends StatelessWidget {
 
   final formKey = GlobalKey<FormState>();
 
-  @override
   void dispose() {
     _passwordC.dispose();
     _confirmPasswordC.dispose();
