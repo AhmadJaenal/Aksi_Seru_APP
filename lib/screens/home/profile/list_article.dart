@@ -2,7 +2,6 @@ import 'package:aksi_seru_app/shared/style.dart';
 import 'package:aksi_seru_app/widgets/card_article.dart';
 import 'package:aksi_seru_app/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
 class ListArticle extends StatelessWidget {
@@ -19,7 +18,7 @@ class ListArticle extends StatelessWidget {
               padding: EdgeInsets.all(AppMargin.defaultMargin),
               child: MiniButton(
                 icon: 'icon_pen.png',
-                ontap: () {},
+                ontap: () => Get.toNamed('/create-article'),
                 title: 'Tulis artikel',
                 color: AppColors.primary1,
                 titleColor: AppColors.primary1,
