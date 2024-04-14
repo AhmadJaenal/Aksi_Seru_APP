@@ -10,6 +10,7 @@ import 'package:aksi_seru_app/screens/home/article/detail_article.dart';
 import 'package:aksi_seru_app/screens/home/article/following_page.dart';
 import 'package:aksi_seru_app/screens/home/article/for_you_page.dart';
 import 'package:aksi_seru_app/screens/home/article/trending_page.dart';
+import 'package:aksi_seru_app/screens/home/chat/list_chat.dart';
 import 'package:aksi_seru_app/screens/home/feed/create_post.dart';
 import 'package:aksi_seru_app/screens/home/feed/feed_page.dart';
 import 'package:aksi_seru_app/screens/home/feed/review_post.dart';
@@ -118,11 +119,15 @@ class MyApp extends StatelessWidget {
         ),
         GetPage(
           name: '/create-article',
-          page: () => CreateArticle(),
+          page: () => const CreateArticle(),
         ),
         GetPage(
           name: '/verified-profile',
-          page: () => VerifiedProfile(),
+          page: () => const VerifiedProfile(),
+        ),
+        GetPage(
+          name: '/message',
+          page: () => Message(),
         ),
       ],
     );

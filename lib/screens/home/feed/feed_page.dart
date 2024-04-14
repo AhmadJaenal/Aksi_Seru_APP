@@ -48,7 +48,7 @@ class FeedPage extends StatelessWidget {
                               width: 24),
                         ),
                         IconButton(
-                          onPressed: () {},
+                          onPressed: () => Get.toNamed('/message'),
                           icon:
                               Image.asset('assets/icon_chat_2.png', width: 24),
                         ),
