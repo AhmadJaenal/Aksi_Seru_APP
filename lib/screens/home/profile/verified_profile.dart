@@ -12,9 +12,16 @@ import 'package:flutter/widgets.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
-class VerifiedProfile extends StatelessWidget {
+class VerifiedProfile extends StatefulWidget {
   VerifiedProfile({super.key});
 
+  @override
+  State<VerifiedProfile> createState() => _VerifiedProfileState();
+}
+
+bool showRecommendUser = true;
+
+class _VerifiedProfileState extends State<VerifiedProfile> {
   TabBar tabBar = TabBar(
     padding: EdgeInsets.symmetric(horizontal: AppMargin.defaultMargin),
     labelStyle: AppTextStyle.paragraphM.copyWith(color: AppColors.primary1),
@@ -92,19 +99,11 @@ class VerifiedProfile extends StatelessWidget {
                   const Gap(12),
                 ],
                 bottom: PreferredSize(
-                  preferredSize: const Size.fromHeight(777),
+                  preferredSize: Size.fromHeight(showRecommendUser ? 680 : 440),
                   child: Column(
                     children: [
                       Container(
                         padding: EdgeInsets.all(AppMargin.defaultMargin),
-                        decoration: BoxDecoration(
-                          border: Border(
-                            bottom: BorderSide(
-                              color: AppColors.greyColor.withOpacity(.2),
-                              width: 1,
-                            ),
-                          ),
-                        ),
                         child: Column(
                           children: [
                             ClipRRect(
@@ -250,7 +249,11 @@ class VerifiedProfile extends StatelessWidget {
                                 MiniButton(
                                   icon: 'icon_arrow_up.png',
                                   title: 'Saran pengguna',
-                                  ontap: () {},
+                                  ontap: () {
+                                    setState(() {
+                                      showRecommendUser = !showRecommendUser;
+                                    });
+                                  },
                                   color: AppColors.primary1,
                                   iconColor: AppColors.primary1,
                                   titleColor: AppColors.primary1,
@@ -260,29 +263,45 @@ class VerifiedProfile extends StatelessWidget {
                           ],
                         ),
                       ),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: AppMargin.defaultMargin,
-                              vertical: 16),
-                          child: Text(
-                            'Saran pengguna',
-                            style: AppTextStyle.h3.copyWith(
-                              color: AppColors.blackColor,
-                              fontWeight: AppFontWeight.semiBold,
+                      Visibility(
+                        visible: showRecommendUser,
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Container(
+                            width: double.infinity,
+                            padding: EdgeInsets.symmetric(
+                                horizontal: AppMargin.defaultMargin,
+                                vertical: 16),
+                            decoration: BoxDecoration(
+                              border: Border(
+                                top: BorderSide(
+                                  color: AppColors.greyColor.withOpacity(.2),
+                                  width: 1,
+                                ),
+                              ),
                             ),
-                            textAlign: TextAlign.left,
+                            child: Text(
+                              'Saran pengguna',
+                              style: AppTextStyle.h3.copyWith(
+                                color: AppColors.blackColor,
+                                fontWeight: AppFontWeight.semiBold,
+                              ),
+                              textAlign: TextAlign.left,
+                            ),
                           ),
                         ),
                       ),
-                      SizedBox(
-                        width: double.infinity,
-                        height: 180,
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: 10,
-                          itemBuilder: (context, index) => const UserProfile(),
+                      Visibility(
+                        visible: showRecommendUser,
+                        child: SizedBox(
+                          width: double.infinity,
+                          height: 180,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: 10,
+                            itemBuilder: (context, index) =>
+                                const UserProfile(),
+                          ),
                         ),
                       ),
                       Container(
