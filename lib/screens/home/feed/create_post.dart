@@ -68,6 +68,7 @@ class CreatePost extends StatelessWidget {
         body: Padding(
           padding: EdgeInsets.all(AppMargin.defaultMargin),
           child: Form(
+            key: formKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

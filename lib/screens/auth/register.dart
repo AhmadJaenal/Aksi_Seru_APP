@@ -20,8 +20,8 @@ class Register extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool isValidEmail = EmailValidator.validate(_emailC.text);
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: AppMargin.defaultMargin),
         child: Form(
@@ -47,6 +47,8 @@ class Register extends StatelessWidget {
               PrimaryButton(
                 title: 'Lanjut',
                 ontap: () {
+                  final bool isValidEmail =
+                      EmailValidator.validate(_emailC.text);
                   if (formKey.currentState!.validate() && isValidEmail) {
                     Get.toNamed('/verified-code');
                   } else {

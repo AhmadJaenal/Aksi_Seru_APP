@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:aksi_seru_app/shared/style.dart';
 import 'package:flutter/material.dart';
 

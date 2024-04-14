@@ -24,36 +24,39 @@ class CreatePassword extends StatelessWidget {
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: AppMargin.defaultMargin),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Gap(160),
-            Text(
-              'Daftar',
-              style: AppTextStyle.titlePrimary,
-            ),
-            const Gap(24),
-            CustomTextFieldPassword(
-              textController: _passwordC,
-              hintText: 'Buat kata sandi',
-            ),
-            const Gap(24),
-            CustomTextFieldPassword(
-              textController: _confirmPasswordC,
-              hintText: 'Ulangi kata sandi',
-            ),
-            const Gap(24),
-            PrimaryButton(
-              ontap: () {
-                if (formKey.currentState!.validate()) {
-                  Get.offAndToNamed('/success-register');
-                } else {
-                  print('validasi gagal');
-                }
-              },
-              title: 'Lanjut',
-            ),
-          ],
+        child: Form(
+          key: formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Gap(160),
+              Text(
+                'Daftar',
+                style: AppTextStyle.titlePrimary,
+              ),
+              const Gap(24),
+              CustomTextFieldPassword(
+                textController: _passwordC,
+                hintText: 'Buat kata sandi',
+              ),
+              const Gap(24),
+              CustomTextFieldPassword(
+                textController: _confirmPasswordC,
+                hintText: 'Ulangi kata sandi',
+              ),
+              const Gap(24),
+              PrimaryButton(
+                ontap: () {
+                  if (formKey.currentState!.validate()) {
+                    Get.offAndToNamed('/success-register');
+                  } else {
+                    print('validasi gagal');
+                  }
+                },
+                title: 'Lanjut',
+              ),
+            ],
+          ),
         ),
       ),
     );
