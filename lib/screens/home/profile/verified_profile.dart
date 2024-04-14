@@ -1,5 +1,7 @@
 import 'package:aksi_seru_app/screens/home/article/following_page.dart';
 import 'package:aksi_seru_app/screens/home/article/for_you_page.dart';
+import 'package:aksi_seru_app/screens/home/profile/list_article.dart';
+import 'package:aksi_seru_app/screens/home/profile/list_post.dart';
 import 'package:aksi_seru_app/shared/style.dart';
 import 'package:aksi_seru_app/widgets/custom_button.dart';
 import 'package:aksi_seru_app/widgets/custom_textfield.dart';
@@ -44,7 +46,7 @@ class VerifiedProfile extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset('assets/icon_arrow_up.png', width: 24),
+            Image.asset('assets/icon_article.png', width: 24),
             const Gap(8),
             const Text('Saran pengguna'),
           ],
@@ -296,46 +298,6 @@ class VerifiedProfile extends StatelessWidget {
                         ),
                         child: tabBar,
                       ),
-                      Container(
-                        padding: EdgeInsets.all(AppMargin.defaultMargin),
-                        decoration: BoxDecoration(
-                          color: AppColors.whiteColor,
-                          border: Border(
-                            bottom: BorderSide(
-                              color: AppColors.greyColor.withOpacity(.2),
-                              width: 1,
-                            ),
-                          ),
-                        ),
-                        child: Row(
-                          children: [
-                            SizedBox(
-                              width: width * .7,
-                              child: const CustomTextField(
-                                  hintText:
-                                      'Share hal seru kalian hari ini, yuk!'),
-                            ),
-                            const Spacer(),
-                            IconButton(
-                              style: ButtonStyle(
-                                shape: MaterialStateProperty.all<
-                                    RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                ),
-                                backgroundColor: MaterialStatePropertyAll(
-                                    AppColors.primary1),
-                                padding: const MaterialStatePropertyAll(
-                                    EdgeInsets.all(12)),
-                              ),
-                              onPressed: () => Get.toNamed('/create-post'),
-                              icon: Image.asset('assets/icon_image.png',
-                                  width: 24),
-                            )
-                          ],
-                        ),
-                      ),
                     ],
                   ),
                 ),
@@ -344,8 +306,8 @@ class VerifiedProfile extends StatelessWidget {
           },
           body: const TabBarView(
             children: [
-              ForYouPage(),
-              FollowingPage(),
+              ListPost(),
+              ListArticle(),
             ],
           ),
         ),
