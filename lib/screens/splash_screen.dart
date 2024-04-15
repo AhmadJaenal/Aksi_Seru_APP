@@ -1,11 +1,6 @@
-import 'dart:async';
-
 import 'package:aksi_seru_app/shared/style.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'dart:developer' as developer;
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -15,46 +10,6 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  List<ConnectivityResult> _connectionStatus = [ConnectivityResult.none];
-  final Connectivity _connectivity = Connectivity();
-  late StreamSubscription<List<ConnectivityResult>> _connectivitySubscription;
-
-  @override
-  void initState() {
-    super.initState();
-    initConnectivity();
-
-    _connectivitySubscription =
-        _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
-  }
-
-  @override
-  void dispose() {
-    _connectivitySubscription.cancel();
-    super.dispose();
-  }
-
-  Future<void> initConnectivity() async {
-    late List<ConnectivityResult> result;
-    try {
-      result = await _connectivity.checkConnectivity();
-    } on PlatformException catch (e) {
-      developer.log('Couldn\'t check connectivity status', error: e);
-      return;
-    }
-
-    if (!mounted) {
-      return Future.value(null);
-    }
-    return _updateConnectionStatus(result);
-  }
-
-  Future<void> _updateConnectionStatus(List<ConnectivityResult> result) async {
-    setState(() {
-      _connectionStatus = result;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -101,37 +56,30 @@ class _SplashScreenState extends State<SplashScreen> {
           ),
         ],
       ),
-      floatingActionButton: _connectionStatus
-              .contains(ConnectivityResult.mobile)
-          ? ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 30, vertical: 16),
-                maximumSize: const Size(148, 62),
-              ),
-              onPressed: () => Get.toNamed('/login'),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Mulai',
-                    style: AppTextStyle.h3.copyWith(color: AppColors.primary1),
-                  ),
-                  Icon(
-                    Icons.arrow_forward_rounded,
-                    color: AppColors.primary1,
-                    size: 24,
-                  ),
-                ],
-              ),
-            )
-          : SizedBox(
-              width: 20,
-              height: 20,
-              child: CircularProgressIndicator(color: AppColors.whiteColor)),
+      floatingActionButton: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 16),
+          maximumSize: const Size(148, 62),
+        ),
+        onPressed: () => Get.toNamed('/login'),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              'Mulai',
+              style: AppTextStyle.h3.copyWith(color: AppColors.primary1),
+            ),
+            Icon(
+              Icons.arrow_forward_rounded,
+              color: AppColors.primary1,
+              size: 24,
+            ),
+          ],
+        ),
+      ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
