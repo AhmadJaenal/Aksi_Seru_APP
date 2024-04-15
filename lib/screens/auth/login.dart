@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
+import 'dart:developer' as developer;
+
 class Login extends StatelessWidget {
   Login({super.key});
 
@@ -58,7 +60,7 @@ class Login extends StatelessWidget {
                   if (formKey.currentState!.validate() && isValidEmail) {
                     Get.offAndToNamed('/recommendation-page');
                   } else {
-                    print('validasi gagal');
+                    developer.log('validasi gagal');
                   }
                 },
               ),
