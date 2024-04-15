@@ -35,11 +35,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const SplashScreen(),
+      home: SplashScreen(),
       getPages: [
         GetPage(
           name: '/splash-screen',
-          page: () => const SplashScreen(),
+          page: () => SplashScreen(),
         ),
         GetPage(
           name: '/login',
