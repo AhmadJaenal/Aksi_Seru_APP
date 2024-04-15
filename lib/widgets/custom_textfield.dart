@@ -5,11 +5,13 @@ class CustomTextFieldIcon extends StatelessWidget {
   final String hintText;
   final Icon icon;
   final Color color;
+  final TextEditingController textController;
   const CustomTextFieldIcon(
       {super.key,
       required this.hintText,
       required this.icon,
-      this.color = AppColors.greyColor});
+      this.color = AppColors.greyColor,
+      required this.textController});
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +22,7 @@ class CustomTextFieldIcon extends StatelessWidget {
         }
         return null;
       },
+      controller: textController,
       style: AppTextStyle.paragraphL.copyWith(color: color),
       textAlignVertical: TextAlignVertical.bottom,
       cursorColor: AppColors.primary1,
@@ -48,7 +51,12 @@ class CustomTextFieldIcon extends StatelessWidget {
 
 class CustomTextField extends StatelessWidget {
   final String hintText;
-  const CustomTextField({super.key, required this.hintText});
+  final TextEditingController textController;
+  const CustomTextField({
+    super.key,
+    required this.hintText,
+    required this.textController,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -59,6 +67,7 @@ class CustomTextField extends StatelessWidget {
         }
         return null;
       },
+      controller: textController,
       style: AppTextStyle.paragraphL.copyWith(color: AppColors.greyColor),
       textAlignVertical: TextAlignVertical.bottom,
       cursorColor: AppColors.primary1,
@@ -82,7 +91,12 @@ class CustomTextField extends StatelessWidget {
 
 class CustomTextFieldPassword extends StatefulWidget {
   final String hintText;
-  const CustomTextFieldPassword({super.key, required this.hintText});
+  final TextEditingController textController;
+  const CustomTextFieldPassword({
+    super.key,
+    required this.hintText,
+    required this.textController,
+  });
 
   @override
   State<CustomTextFieldPassword> createState() =>
@@ -100,6 +114,7 @@ class _CustomTextFieldPasswordState extends State<CustomTextFieldPassword> {
         }
         return null;
       },
+      controller: widget.textController,
       style: AppTextStyle.paragraphL.copyWith(color: AppColors.greyColor),
       textAlignVertical: TextAlignVertical.bottom,
       cursorColor: AppColors.primary1,
@@ -139,7 +154,9 @@ class _CustomTextFieldPasswordState extends State<CustomTextFieldPassword> {
 
 class CustomTextArea extends StatelessWidget {
   final String hintText;
-  const CustomTextArea({super.key, required this.hintText});
+  final TextEditingController textController;
+  const CustomTextArea(
+      {super.key, required this.hintText, required this.textController});
 
   @override
   Widget build(BuildContext context) {
@@ -151,6 +168,7 @@ class CustomTextArea extends StatelessWidget {
         }
         return null;
       },
+      controller: textController,
       style: AppTextStyle.paragraphL.copyWith(color: AppColors.greyColor),
       textAlignVertical: TextAlignVertical.bottom,
       cursorColor: AppColors.primary1,

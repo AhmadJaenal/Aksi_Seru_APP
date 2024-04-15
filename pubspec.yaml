@@ -38,6 +38,8 @@ dependencies:
   google_fonts: ^6.2.1
   get: ^4.6.6
   gap: ^3.0.1
+  email_validator: ^2.1.17
+  connectivity_plus: ^6.0.2
 
 dev_dependencies:
   flutter_test:

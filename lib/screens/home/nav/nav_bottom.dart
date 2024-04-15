@@ -15,10 +15,10 @@ class CustomNavBottom extends StatefulWidget {
 class _CustomNavBottomState extends State<CustomNavBottom> {
   int _selectedIndex = 0;
   final List<Widget> _pages = [
-    const FeedPage(),
-    const SearchPage(),
+    FeedPage(),
+    SearchPage(),
     ArticlePage(),
-    const FeedPage(),
+    FeedPage(),
     const VerifiedProfile(),
   ];
 
