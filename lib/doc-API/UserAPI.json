@@ -13,6 +13,7 @@
     "paths": {
         "/api/users/register" : {
             "post" : {
+                "tags": ["Succeed"],
                 "description": "Register new user",
                 "requestBody" : {
                     "content": {
@@ -22,9 +23,10 @@
                                     "description": "Register user Antonio",
                                     "value" : {
                                         "username" : "Antonio",
+                                        "email" : "daniel.antonioramirez@example.com",
                                         "password" : "secret",
-                                        "name" : "Daniel Antonio Ramirez",
-                                        "email" : "daniel.antonioramirez@example.com"
+                                        "name" : "Daniel Antonio Ramirez"
+                                        
                                     }
                                 }
                             },
@@ -37,15 +39,16 @@
                                     "username" : {
                                         "type": "string"
                                     },
+                                    "email" : {
+                                        "type": "string"
+                                    },
                                     "password" : {
                                         "type": "string"
                                     },
                                     "name" : {
                                         "type": "string"
-                                    },
-                                    "email" : {
-                                        "type": "string"
                                     }
+                                    
                                 }
                             }
                         }
@@ -62,19 +65,18 @@
                                         "value" : {
                                             "erros" : {
                                                 "username" : [
-                                                    "username must not be blank",
-                                                    "username min 6 characters"
-                                                ],
-                                                "name" : [
-                                                    "name must not be blank",
-                                                    "name min 6 characters"
+                                                    "The username field is required",
+                                                    "username already registered"
                                                 ],
                                                 "email" : [
-                                                    "email must not be blank"
+                                                    "The username field is required",
+                                                    "email already registered"
                                                 ],
                                                 "password" : [
-                                                    "password must not be blank",
-                                                    "Create a strong password: 8+ characters, mix of letters (upper & lower case), numbers, and symbols, avoiding common phrases or personal info."
+                                                    "The username field is required"
+                                                ],
+                                                "name" : [
+                                                    "The username field is required"
                                                 ]
                                             }
                                         }
@@ -134,6 +136,7 @@
         },
         "/api/users/login" : {
             "post" : {
+                "tags": ["Succeed"],
                 "description": "Login user",
                 "requestBody" : {
                     "content": {
@@ -217,6 +220,7 @@
         },
         "/api/users/current" : {
             "get" : {
+                "tags": ["Succeed"],
                 "description": "Get current user",
                 "parameters": [
                     {
@@ -369,8 +373,9 @@
             }
         },
         "/api/users/profile" : {
-            "put" : {
-                "description": "Update profile",
+            "patch" : {
+                "tags": ["Succeed"],
+                "description": "Update current user's profile",
                 "parameters": [
                     {
                         "name" : "Authorization",
@@ -450,8 +455,24 @@
                 }
             }
         },
+
+
+
+
+        "/api/users/current/uploadAvatar" : {
+            "post" : {
+                "tags": ["Succeed"],
+                "description": "name file : avatar",
+                "requestBody" : {
+                    "content": {
+                        "image/png" : {}
+                    }
+                }
+            }
+        },
         "/api/users/logout" : {
             "delete" : {
+                "tags": ["Succeed"],
                 "description": "Logout current user",
                 "parameters": [
                     {
