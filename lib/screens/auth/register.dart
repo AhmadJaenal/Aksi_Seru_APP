@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
+import 'dart:developer' as developer;
+
 class Register extends StatelessWidget {
   Register({super.key});
 
@@ -37,6 +39,7 @@ class Register extends StatelessWidget {
               CustomTextFieldIcon(
                 textController: _emailC,
                 hintText: 'Masukan email',
+                messageError: 'EMAIL TIDAK BOLEH KOSONG',
                 icon: const Icon(
                   Icons.email_outlined,
                   color: AppColors.greyColor,
@@ -51,7 +54,7 @@ class Register extends StatelessWidget {
                   if (formKey.currentState!.validate() && isValidEmail) {
                     Get.toNamed('/verified-code');
                   } else {
-                    print('validasi gagal');
+                    developer.log('validasi gagal');
                   }
                 },
               ),

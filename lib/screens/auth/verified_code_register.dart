@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
+import 'dart:developer' as developer;
+
 class VerifiedCode extends StatelessWidget {
   VerifiedCode({super.key});
 
@@ -35,6 +37,7 @@ class VerifiedCode extends StatelessWidget {
               CustomTextFieldIcon(
                 textController: _verifiedCodeC,
                 hintText: 'Masukan code verifikasi',
+                messageError: 'KODE VERIFIKASI TIDAK BOLEH KOSONG',
                 icon: const Icon(
                   Icons.email_outlined,
                   color: AppColors.greyColor,
@@ -46,7 +49,7 @@ class VerifiedCode extends StatelessWidget {
                   if (formKey.currentState!.validate()) {
                     Get.toNamed('/create-password');
                   } else {
-                    print('validasi gagal');
+                    developer.log('validasi gagal');
                   }
                 },
                 title: 'Lanjut',
