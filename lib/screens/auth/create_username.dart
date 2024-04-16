@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
+import 'dart:developer' as developer;
+
 class CreateUsername extends StatelessWidget {
   CreateUsername({super.key});
 
@@ -35,6 +37,7 @@ class CreateUsername extends StatelessWidget {
               CustomTextFieldIcon(
                 textController: _usernameC,
                 hintText: 'Masukan nama kamu',
+                messageError: 'USERNAME TIDAK BOLEH KOSONG',
                 icon: const Icon(
                   Icons.account_circle_outlined,
                   color: AppColors.greyColor,
@@ -46,7 +49,7 @@ class CreateUsername extends StatelessWidget {
                   if (formKey.currentState!.validate()) {
                     Get.toNamed('/recommendation-page');
                   } else {
-                    print('validasi gagal');
+                    developer.log('validasi gagal');
                   }
                 },
                 title: 'Lanjut',

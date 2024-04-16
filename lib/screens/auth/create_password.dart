@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
+import 'dart:developer' as developer;
+
 class CreatePassword extends StatelessWidget {
   CreatePassword({super.key});
 
@@ -49,7 +51,7 @@ class CreatePassword extends StatelessWidget {
                   if (formKey.currentState!.validate()) {
                     Get.offAndToNamed('/success-register');
                   } else {
-                    print('validasi gagal');
+                    developer.log('validasi gagal');
                   }
                 },
                 title: 'Lanjut',

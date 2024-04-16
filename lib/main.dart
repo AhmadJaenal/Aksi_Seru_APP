@@ -11,6 +11,7 @@ import 'package:aksi_seru_app/screens/home/article/following_page.dart';
 import 'package:aksi_seru_app/screens/home/article/for_you_page.dart';
 import 'package:aksi_seru_app/screens/home/article/trending_page.dart';
 import 'package:aksi_seru_app/screens/home/chat/list_chat.dart';
+import 'package:aksi_seru_app/screens/home/errors/check_connection.dart';
 import 'package:aksi_seru_app/screens/home/feed/create_post.dart';
 import 'package:aksi_seru_app/screens/home/feed/feed_page.dart';
 import 'package:aksi_seru_app/screens/home/feed/review_post.dart';
@@ -28,14 +29,19 @@ void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const SplashScreen(),
+      home: const CheckConnection(page: SplashScreen()),
       getPages: [
         GetPage(
           name: '/splash-screen',
@@ -43,51 +49,51 @@ class MyApp extends StatelessWidget {
         ),
         GetPage(
           name: '/login',
-          page: () => Login(),
+          page: () => CheckConnection(page: Login()),
         ),
         GetPage(
           name: '/register',
-          page: () => Register(),
+          page: () => CheckConnection(page: Register()),
         ),
         GetPage(
           name: '/verified-code',
-          page: () => VerifiedCode(),
+          page: () => CheckConnection(page: VerifiedCode()),
         ),
         GetPage(
           name: '/create-password',
-          page: () => CreatePassword(),
+          page: () => CheckConnection(page: CreatePassword()),
         ),
         GetPage(
           name: '/success-register',
-          page: () => const SuccessRegister(),
+          page: () => const CheckConnection(page: SuccessRegister()),
         ),
         GetPage(
           name: '/create-username',
-          page: () => CreateUsername(),
+          page: () => CheckConnection(page: CreateUsername()),
         ),
         GetPage(
           name: '/recommendation-page',
-          page: () => const RecommendationPage(),
+          page: () => const CheckConnection(page: RecommendationPage()),
         ),
         GetPage(
           name: '/feed-page',
-          page: () => FeedPage(),
+          page: () => CheckConnection(page: FeedPage()),
         ),
         GetPage(
           name: '/create-post',
-          page: () => CreatePost(),
+          page: () => CheckConnection(page: CreatePost()),
         ),
         GetPage(
           name: '/story',
-          page: () => StoryView(),
+          page: () => CheckConnection(page: StoryView()),
         ),
         GetPage(
           name: '/review-post',
-          page: () => const ReviewPost(),
+          page: () => const CheckConnection(page: ReviewPost()),
         ),
         GetPage(
           name: '/notification-page',
-          page: () => const NotificationPage(),
+          page: () => const CheckConnection(page: NotificationPage()),
         ),
         GetPage(
           name: '/nav-bar',
@@ -95,39 +101,39 @@ class MyApp extends StatelessWidget {
         ),
         GetPage(
           name: '/search-page',
-          page: () => SearchPage(),
+          page: () => CheckConnection(page: SearchPage()),
         ),
         GetPage(
           name: '/article-page',
-          page: () => ArticlePage(),
+          page: () => CheckConnection(page: ArticlePage()),
         ),
         GetPage(
           name: '/detail-article',
-          page: () => const DetailArticle(),
+          page: () => const CheckConnection(page: DetailArticle()),
         ),
         GetPage(
           name: '/trending-article',
-          page: () => const TrendingPage(),
+          page: () => const CheckConnection(page: TrendingPage()),
         ),
         GetPage(
           name: '/for-you-article',
-          page: () => const ForYouPage(),
+          page: () => const CheckConnection(page: ForYouPage()),
         ),
         GetPage(
           name: '/following-article',
-          page: () => const FollowingPage(),
+          page: () => const CheckConnection(page: FollowingPage()),
         ),
         GetPage(
           name: '/create-article',
-          page: () => const CreateArticle(),
+          page: () => const CheckConnection(page: CreateArticle()),
         ),
         GetPage(
           name: '/verified-profile',
-          page: () => const VerifiedProfile(),
+          page: () => const CheckConnection(page: VerifiedProfile()),
         ),
         GetPage(
           name: '/message',
-          page: () => Message(),
+          page: () => CheckConnection(page: Message()),
         ),
       ],
     );

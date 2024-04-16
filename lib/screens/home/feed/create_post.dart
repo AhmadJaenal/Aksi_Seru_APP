@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
+import 'dart:developer' as developer;
+
 class CreatePost extends StatelessWidget {
   CreatePost({super.key});
 
@@ -101,7 +103,7 @@ class CreatePost extends StatelessWidget {
                     if (formKey.currentState!.validate()) {
                       Get.toNamed('/review-post');
                     } else {
-                      print('validasi gagal');
+                      developer.log('validasi gagal');
                     }
                   },
                   title: 'Lanjut',

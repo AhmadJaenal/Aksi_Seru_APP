@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
+import 'dart:developer' as developer;
+
 class Login extends StatelessWidget {
   Login({super.key});
 
@@ -38,6 +40,7 @@ class Login extends StatelessWidget {
               const Gap(24),
               CustomTextFieldIcon(
                 hintText: 'Masukan email',
+                messageError: 'EMAIL TIDAK BOLEH KOSONG',
                 icon: const Icon(
                   Icons.email_outlined,
                   color: AppColors.greyColor,
@@ -58,7 +61,7 @@ class Login extends StatelessWidget {
                   if (formKey.currentState!.validate() && isValidEmail) {
                     Get.offAndToNamed('/recommendation-page');
                   } else {
-                    print('validasi gagal');
+                    developer.log('validasi gagal');
                   }
                 },
               ),

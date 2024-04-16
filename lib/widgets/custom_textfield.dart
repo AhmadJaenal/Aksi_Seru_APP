@@ -5,11 +5,13 @@ class CustomTextFieldIcon extends StatelessWidget {
   final String hintText;
   final Icon icon;
   final Color color;
+  final String messageError;
   final TextEditingController textController;
   const CustomTextFieldIcon(
       {super.key,
       required this.hintText,
       required this.icon,
+      this.messageError = 'DATA TIDAK BOLEH KOSONG',
       this.color = AppColors.greyColor,
       required this.textController});
 
@@ -18,7 +20,7 @@ class CustomTextFieldIcon extends StatelessWidget {
     return TextFormField(
       validator: (value) {
         if (value!.isEmpty) {
-          return 'DATA TIDAK BOLEH KOSONG';
+          return messageError;
         }
         return null;
       },
@@ -110,7 +112,7 @@ class _CustomTextFieldPasswordState extends State<CustomTextFieldPassword> {
     return TextFormField(
       validator: (value) {
         if (value!.isEmpty) {
-          return 'DATA TIDAK BOLEH KOSONG';
+          return 'PASSWORD TIDAK BOLEH KOSONG';
         }
         return null;
       },
