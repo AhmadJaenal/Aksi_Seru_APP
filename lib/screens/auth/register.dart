@@ -39,6 +39,7 @@ class Register extends StatelessWidget {
               CustomTextFieldIcon(
                 textController: _emailC,
                 hintText: 'Masukan email',
+                messageError: 'EMAIL TIDAK BOLEH KOSONG',
                 icon: const Icon(
                   Icons.email_outlined,
                   color: AppColors.greyColor,

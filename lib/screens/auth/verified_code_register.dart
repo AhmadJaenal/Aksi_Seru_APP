@@ -37,6 +37,7 @@ class VerifiedCode extends StatelessWidget {
               CustomTextFieldIcon(
                 textController: _verifiedCodeC,
                 hintText: 'Masukan code verifikasi',
+                messageError: 'KODE VERIFIKASI TIDAK BOLEH KOSONG',
                 icon: const Icon(
                   Icons.email_outlined,
                   color: AppColors.greyColor,

@@ -40,6 +40,7 @@ class Login extends StatelessWidget {
               const Gap(24),
               CustomTextFieldIcon(
                 hintText: 'Masukan email',
+                messageError: 'EMAIL TIDAK BOLEH KOSONG',
                 icon: const Icon(
                   Icons.email_outlined,
                   color: AppColors.greyColor,

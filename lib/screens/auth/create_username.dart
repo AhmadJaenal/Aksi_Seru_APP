@@ -37,6 +37,7 @@ class CreateUsername extends StatelessWidget {
               CustomTextFieldIcon(
                 textController: _usernameC,
                 hintText: 'Masukan nama kamu',
+                messageError: 'USERNAME TIDAK BOLEH KOSONG',
                 icon: const Icon(
                   Icons.account_circle_outlined,
                   color: AppColors.greyColor,
