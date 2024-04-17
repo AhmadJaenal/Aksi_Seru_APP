@@ -72,3 +72,31 @@ class RegisterationController extends GetxController {
     }
   }
 }
+
+class LoginController extends GetxController {
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+
+  Future<void> loginWithEmail() async {
+    var header = {'Content-Type': 'application/json'};
+    try {
+      var url = Uri.parse(
+          ApiEndPoints.baseUrl + ApiEndPoints.authEndPoints.loginWithEmail);
+      Map body = {
+        'email': emailController.text.trim(),
+        'password': passwordController.text,
+      };
+      http.Response response =
+          await http.post(url, body: jsonEncode(body), headers: header);
+      if (response.statusCode == 201) {
+        final json = jsonDecode(response.body);
+        developer.log(json, name: 'response success login');
+      } else {
+        developer.log(response.body, name: 'response success failed');
+      }
+    } catch (e) {
+      developer.log('error catch');
+    }
+  }
+}

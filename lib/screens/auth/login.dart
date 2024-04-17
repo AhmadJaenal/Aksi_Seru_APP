@@ -1,3 +1,4 @@
+import 'package:aksi_seru_app/controller/auth.dart';
 import 'package:aksi_seru_app/shared/style.dart';
 import 'package:aksi_seru_app/widgets/custom_button.dart';
 import 'package:aksi_seru_app/widgets/custom_textfield.dart';
@@ -20,6 +21,8 @@ class Login extends StatelessWidget {
     _emailC.dispose();
     _passwordC.dispose();
   }
+
+  LoginController loginController = Get.put(LoginController());
 
   @override
   Widget build(BuildContext context) {
@@ -45,21 +48,21 @@ class Login extends StatelessWidget {
                   Icons.email_outlined,
                   color: AppColors.greyColor,
                 ),
-                textController: _emailC,
+                textController: loginController.emailController,
               ),
               const Gap(12),
               CustomTextFieldPassword(
                 hintText: 'Masukan kata sandi',
-                textController: _passwordC,
+                textController: loginController.passwordController,
               ),
               const Gap(24),
               PrimaryButton(
                 title: 'Lanjut',
                 ontap: () {
-                  final bool isValidEmail =
-                      EmailValidator.validate(_emailC.text);
+                  final bool isValidEmail = EmailValidator.validate(
+                      loginController.emailController.text.trim());
                   if (formKey.currentState!.validate() && isValidEmail) {
-                    Get.offAndToNamed('/recommendation-page');
+                    loginController.loginWithEmail();
                   } else {
                     developer.log('validasi gagal');
                   }
