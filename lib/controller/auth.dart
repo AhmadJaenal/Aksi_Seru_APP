@@ -29,6 +29,8 @@ class RegisterationController extends GetxController {
       http.Response response =
           await http.post(url, body: jsonEncode(body), headers: header);
 
+      developer.log('status code ${response.statusCode}');
+
       if (response.statusCode == 201) {
         final json = jsonDecode(response.body);
         Get.toNamed('/login');
@@ -43,19 +45,17 @@ class RegisterationController extends GetxController {
         developer.log('berhasil login');
       } else if (response.statusCode == 400) {
         Map<String, dynamic> errors = jsonDecode(response.body);
-        // developer.log('test : ${errors['errors']['email']}', level: 0);
-        developer.log('test : ${errors}', level: 0);
+        developer.log('test : ${errors['errors']['email']}', level: 0);
         showDialog(
             context: Get.context!,
             builder: (context) {
               return SimpleDialog(
                 title: const Text('Error'),
                 contentPadding: const EdgeInsets.all(20),
-                children: [Text(errors['errors']['email'].toString())],
+                children: [Text(errors['errors'].toString())],
               );
             });
-        // Get.offAllNamed('/register');
-        // throw jsonDecode(response.body)["Message"] ?? "Unknown Error Occured";
+        Get.offAllNamed('/register');
       } else {
         developer.log(response.statusCode.toString());
       }
