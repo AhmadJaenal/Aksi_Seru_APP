@@ -7,6 +7,9 @@ class SuccessRegister extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Map<String, dynamic> data = Get.arguments;
+    String email = data['email'];
+    String password = data['password'];
     return Scaffold(
       backgroundColor: AppColors.primary1,
       body: Stack(
@@ -59,7 +62,8 @@ class SuccessRegister extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 16),
           maximumSize: const Size(148, 62),
         ),
-        onPressed: () => Get.toNamed('/create-username'),
+        onPressed: () => Get.toNamed('/create-username',
+            arguments: {'email': email, 'password': password}),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
