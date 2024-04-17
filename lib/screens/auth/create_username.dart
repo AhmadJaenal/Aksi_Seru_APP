@@ -26,9 +26,6 @@ class CreateUsername extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Map<String, dynamic> data = Get.arguments;
-    String email = data['email'];
-    String password = data['password'];
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: AppMargin.defaultMargin),
