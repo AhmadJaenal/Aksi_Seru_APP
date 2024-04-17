@@ -1,6 +1,8 @@
 import 'dart:convert';
 
+import 'package:aksi_seru_app/shared/style.dart';
 import 'package:aksi_seru_app/utils/api.dart';
+import 'package:aksi_seru_app/widgets/custom_popup.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -33,42 +35,42 @@ class RegisterationController extends GetxController {
 
       if (response.statusCode == 201) {
         final json = jsonDecode(response.body);
-        Get.toNamed('/login');
-        showDialog(
-            context: Get.context!,
-            builder: (context) {
-              return const SimpleDialog(
-                title: Text('Berhasil'),
-                contentPadding: EdgeInsets.all(20),
-              );
-            });
+        CustomPopUp(
+          icon: Icons.check_circle_outline_rounded,
+          message: 'Berhasil membuat akun',
+          isSuccess: false,
+          onTap: () {
+            Get.toNamed('/login');
+          },
+          titleButton: 'Lanjut Login',
+        );
         developer.log('berhasil login');
       } else if (response.statusCode == 400) {
         Map<String, dynamic> errors = jsonDecode(response.body);
-        developer.log('test : ${errors['errors']['email']}', level: 0);
-        showDialog(
-            context: Get.context!,
-            builder: (context) {
-              return SimpleDialog(
-                title: const Text('Error'),
-                contentPadding: const EdgeInsets.all(20),
-                children: [Text(errors['errors'].toString())],
-              );
-            });
-        Get.offAllNamed('/register');
+        CustomPopUp(
+          icon: Icons.cancel_outlined,
+          message: 'Gagal membuat akun\n $errors',
+          isSuccess: false,
+          onTap: () {
+            Get.offAllNamed('/register');
+          },
+          titleButton: 'Daftar ulang',
+        );
       } else {
-        developer.log(response.statusCode.toString());
+        developer.log(response.statusCode.toString(), name: 'test');
       }
     } catch (e) {
-      showDialog(
-          context: Get.context!,
-          builder: (context) {
-            return SimpleDialog(
-              title: const Text('Error catch'),
-              contentPadding: const EdgeInsets.all(20),
-              children: [Text(e.toString())],
-            );
-          });
+      CustomPopUp(
+        icon: Icons.cancel_outlined,
+        message: 'Terjadi kesalahan diserver',
+        isSuccess: false,
+        onTap: () {
+          Get.back();
+
+          Get.offAllNamed('/register');
+        },
+        titleButton: 'Daftar ulang',
+      );
     }
   }
 }
