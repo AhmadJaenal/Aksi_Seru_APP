@@ -24,8 +24,6 @@ class RegisterationController extends GetxController {
     super.disposeId(id);
   }
 
-  final Future<SharedPreferences> _presf = SharedPreferences.getInstance();
-
   Future<void> registerWithEmail() async {
     var header = {'Content-type': 'application/json'};
     try {
@@ -114,8 +112,8 @@ class LoginController extends GetxController {
           await http.post(url, body: jsonEncode(body), headers: header);
       if (response.statusCode == 200) {
         Map<String, dynamic> jsonResponse = jsonDecode(response.body)['data'];
-        UserModel user = UserModel.fromJson(jsonResponse);
-        String token = user.token;
+        String token = jsonResponse['token'];
+        // developer.log(token, name: 'user token login email');
         if (token.isNotEmpty) {
           final SharedPreferences prefs = await _prefs;
           await prefs.setString('token', token);

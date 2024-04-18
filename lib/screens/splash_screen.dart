@@ -1,5 +1,6 @@
 import 'package:aksi_seru_app/shared/style.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:developer' as developer;
 
@@ -73,8 +74,8 @@ class _SplashScreenState extends State<SplashScreen> {
           maximumSize: const Size(148, 62),
         ),
         onPressed: () {
-          getToken();
-          // Get.toNamed('/login');
+          // getToken();
+          Get.toNamed('/login');
         },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -7,3 +7,7 @@ class _AuthEndPoints {
   final String registerWithEmail = 'api/users/register';
   final String loginWithEmail = 'api/users/login';
 }
+
+class User {
+  static String currentUser = 'api/users/current';
+}
