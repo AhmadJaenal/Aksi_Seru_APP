@@ -8,10 +8,6 @@ import 'package:aksi_seru_app/widgets/user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
-import 'dart:developer' as developer;
-
-import 'package:get/get.dart';
-
 class VerifiedProfile extends StatefulWidget {
   const VerifiedProfile({super.key});
 
