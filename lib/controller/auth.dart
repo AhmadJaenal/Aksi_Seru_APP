@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:aksi_seru_app/shared/style.dart';
+import 'package:aksi_seru_app/models/user_model.dart';
 import 'package:aksi_seru_app/utils/api.dart';
 import 'package:aksi_seru_app/widgets/custom_popup.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +14,15 @@ class RegisterationController extends GetxController {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController nameController = TextEditingController();
+
+  @override
+  void disposeId(Object id) {
+    usernameController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+    nameController.dispose();
+    super.disposeId(id);
+  }
 
   final Future<SharedPreferences> _presf = SharedPreferences.getInstance();
 
@@ -35,10 +44,13 @@ class RegisterationController extends GetxController {
 
       if (response.statusCode == 201) {
         final json = jsonDecode(response.body);
+        usernameController.clear();
+        nameController.clear();
+        passwordController.clear();
+        emailController.clear();
         CustomPopUp(
           icon: Icons.check_circle_outline_rounded,
           message: 'Berhasil membuat akun',
-          isSuccess: false,
           onTap: () {
             Get.toNamed('/login');
           },
@@ -78,27 +90,65 @@ class RegisterationController extends GetxController {
 class LoginController extends GetxController {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+
+  @override
+  void disposeId(Object id) {
+    emailController.dispose();
+    passwordController.dispose();
+    super.disposeId(id);
+  }
+
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
   Future<void> loginWithEmail() async {
     var header = {'Content-Type': 'application/json'};
+
     try {
       var url = Uri.parse(
           ApiEndPoints.baseUrl + ApiEndPoints.authEndPoints.loginWithEmail);
-      Map body = {
+      Map<String, String> body = {
         'email': emailController.text.trim(),
         'password': passwordController.text,
       };
       http.Response response =
           await http.post(url, body: jsonEncode(body), headers: header);
-      if (response.statusCode == 201) {
-        final json = jsonDecode(response.body);
-        developer.log(json, name: 'response success login');
+      if (response.statusCode == 200) {
+        Map<String, dynamic> jsonResponse = jsonDecode(response.body)['data'];
+        UserModel user = UserModel.fromJson(jsonResponse);
+        String token = user.token;
+        if (token.isNotEmpty) {
+          final SharedPreferences prefs = await _prefs;
+          await prefs.setString('token', token);
+          emailController.clear();
+          passwordController.clear();
+          Get.offAllNamed('/recommendation-page');
+        }
       } else {
-        developer.log(response.body, name: 'response success failed');
+        Map<String, dynamic> jsonResponse = jsonDecode(response.body)['errors'];
+        String messageError = jsonResponse['message'][0];
+
+        developer.log(messageError, name: 'response failed login');
+        CustomPopUp(
+          icon: Icons.cancel_outlined,
+          message: messageError,
+          isSuccess: false,
+          onTap: () {
+            Get.back();
+          },
+          titleButton: 'Login kembali',
+        );
       }
     } catch (e) {
-      developer.log('error catch');
+      CustomPopUp(
+        icon: Icons.cancel_outlined,
+        message: 'Terjadi kesalahan',
+        isSuccess: false,
+        onTap: () {
+          Get.back();
+        },
+        titleButton: 'Login kembali',
+      );
+      developer.log('Error: $e', name: 'error catch');
     }
   }
 }

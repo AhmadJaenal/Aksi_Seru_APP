@@ -39,7 +39,7 @@ Future<dynamic> CustomPopUp({
               ),
             ),
             const Spacer(),
-            PrimaryButton(ontap: () {}, title: titleButton!)
+            PrimaryButton(ontap: onTap!, title: titleButton!)
           ],
         ),
       );
