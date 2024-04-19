@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:aksi_seru_app/models/user_model.dart';
 import 'package:aksi_seru_app/utils/api.dart';
 import 'package:aksi_seru_app/widgets/custom_popup.dart';
 import 'package:flutter/material.dart';
