@@ -1,17 +1,14 @@
-# aksi_seru_app
+# Aksi Seru APP
 
-A new Flutter project.
+The exciting action app is an open source application with the main theme being social media specifically for the environment. This application is written with flutter & dart as the main programming language and communicates with the server via REST on the main server. 
+**This application is still being developed** to fulfill one of my course projects.
 
-## Getting Started
+<div> 
+<img src="assets/README/Feed.png" width="200" height="350px">
+<img src="assets/README/Search.png" width="200" height="350px">
+<img src="assets/README/Article.png" width="200" height="350px">
+<img src="assets/README/Comment.png" width="200" height="350px">
+<img src="assets/README/Profile.png" width="200" height="350px">
+</div>
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-# Aksi_Seru_APP
