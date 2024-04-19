@@ -1,3 +1,4 @@
+import 'package:aksi_seru_app/screens/home/chat/list_message.dart';
 import 'package:aksi_seru_app/screens/home/profile/list_article.dart';
 import 'package:aksi_seru_app/screens/home/profile/list_post.dart';
 import 'package:aksi_seru_app/shared/style.dart';
@@ -28,9 +29,9 @@ class Message extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset('assets/icon_list_post.png', width: 24),
+            Image.asset('assets/icon_incoming_message.png', width: 24),
             const Gap(8),
-            const Text('Postingan'),
+            const Text('Kotak masuk'),
           ],
         ),
       ),
@@ -38,9 +39,9 @@ class Message extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset('assets/icon_article.png', width: 24),
+            Image.asset('assets/icon_community.png', width: 24),
             const Gap(8),
-            const Text('Saran pengguna'),
+            const Text('Komunitas'),
           ],
         ),
       ),
@@ -102,6 +103,8 @@ class Message extends StatelessWidget {
             headerSliverBuilder: (context, innerBoxIsScrolled) {
               return [
                 SliverAppBar(
+                  pinned: true,
+                  surfaceTintColor: AppColors.whiteColor,
                   backgroundColor: AppColors.whiteColor,
                   automaticallyImplyLeading: false,
                   bottom: PreferredSize(
@@ -136,10 +139,10 @@ class Message extends StatelessWidget {
                 ),
               ];
             },
-            body: TabBarView(
+            body: const TabBarView(
               children: [
-                ListPost(),
-                const ListArticle(),
+                ListMessage(),
+                ListArticle(),
               ],
             ),
           ),

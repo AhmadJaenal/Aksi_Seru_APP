@@ -10,7 +10,8 @@ import 'package:aksi_seru_app/screens/home/article/detail_article.dart';
 import 'package:aksi_seru_app/screens/home/article/following_page.dart';
 import 'package:aksi_seru_app/screens/home/article/for_you_page.dart';
 import 'package:aksi_seru_app/screens/home/article/trending_page.dart';
-import 'package:aksi_seru_app/screens/home/chat/list_chat.dart';
+import 'package:aksi_seru_app/screens/home/chat/list_message.dart';
+import 'package:aksi_seru_app/screens/home/chat/message_page.dart';
 import 'package:aksi_seru_app/screens/home/errors/check_connection.dart';
 import 'package:aksi_seru_app/screens/home/feed/create_post.dart';
 import 'package:aksi_seru_app/screens/home/feed/feed_page.dart';
@@ -25,8 +26,6 @@ import 'package:aksi_seru_app/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import 'dart:developer' as developer;
 
 void main() {
   runApp(const MyApp());
@@ -153,6 +152,10 @@ class _MyAppState extends State<MyApp> {
         GetPage(
           name: '/message',
           page: () => CheckConnection(page: Message()),
+        ),
+        GetPage(
+          name: '/list-message',
+          page: () => const CheckConnection(page: ListMessage()),
         ),
       ],
     );
