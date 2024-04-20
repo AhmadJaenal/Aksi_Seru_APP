@@ -1,6 +1,7 @@
 import 'package:aksi_seru_app/controller/auth.dart';
 import 'package:aksi_seru_app/shared/style.dart';
 import 'package:aksi_seru_app/widgets/custom_button.dart';
+import 'package:aksi_seru_app/widgets/custom_popup.dart';
 import 'package:aksi_seru_app/widgets/custom_textfield.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
@@ -64,7 +65,13 @@ class Login extends StatelessWidget {
                   if (formKey.currentState!.validate() && isValidEmail) {
                     loginController.loginWithEmail();
                   } else {
-                    developer.log('validasi gagal');
+                    CustomPopUp(
+                      icon: Icons.alternate_email_rounded,
+                      isSuccess: false,
+                      onTap: () => Get.back(),
+                      message: 'Format email tidak sesuai!',
+                      titleButton: 'Login kembali',
+                    );
                   }
                 },
               ),
