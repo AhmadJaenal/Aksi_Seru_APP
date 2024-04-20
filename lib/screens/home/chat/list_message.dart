@@ -1,7 +1,6 @@
 import 'package:aksi_seru_app/shared/style.dart';
 import 'package:aksi_seru_app/widgets/card_message.dart';
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
 
 class ListMessage extends StatelessWidget {
   const ListMessage({super.key});
