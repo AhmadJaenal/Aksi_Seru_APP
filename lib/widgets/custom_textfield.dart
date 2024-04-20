@@ -190,3 +190,54 @@ class CustomTextArea extends StatelessWidget {
     );
   }
 }
+
+class CustomTextFieldMessage extends StatelessWidget {
+  final String hintText;
+  final Icon icon;
+  final Color color;
+  final String messageError;
+  final TextEditingController textController;
+  const CustomTextFieldMessage(
+      {super.key,
+      required this.hintText,
+      required this.icon,
+      this.messageError = 'DATA TIDAK BOLEH KOSONG',
+      this.color = AppColors.greyColor,
+      required this.textController});
+
+  @override
+  Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    return TextFormField(
+      validator: (value) {
+        if (value!.isEmpty) {
+          return messageError;
+        }
+        return null;
+      },
+      controller: textController,
+      style: AppTextStyle.paragraphL.copyWith(color: color),
+      textAlignVertical: TextAlignVertical.bottom,
+      cursorColor: AppColors.primary1,
+      decoration: InputDecoration(
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: color),
+          borderRadius: BorderRadius.circular(8),
+        ),
+        prefixIcon: icon,
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
+        border: OutlineInputBorder(
+          borderSide: const BorderSide(color: AppColors.greyColor, width: 1.5),
+          borderRadius: BorderRadius.circular(8),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: color, width: 1.5),
+          borderRadius: BorderRadius.circular(8),
+        ),
+        hintText: hintText,
+        hintStyle: AppTextStyle.paragraphL.copyWith(color: color),
+      ),
+    );
+  }
+}

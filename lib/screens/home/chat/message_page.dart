@@ -97,7 +97,7 @@ class Message extends StatelessWidget {
         ),
         body: DefaultTabController(
           length: 2,
-          initialIndex: 1,
+          initialIndex: 0,
           child: NestedScrollView(
             headerSliverBuilder: (context, innerBoxIsScrolled) {
               return [
