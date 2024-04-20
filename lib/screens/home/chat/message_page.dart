@@ -1,6 +1,5 @@
 import 'package:aksi_seru_app/screens/home/chat/list_message.dart';
 import 'package:aksi_seru_app/screens/home/profile/list_article.dart';
-import 'package:aksi_seru_app/screens/home/profile/list_post.dart';
 import 'package:aksi_seru_app/shared/style.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -98,7 +97,7 @@ class Message extends StatelessWidget {
         ),
         body: DefaultTabController(
           length: 2,
-          initialIndex: 1,
+          initialIndex: 0,
           child: NestedScrollView(
             headerSliverBuilder: (context, innerBoxIsScrolled) {
               return [

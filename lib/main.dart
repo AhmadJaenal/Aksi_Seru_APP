@@ -12,6 +12,7 @@ import 'package:aksi_seru_app/screens/home/article/for_you_page.dart';
 import 'package:aksi_seru_app/screens/home/article/trending_page.dart';
 import 'package:aksi_seru_app/screens/home/chat/list_message.dart';
 import 'package:aksi_seru_app/screens/home/chat/message_page.dart';
+import 'package:aksi_seru_app/screens/home/chat/room_message.dart';
 import 'package:aksi_seru_app/screens/home/errors/check_connection.dart';
 import 'package:aksi_seru_app/screens/home/feed/create_post.dart';
 import 'package:aksi_seru_app/screens/home/feed/feed_page.dart';
@@ -59,7 +60,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const SplashScreen(),
+      home: const CustomNavBottom(),
       getPages: [
         GetPage(
           name: '/splash-screen',
@@ -156,6 +157,10 @@ class _MyAppState extends State<MyApp> {
         GetPage(
           name: '/list-message',
           page: () => const CheckConnection(page: ListMessage()),
+        ),
+        GetPage(
+          name: '/room-message',
+          page: () => CheckConnection(page: RoomMessage()),
         ),
       ],
     );
