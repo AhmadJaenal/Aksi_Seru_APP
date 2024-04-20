@@ -1,7 +1,5 @@
 import 'package:aksi_seru_app/shared/style.dart';
-import 'package:aksi_seru_app/widgets/user_profile.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:gap/gap.dart';
 
 class ListMessage extends StatelessWidget {
