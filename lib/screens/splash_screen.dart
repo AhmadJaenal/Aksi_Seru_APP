@@ -1,6 +1,8 @@
 import 'package:aksi_seru_app/shared/style.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:developer' as developer;
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -10,6 +12,13 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  Future<String> getToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString('nama');
+    developer.log(token!, name: 'get user token');
+    return token;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,7 +73,10 @@ class _SplashScreenState extends State<SplashScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 16),
           maximumSize: const Size(148, 62),
         ),
-        onPressed: () => Get.toNamed('/login'),
+        onPressed: () {
+          // getToken();
+          Get.toNamed('/login');
+        },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

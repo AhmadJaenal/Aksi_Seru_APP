@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
+import 'dart:developer' as developer;
+
 class FeedPage extends StatelessWidget {
   FeedPage({super.key});
 
@@ -91,7 +93,7 @@ class FeedPage extends StatelessWidget {
                               if (formKey.currentState!.validate()) {
                                 Get.toNamed('/create-post');
                               } else {
-                                print('validasi gagal');
+                                developer.log('validasi gagal');
                               }
                             },
                             icon:

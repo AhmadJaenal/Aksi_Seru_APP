@@ -1,3 +1,4 @@
+import 'package:aksi_seru_app/controller/auth.dart';
 import 'package:aksi_seru_app/shared/style.dart';
 import 'package:aksi_seru_app/widgets/custom_button.dart';
 import 'package:aksi_seru_app/widgets/custom_textfield.dart';
@@ -5,6 +6,8 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+
+import 'dart:developer' as developer;
 
 class Register extends StatelessWidget {
   Register({super.key});
@@ -16,6 +19,9 @@ class Register extends StatelessWidget {
   void dispose() {
     _emailC.dispose();
   }
+
+  RegisterationController registerationController =
+      Get.put(RegisterationController());
 
   @override
   Widget build(BuildContext context) {
@@ -35,8 +41,9 @@ class Register extends StatelessWidget {
               ),
               const Gap(24),
               CustomTextFieldIcon(
-                textController: _emailC,
+                textController: registerationController.emailController,
                 hintText: 'Masukan email',
+                messageError: 'EMAIL TIDAK BOLEH KOSONG',
                 icon: const Icon(
                   Icons.email_outlined,
                   color: AppColors.greyColor,
@@ -46,12 +53,14 @@ class Register extends StatelessWidget {
               PrimaryButton(
                 title: 'Lanjut',
                 ontap: () {
-                  final bool isValidEmail =
-                      EmailValidator.validate(_emailC.text);
+                  final bool isValidEmail = EmailValidator.validate(
+                      registerationController.emailController.text);
                   if (formKey.currentState!.validate() && isValidEmail) {
-                    Get.toNamed('/verified-code');
+                    Get.toNamed('/create-password', arguments: {
+                      'email': registerationController.emailController.text,
+                    });
                   } else {
-                    print('validasi gagal');
+                    developer.log('validasi gagal');
                   }
                 },
               ),

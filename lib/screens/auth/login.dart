@@ -1,10 +1,14 @@
+import 'package:aksi_seru_app/controller/auth.dart';
 import 'package:aksi_seru_app/shared/style.dart';
 import 'package:aksi_seru_app/widgets/custom_button.dart';
+import 'package:aksi_seru_app/widgets/custom_popup.dart';
 import 'package:aksi_seru_app/widgets/custom_textfield.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+
+import 'dart:developer' as developer;
 
 class Login extends StatelessWidget {
   Login({super.key});
@@ -18,6 +22,8 @@ class Login extends StatelessWidget {
     _emailC.dispose();
     _passwordC.dispose();
   }
+
+  LoginController loginController = Get.put(LoginController());
 
   @override
   Widget build(BuildContext context) {
@@ -38,27 +44,34 @@ class Login extends StatelessWidget {
               const Gap(24),
               CustomTextFieldIcon(
                 hintText: 'Masukan email',
+                messageError: 'EMAIL TIDAK BOLEH KOSONG',
                 icon: const Icon(
                   Icons.email_outlined,
                   color: AppColors.greyColor,
                 ),
-                textController: _emailC,
+                textController: loginController.emailController,
               ),
               const Gap(12),
               CustomTextFieldPassword(
                 hintText: 'Masukan kata sandi',
-                textController: _passwordC,
+                textController: loginController.passwordController,
               ),
               const Gap(24),
               PrimaryButton(
                 title: 'Lanjut',
                 ontap: () {
-                  final bool isValidEmail =
-                      EmailValidator.validate(_emailC.text);
+                  final bool isValidEmail = EmailValidator.validate(
+                      loginController.emailController.text.trim());
                   if (formKey.currentState!.validate() && isValidEmail) {
-                    Get.offAndToNamed('/recommendation-page');
+                    loginController.loginWithEmail();
                   } else {
-                    print('validasi gagal');
+                    CustomPopUp(
+                      icon: Icons.alternate_email_rounded,
+                      isSuccess: false,
+                      onTap: () => Get.back(),
+                      message: 'Format email tidak sesuai!',
+                      titleButton: 'Login kembali',
+                    );
                   }
                 },
               ),

@@ -10,7 +10,9 @@ import 'package:aksi_seru_app/screens/home/article/detail_article.dart';
 import 'package:aksi_seru_app/screens/home/article/following_page.dart';
 import 'package:aksi_seru_app/screens/home/article/for_you_page.dart';
 import 'package:aksi_seru_app/screens/home/article/trending_page.dart';
-import 'package:aksi_seru_app/screens/home/chat/list_chat.dart';
+import 'package:aksi_seru_app/screens/home/chat/list_message.dart';
+import 'package:aksi_seru_app/screens/home/chat/message_page.dart';
+import 'package:aksi_seru_app/screens/home/chat/room_message.dart';
 import 'package:aksi_seru_app/screens/home/errors/check_connection.dart';
 import 'package:aksi_seru_app/screens/home/feed/create_post.dart';
 import 'package:aksi_seru_app/screens/home/feed/feed_page.dart';
@@ -24,6 +26,7 @@ import 'package:aksi_seru_app/screens/home/search/search_page.dart';
 import 'package:aksi_seru_app/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   runApp(const MyApp());
@@ -37,11 +40,27 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  Future<void> setToken() async {
+    final SharedPreferences prefs = await _prefs;
+    await prefs.setString('token', '');
+  }
+
+  Future<Widget> getToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString('token');
+    if (token!.isEmpty) {
+      return const CheckConnection(page: SplashScreen());
+    } else {
+      return const CheckConnection(page: CustomNavBottom());
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const CheckConnection(page: SplashScreen()),
+      home: const CustomNavBottom(),
       getPages: [
         GetPage(
           name: '/splash-screen',
@@ -134,6 +153,14 @@ class _MyAppState extends State<MyApp> {
         GetPage(
           name: '/message',
           page: () => CheckConnection(page: Message()),
+        ),
+        GetPage(
+          name: '/list-message',
+          page: () => const CheckConnection(page: ListMessage()),
+        ),
+        GetPage(
+          name: '/room-message',
+          page: () => CheckConnection(page: RoomMessage()),
         ),
       ],
     );
