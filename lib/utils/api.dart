@@ -4,8 +4,8 @@ class ApiEndPoints {
 }
 
 class _AuthEndPoints {
-  final String registerWithEmail = 'api/users/register';
-  final String loginWithEmail = 'api/users/login';
+  final String registerWithEmail = 'api/users/register.php';
+  final String loginWithEmail = 'api/users/login.php';
 }
 
 class User {
