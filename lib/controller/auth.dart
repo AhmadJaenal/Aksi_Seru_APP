@@ -69,6 +69,7 @@ class RegisterationController extends GetxController {
         developer.log(response.statusCode.toString(), name: 'test');
       }
     } catch (e) {
+      developer.log(e.toString(), name: 'Failed register');
       CustomPopUp(
         icon: Icons.cancel_outlined,
         message: 'Terjadi kesalahan diserver',

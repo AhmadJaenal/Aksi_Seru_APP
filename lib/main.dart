@@ -60,7 +60,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const CustomNavBottom(),
+      home: const SplashScreen(),
       getPages: [
         GetPage(
           name: '/splash-screen',
