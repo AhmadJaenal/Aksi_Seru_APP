@@ -1,0 +1,30 @@
+List end point API MPPL
+User 
+-	Post : Register = [Username, Email, Password, Verifikasi password] 
+-	Post : Login = [Email, Password]
+-	Get : Current User = [Id, Username, Bio, CountPost, CountArticle, Following, Followers, StatusVerified]
+-	Get : ListFollowers = [IdUser, Username, Bio, CountPost, CountArticle, Following, Followers, StatusVerified]
+-	Post : Profile = [Username, Bio]
+Postingan
+-	Post : CreatePost = [UrlImage, Caption, Date]
+-	Get : ListPost = [UrlImage, Caption, Date, ListPeopleComment, ListPeopleLike],
+-	Post : Story = [IdUser, UrlImage, Date]
+-	Get : ListStory = [UrlImage, IdUser]
+-	Post : Story = [UrlImage, IdUser]
+
+Article
+-	Post : CreateArticle = [Masih belum kepikiran]
+-	Get : ListPost = [IdUser,…]
+-	Get : ListTrendArticle = [IdArticle, Title, Content, UrlImage, Date, ListPeopleLike]
+-	Get : DetailArticle = [IdArticle, Title, Content, UrlImage, Date, ListPeopleComment, ListPeopleLike, Tag]
+Recommend User
+-	Get : ListRecommendUser = [IdUser, Username, StatusVerified]
+Recomment Article
+-	Get : ListRecommentArticle = [IdArticle, Title, UrlImage, Date]
+Search
+-	Post : SearchUser = [Username] mengembalikan ListUser
+-	Post : SearchArticle = [Title, Tag] mengembalikan ListArticle
+Chat 
+-	Post: SendChat = [IdUser, Date, message] masih belum kepikiran
+-	Get : ListChat = [] masih belum kepikiran
+
