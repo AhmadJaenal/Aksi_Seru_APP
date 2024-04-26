@@ -112,7 +112,7 @@ class LoginController extends GetxController {
       if (response.statusCode == 200) {
         Map<String, dynamic> jsonResponse = jsonDecode(response.body)['data'];
         String token = jsonResponse['token'];
-        // developer.log(token, name: 'user token login email');
+        developer.log(token, name: 'user token login email');
         if (token.isNotEmpty) {
           final SharedPreferences prefs = await _prefs;
           await prefs.setString('token', token);
