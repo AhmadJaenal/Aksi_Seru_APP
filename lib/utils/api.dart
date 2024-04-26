@@ -9,5 +9,5 @@ class _AuthEndPoints {
 }
 
 class User {
-  static String currentUser = 'api/users/current';
+  static String currentUser = 'api/users/current.php';
 }

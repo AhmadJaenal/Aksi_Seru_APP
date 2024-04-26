@@ -5,10 +5,10 @@ class UserModel {
   final String email;
   final String token;
   final String avatar;
-  // final int countPost;
-  // final int countArticle;
-  // final int followers;
-  // final int following;
+  final int countPost;
+  final int countArticle;
+  final int followers;
+  final int following;
   final String bio;
   // final int idPost;
   // final int idArticle;
@@ -20,10 +20,10 @@ class UserModel {
     required this.email,
     required this.token,
     required this.avatar,
-    // required this.countPost,
-    // required this.countArticle,
-    // required this.followers,
-    // required this.following,
+    required this.countPost,
+    required this.countArticle,
+    required this.followers,
+    required this.following,
     required this.bio,
     // required this.idPost,
     // required this.idArticle,
@@ -37,10 +37,10 @@ class UserModel {
       email: json['email'].toString(),
       token: json['token'].toString(),
       avatar: json['avatar'] != null ? json['avatar'].toString() : '',
-      // countPost: json['countPost'],
-      // countArticle: json['countArticle'],
-      // followers: json['followers'],
-      // following: json['following'],
+      countPost: json['countpost'],
+      countArticle: json['countarticle'],
+      followers: json['followers'],
+      following: json['following'],
       bio: json['bio'] != null ? json['bio'].toString() : '',
       // idPost: json['idPost'],
       // idArticle: json['idArticle'],
