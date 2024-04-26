@@ -16,14 +16,15 @@ class UserData extends GetxController {
 
   Future<UserModel?> getCurrentUser() async {
     String? token = await getToken();
+    // developer.log(token.toString(), name: 'token user profile');
     final uri = Uri.parse(ApiEndPoints.baseUrl + User.currentUser);
     var headers = {
-      'Authorization': '$token',
+      'X-Authorization': '$token',
     };
 
     try {
       final response = await http.get(uri, headers: headers);
-      developer.log(token.toString(), name: 'user token profile');
+      developer.log(response.body, name: 'Data Current User');
       developer.log(response.statusCode.toString(), name: 'code response');
       if (response.statusCode == 200) {
         Map<String, dynamic> jsonResponse = jsonDecode(response.body)['data'];
@@ -31,6 +32,8 @@ class UserData extends GetxController {
 
         UserModel user = UserModel.fromJson(jsonResponse);
         return user;
+      } else if (response.statusCode == 401) {
+        developer.log('Unauthorized');
       }
     } catch (e) {
       developer.log('Error: $e', name: 'error get user');

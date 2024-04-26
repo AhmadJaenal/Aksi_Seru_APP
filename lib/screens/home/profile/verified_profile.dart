@@ -7,6 +7,7 @@ import 'package:aksi_seru_app/widgets/custom_button.dart';
 import 'package:aksi_seru_app/widgets/user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get.dart';
 
 class VerifiedProfile extends StatefulWidget {
   const VerifiedProfile({super.key});
@@ -81,14 +82,12 @@ class _VerifiedProfileState extends State<VerifiedProfile> {
                       child: Gap(12),
                     ),
                     SliverAppBar(
-                      floating: true,
-                      automaticallyImplyLeading: false,
-                      backgroundColor: AppColors.whiteColor,
                       title: Text(
                         user.name,
                         style: AppTextStyle.appbarTitle.copyWith(
                           color: AppColors.primary1,
                         ),
+                        maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
                       actions: [
@@ -147,21 +146,12 @@ class _VerifiedProfileState extends State<VerifiedProfile> {
                                       ),
                                     ],
                                   ),
-                                  const Gap(8),
-                                  Text(
-                                    'Pengamat',
-                                    style: AppTextStyle.paragraphL.copyWith(
-                                      color: AppColors.blackColor,
-                                    ),
-                                  ),
                                   const Gap(12),
                                   Text(
                                     user.bio,
                                     style: AppTextStyle.paragraphL.copyWith(
                                       color: AppColors.blackColor,
                                     ),
-                                    textAlign: TextAlign.center,
-                                    maxLines: 3,
                                   ),
                                   const Gap(16),
                                   Row(
@@ -171,7 +161,7 @@ class _VerifiedProfileState extends State<VerifiedProfile> {
                                       Column(
                                         children: [
                                           Text(
-                                            '3',
+                                            user.countPost.toString(),
                                             style: AppTextStyle.h3.copyWith(
                                               fontWeight:
                                                   AppFontWeight.semiBold,
@@ -191,7 +181,7 @@ class _VerifiedProfileState extends State<VerifiedProfile> {
                                       Column(
                                         children: [
                                           Text(
-                                            '1',
+                                            user.countArticle.toString(),
                                             style: AppTextStyle.h3.copyWith(
                                               fontWeight:
                                                   AppFontWeight.semiBold,
@@ -211,7 +201,7 @@ class _VerifiedProfileState extends State<VerifiedProfile> {
                                       Column(
                                         children: [
                                           Text(
-                                            '2893',
+                                            user.followers.toString(),
                                             style: AppTextStyle.h3.copyWith(
                                               fontWeight:
                                                   AppFontWeight.semiBold,
@@ -231,7 +221,7 @@ class _VerifiedProfileState extends State<VerifiedProfile> {
                                       Column(
                                         children: [
                                           Text(
-                                            '147',
+                                            user.following.toString(),
                                             style: AppTextStyle.h3.copyWith(
                                               fontWeight:
                                                   AppFontWeight.semiBold,
@@ -256,7 +246,8 @@ class _VerifiedProfileState extends State<VerifiedProfile> {
                                       MiniButton(
                                         icon: 'icon_update_profile.png',
                                         title: 'Atur profil',
-                                        ontap: () {},
+                                        ontap: () =>
+                                            Get.toNamed('/edit-profile'),
                                         color: AppColors.primary1,
                                         iconColor: AppColors.primary1,
                                         titleColor: AppColors.primary1,
