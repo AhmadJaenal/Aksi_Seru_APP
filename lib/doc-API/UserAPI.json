@@ -55,6 +55,25 @@
                     }
                 },
                 "responses": {
+                    "405" : {
+                        "description": "Method Not Allowed",
+                        "content": {
+                            "application/json" : {
+                                "examples": {
+                                    "validationerror" : {
+                                        "description": "Method Not Allowed",
+                                        "value" : {
+                                            "erros" : {
+                                                "message" : [
+                                                    "Method Not Allowed"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
                     "400" : {
                         "description": "Validation error",
                         "content": {
@@ -174,7 +193,7 @@
                     }
                 },
                 "responses": {
-                    "200" : {
+                    "201" : {
                         "description": "Success login",
                         "content": {
                             "application/json" : {
@@ -205,7 +224,49 @@
                                 }
                             }
                         }
+                    },
+                    "400" : {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json" : {
+                                "examples": {
+                                    "validationerror" : {
+                                        "description": "Validation error",
+                                        "value" : {
+                                            "erros" : {
+                                                "login" : [
+                                                    "Either a username or an email must be provided for login."
+                                                ],
+                                                "password" : [
+                                                    "The username field is required"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "405" : {
+                        "description": "Method Not Allowed",
+                        "content": {
+                            "application/json" : {
+                                "examples": {
+                                    "validationerror" : {
+                                        "description": "Method Not Allowed",
+                                        "value" : {
+                                            "erros" : {
+                                                "message" : [
+                                                    "Method Not Allowed"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
+                    
                 }
             }
         },
@@ -263,6 +324,44 @@
                                                 "followers" : {
                                                     "type": "integer"
                                                 }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401" : {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json" : {
+                                "examples": {
+                                    "validationerror" : {
+                                        "description": "Unauthorized",
+                                        "value" : {
+                                            "erros" : {
+                                                "message" : [
+                                                    "unauthorized"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "405" : {
+                        "description": "Method Not Allowed",
+                        "content": {
+                            "application/json" : {
+                                "examples": {
+                                    "validationerror" : {
+                                        "description": "Method Not Allowed",
+                                        "value" : {
+                                            "erros" : {
+                                                "message" : [
+                                                    "Method Not Allowed"
+                                                ]
                                             }
                                         }
                                     }
@@ -381,9 +480,10 @@
                 }
             }
         },
-        "/api/users/profile" : {
-            "patch" : {
-                "tags": ["default"],
+
+        "/api/users/profile.php" : {
+            "post" : {
+                "tags": ["Success"],
                 "description": "Update current user's profile",
                 "parameters": [
                     {
@@ -393,18 +493,20 @@
                 ],
                 "requestBody" : {
                     "content": {
-                        "application/json" : {
+                        "multipart/form-data" : {
                             "schema" : {
                                 "type": "object",
                                 "properties": {
-                                    "username" : {
-                                        "type": "string"
-                                    },
-                                    "email" : {
+                                    "name" : {
                                         "type": "string"
                                     },
                                     "bio" : {
                                         "type": "string"
+                                    },
+                                    "avatar" : {
+                                        "type": "string",
+                                        "format": "binary",
+                                        "description": "Upload Image"
                                     }
                                 }
                             }
@@ -416,45 +518,82 @@
                         "description": "Succes update profile",
                         "content": {
                             "application/json" : {
-                                "examples": {
-                                    "success" : {
-                                        "description": "Success update profile",
-                                        "value" : {
-                                            "data" : {
-                                                "id" : 0,
-                                                "name" : "Daniel Antonio Ramirez",
-                                                "username" : "Antonio",
-                                                "email" : "daniel.antonioramirez@example.com",
-                                                "bio" : "Hi, I'm writer and traveler. Exploring the world one story at a time. 🌍✍️"
-                                            }
-                                        }
-                                    }
-                                },
                                 "schema" : {
                                     "type": "object",
                                     "properties": {
                                         "data" : {
                                             "type": "object",
                                             "properties": {
-                                                "id" : {
-                                                    "type": "number"
-                                                },
                                                 "name" : {
                                                     "type": "string"
                                                 },
-                                                "username" : {
-                                                    "type": "string"
-                                                },
-                                                "email" : {
-                                                    "type": "string"
-                                                },
                                                 "bio" : {
+                                                    "type": "string"
+                                                },
+                                                "avatar" : {
                                                     "type": "string"
                                                 }
                                             }
                                         },
                                         "errors" : {
                                             "type": "object"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400" : {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json" : {
+                                "examples": {
+                                    "validationerror" : {
+                                        "description": "Validation error",
+                                        "value" : {
+                                            "erros" : {
+                                                "message" : [
+                                                    "Use the name, bio, or upload avatar photo fields to update your profile"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401" : {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json" : {
+                                "examples": {
+                                    "validationerror" : {
+                                        "description": "Unauthorized",
+                                        "value" : {
+                                            "erros" : {
+                                                "message" : [
+                                                    "unauthorized"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "405" : {
+                        "description": "Method Not Allowed",
+                        "content": {
+                            "application/json" : {
+                                "examples": {
+                                    "validationerror" : {
+                                        "description": "Method Not Allowed",
+                                        "value" : {
+                                            "erros" : {
+                                                "message" : [
+                                                    "Method Not Allowed"
+                                                ]
+                                            }
                                         }
                                     }
                                 }
@@ -499,6 +638,44 @@
                                     "properties": {
                                         "data" : {
                                             "type": "boolean"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401" : {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json" : {
+                                "examples": {
+                                    "validationerror" : {
+                                        "description": "Unauthorized",
+                                        "value" : {
+                                            "erros" : {
+                                                "message" : [
+                                                    "unauthorized"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "405" : {
+                        "description": "Method Not Allowed",
+                        "content": {
+                            "application/json" : {
+                                "examples": {
+                                    "validationerror" : {
+                                        "description": "Method Not Allowed",
+                                        "value" : {
+                                            "erros" : {
+                                                "message" : [
+                                                    "Method Not Allowed"
+                                                ]
+                                            }
                                         }
                                     }
                                 }
