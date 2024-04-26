@@ -11,9 +11,9 @@
         }
     ],
     "paths": {
-        "/api/users/register" : {
+        "/api/users/register.php" : {
             "post" : {
-                "tags": ["Succeed"],
+                "tags": ["Success"],
                 "description": "Register new user",
                 "requestBody" : {
                     "content": {
@@ -55,6 +55,25 @@
                     }
                 },
                 "responses": {
+                    "405" : {
+                        "description": "Method Not Allowed",
+                        "content": {
+                            "application/json" : {
+                                "examples": {
+                                    "validationerror" : {
+                                        "description": "Method Not Allowed",
+                                        "value" : {
+                                            "erros" : {
+                                                "message" : [
+                                                    "Method Not Allowed"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
                     "400" : {
                         "description": "Validation error",
                         "content": {
@@ -65,18 +84,19 @@
                                         "value" : {
                                             "erros" : {
                                                 "username" : [
-                                                    "The username field is required",
-                                                    "username already registered"
+                                                    "The username field is required"
                                                 ],
                                                 "email" : [
-                                                    "The username field is required",
-                                                    "email already registered"
+                                                    "The username field is required"
                                                 ],
                                                 "password" : [
                                                     "The username field is required"
                                                 ],
                                                 "name" : [
                                                     "The username field is required"
+                                                ],
+                                                "message" : [
+                                                    "username or email already registered"
                                                 ]
                                             }
                                         }
@@ -134,9 +154,9 @@
                 }
             }
         },
-        "/api/users/login" : {
+        "/api/users/login.php" : {
             "post" : {
-                "tags": ["Succeed"],
+                "tags": ["Success"],
                 "description": "Login user",
                 "requestBody" : {
                     "content": {
@@ -146,13 +166,6 @@
                                     "description": "Sign in using Username",
                                     "value" : {
                                         "username" : "Antonio",
-                                        "password" : "secret"
-                                    }
-                                },
-                                "Using a Email" : {
-                                    "description": "Sign in using Email",
-                                    "value" : {
-                                        "email" : "daniel.antonioramirez@example.com",
                                         "password" : "secret"
                                     }
                                 }
@@ -180,7 +193,7 @@
                     }
                 },
                 "responses": {
-                    "200" : {
+                    "201" : {
                         "description": "Success login",
                         "content": {
                             "application/json" : {
@@ -206,21 +219,60 @@
                                                     "type": "string"
                                                 }
                                             }
-                                        },
-                                        "errors" : {
-                                            "type": "object"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400" : {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json" : {
+                                "examples": {
+                                    "validationerror" : {
+                                        "description": "Validation error",
+                                        "value" : {
+                                            "erros" : {
+                                                "login" : [
+                                                    "Either a username or an email must be provided for login."
+                                                ],
+                                                "password" : [
+                                                    "The username field is required"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "405" : {
+                        "description": "Method Not Allowed",
+                        "content": {
+                            "application/json" : {
+                                "examples": {
+                                    "validationerror" : {
+                                        "description": "Method Not Allowed",
+                                        "value" : {
+                                            "erros" : {
+                                                "message" : [
+                                                    "Method Not Allowed"
+                                                ]
+                                            }
                                         }
                                     }
                                 }
                             }
                         }
                     }
+                    
                 }
             }
         },
-        "/api/users/current" : {
+        "/api/users/current.php" : {
             "get" : {
-                "tags": ["Succeed"],
+                "tags": ["Success"],
                 "description": "Get current user",
                 "parameters": [
                     {
@@ -250,11 +302,67 @@
                                                 },
                                                 "name" : {
                                                     "type": "string"
+                                                },
+                                                "bio" : {
+                                                    "type": "string"
+                                                },
+                                                "avatar" : {
+                                                    "type": "string"
+                                                },
+                                                "verified" : {
+                                                    "type": "integer"
+                                                },
+                                                "countpost" : {
+                                                    "type": "integer"
+                                                },
+                                                "countarticle" : {
+                                                    "type": "integer"
+                                                },
+                                                "following" : {
+                                                    "type": "integer"
+                                                },
+                                                "followers" : {
+                                                    "type": "integer"
                                                 }
                                             }
-                                        },
-                                        "errors" : {
-                                            "type": "object"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401" : {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json" : {
+                                "examples": {
+                                    "validationerror" : {
+                                        "description": "Unauthorized",
+                                        "value" : {
+                                            "erros" : {
+                                                "message" : [
+                                                    "unauthorized"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "405" : {
+                        "description": "Method Not Allowed",
+                        "content": {
+                            "application/json" : {
+                                "examples": {
+                                    "validationerror" : {
+                                        "description": "Method Not Allowed",
+                                        "value" : {
+                                            "erros" : {
+                                                "message" : [
+                                                    "Method Not Allowed"
+                                                ]
+                                            }
                                         }
                                     }
                                 }
@@ -372,9 +480,9 @@
                 }
             }
         },
-        "/api/users/profile" : {
-            "patch" : {
-                "tags": ["Succeed"],
+        "/api/users/profile.php" : {
+            "post" : {
+                "tags": ["Success"],
                 "description": "Update current user's profile",
                 "parameters": [
                     {
@@ -384,18 +492,20 @@
                 ],
                 "requestBody" : {
                     "content": {
-                        "application/json" : {
+                        "multipart/form-data" : {
                             "schema" : {
                                 "type": "object",
                                 "properties": {
-                                    "username" : {
-                                        "type": "string"
-                                    },
-                                    "email" : {
+                                    "name" : {
                                         "type": "string"
                                     },
                                     "bio" : {
                                         "type": "string"
+                                    },
+                                    "avatar" : {
+                                        "type": "string",
+                                        "format": "binary",
+                                        "description": "Upload Image"
                                     }
                                 }
                             }
@@ -407,45 +517,82 @@
                         "description": "Succes update profile",
                         "content": {
                             "application/json" : {
-                                "examples": {
-                                    "success" : {
-                                        "description": "Success update profile",
-                                        "value" : {
-                                            "data" : {
-                                                "id" : 0,
-                                                "name" : "Daniel Antonio Ramirez",
-                                                "username" : "Antonio",
-                                                "email" : "daniel.antonioramirez@example.com",
-                                                "bio" : "Hi, I'm writer and traveler. Exploring the world one story at a time. 🌍✍️"
-                                            }
-                                        }
-                                    }
-                                },
                                 "schema" : {
                                     "type": "object",
                                     "properties": {
                                         "data" : {
                                             "type": "object",
                                             "properties": {
-                                                "id" : {
-                                                    "type": "number"
-                                                },
                                                 "name" : {
                                                     "type": "string"
                                                 },
-                                                "username" : {
-                                                    "type": "string"
-                                                },
-                                                "email" : {
-                                                    "type": "string"
-                                                },
                                                 "bio" : {
+                                                    "type": "string"
+                                                },
+                                                "avatar" : {
                                                     "type": "string"
                                                 }
                                             }
                                         },
                                         "errors" : {
                                             "type": "object"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400" : {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json" : {
+                                "examples": {
+                                    "validationerror" : {
+                                        "description": "Validation error",
+                                        "value" : {
+                                            "erros" : {
+                                                "message" : [
+                                                    "Use the name, bio, or upload avatar photo fields to update your profile"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401" : {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json" : {
+                                "examples": {
+                                    "validationerror" : {
+                                        "description": "Unauthorized",
+                                        "value" : {
+                                            "erros" : {
+                                                "message" : [
+                                                    "unauthorized"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "405" : {
+                        "description": "Method Not Allowed",
+                        "content": {
+                            "application/json" : {
+                                "examples": {
+                                    "validationerror" : {
+                                        "description": "Method Not Allowed",
+                                        "value" : {
+                                            "erros" : {
+                                                "message" : [
+                                                    "Method Not Allowed"
+                                                ]
+                                            }
                                         }
                                     }
                                 }
@@ -461,7 +608,7 @@
 
         "/api/users/current/uploadAvatar" : {
             "post" : {
-                "tags": ["Succeed"],
+                "tags": ["default"],
                 "description": "name file : avatar",
                 "requestBody" : {
                     "content": {
@@ -470,9 +617,9 @@
                 }
             }
         },
-        "/api/users/logout" : {
-            "delete" : {
-                "tags": ["Succeed"],
+        "/api/users/logout.php" : {
+            "get" : {
+                "tags": ["Success"],
                 "description": "Logout current user",
                 "parameters": [
                     {
@@ -490,9 +637,44 @@
                                     "properties": {
                                         "data" : {
                                             "type": "boolean"
-                                        },
-                                        "errors" : {
-                                            "type": "object"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401" : {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json" : {
+                                "examples": {
+                                    "validationerror" : {
+                                        "description": "Unauthorized",
+                                        "value" : {
+                                            "erros" : {
+                                                "message" : [
+                                                    "unauthorized"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "405" : {
+                        "description": "Method Not Allowed",
+                        "content": {
+                            "application/json" : {
+                                "examples": {
+                                    "validationerror" : {
+                                        "description": "Method Not Allowed",
+                                        "value" : {
+                                            "erros" : {
+                                                "message" : [
+                                                    "Method Not Allowed"
+                                                ]
+                                            }
                                         }
                                     }
                                 }
