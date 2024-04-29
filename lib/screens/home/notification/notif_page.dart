@@ -26,23 +26,7 @@ class NotificationPage extends StatelessWidget {
             padding: EdgeInsets.all(AppMargin.defaultMargin),
             child: Row(
               children: [
-                IconButton(
-                  style: ButtonStyle(
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
-                    backgroundColor:
-                        MaterialStatePropertyAll(AppColors.primary1),
-                    padding: const MaterialStatePropertyAll(EdgeInsets.all(12)),
-                  ),
-                  onPressed: () => Get.back(),
-                  icon: Icon(
-                    Icons.arrow_back,
-                    color: AppColors.whiteColor,
-                  ),
-                ),
+                const BackButtonCustom(),
                 const Gap(16),
                 Text(
                   'Notifikasi',

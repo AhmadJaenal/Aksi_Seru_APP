@@ -1,6 +1,7 @@
 import 'package:aksi_seru_app/screens/home/chat/list_message.dart';
 import 'package:aksi_seru_app/screens/home/profile/list_article.dart';
 import 'package:aksi_seru_app/shared/style.dart';
+import 'package:aksi_seru_app/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
@@ -66,23 +67,7 @@ class Message extends StatelessWidget {
             padding: EdgeInsets.all(AppMargin.defaultMargin),
             child: Row(
               children: [
-                IconButton(
-                  style: ButtonStyle(
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
-                    backgroundColor:
-                        MaterialStatePropertyAll(AppColors.primary1),
-                    padding: const MaterialStatePropertyAll(EdgeInsets.all(12)),
-                  ),
-                  onPressed: () => Get.back(),
-                  icon: Icon(
-                    Icons.arrow_back,
-                    color: AppColors.whiteColor,
-                  ),
-                ),
+                const BackButtonCustom(),
                 const Gap(16),
                 Text(
                   'Pesan masuk',
