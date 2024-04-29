@@ -100,8 +100,9 @@ class _PublicProfileState extends State<PublicProfile> {
                     const Gap(12),
                   ],
                   bottom: PreferredSize(
-                    preferredSize: Size.fromHeight(440),
+                    preferredSize: const Size.fromHeight(400),
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
                           padding: EdgeInsets.all(AppMargin.defaultMargin),
