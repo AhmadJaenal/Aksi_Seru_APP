@@ -1,6 +1,7 @@
 import 'package:aksi_seru_app/shared/style.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get.dart';
 
 class PrimaryButton extends StatelessWidget {
   final Function() ontap;
@@ -168,6 +169,30 @@ class CustomIconButton extends StatelessWidget {
         ),
         onPressed: ontap,
         icon: icon,
+      ),
+    );
+  }
+}
+
+class BackButtonCustom extends StatelessWidget {
+  const BackButtonCustom({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      style: ButtonStyle(
+        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
+        backgroundColor: MaterialStatePropertyAll(AppColors.primary1),
+        padding: const MaterialStatePropertyAll(EdgeInsets.all(12)),
+      ),
+      onPressed: () => Get.back(),
+      icon: Icon(
+        Icons.arrow_back_rounded,
+        color: AppColors.whiteColor,
       ),
     );
   }
