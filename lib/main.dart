@@ -22,6 +22,7 @@ import 'package:aksi_seru_app/screens/home/nav/nav_bottom.dart';
 import 'package:aksi_seru_app/screens/home/notification/notif_page.dart';
 import 'package:aksi_seru_app/screens/home/onboarding/recommendation_page.dart';
 import 'package:aksi_seru_app/screens/home/profile/edit_profile.dart';
+import 'package:aksi_seru_app/screens/home/profile/public_profile.dart';
 import 'package:aksi_seru_app/screens/home/profile/verified_profile.dart';
 import 'package:aksi_seru_app/screens/home/search/search_page.dart';
 import 'package:aksi_seru_app/screens/splash_screen.dart';
@@ -117,7 +118,7 @@ class _MyAppState extends State<MyApp> {
         ),
         GetPage(
           name: '/nav-bar',
-          page: () => const CustomNavBottom(),
+          page: () => const CheckConnection(page: CustomNavBottom()),
         ),
         GetPage(
           name: '/search-page',
@@ -152,6 +153,10 @@ class _MyAppState extends State<MyApp> {
           page: () => const CheckConnection(page: VerifiedProfile()),
         ),
         GetPage(
+          name: '/public-profile',
+          page: () => const CheckConnection(page: PublicProfile()),
+        ),
+        GetPage(
           name: '/message',
           page: () => CheckConnection(page: Message()),
         ),
@@ -165,7 +170,7 @@ class _MyAppState extends State<MyApp> {
         ),
         GetPage(
           name: '/edit-profile',
-          page: () => CheckConnection(page: EditProfile()),
+          page: () => const CheckConnection(page: EditProfile()),
         ),
       ],
     );
