@@ -1,5 +1,5 @@
 class ApiEndPoints {
-  static String baseUrl = 'https://apitubesmppl.000webhostapp.com/';
+  static String baseUrl = 'http://192.168.137.1/api-main/';
   static _AuthEndPoints authEndPoints = _AuthEndPoints();
 }
 
