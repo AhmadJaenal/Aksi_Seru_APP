@@ -1,3 +1,5 @@
+import 'package:aksi_seru_app/controller/user.dart';
+import 'package:aksi_seru_app/models/user_model.dart';
 import 'package:aksi_seru_app/shared/style.dart';
 import 'package:aksi_seru_app/widgets/card_article.dart';
 import 'package:aksi_seru_app/widgets/custom_textfield.dart';
@@ -91,20 +93,32 @@ class SearchPage extends StatelessWidget {
                   ),
                 ),
               ),
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                physics: const BouncingScrollPhysics(),
-                itemCount: 10,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: index == 0
-                        ? EdgeInsets.only(left: AppMargin.defaultMargin)
-                        : index == 9
-                            ? EdgeInsets.only(
-                                left: 8, right: AppMargin.defaultMargin)
-                            : const EdgeInsets.only(left: 8),
-                    child: const UserProfile(),
-                  );
+              child: FutureBuilder(
+                future: UserData.getRandomUser(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    if (snapshot.hasData) {
+                      return ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: snapshot.data!.length,
+                        itemBuilder: (context, index) {
+                          UserModel userData = snapshot.data![index];
+                          return UserProfile(
+                            username: userData.username,
+                            avatar: userData.avatar,
+                          );
+                        },
+                      );
+                    } else {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                  } else {
+                    return const Center(
+                      child: Text("Tunggu"),
+                    );
+                  }
                 },
               ),
             ),

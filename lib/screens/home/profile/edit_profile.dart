@@ -141,11 +141,11 @@ class _EditProfileState extends State<EditProfile> {
                 const Gap(16),
                 PrimaryButton(
                   ontap: () {
-                    UserData.updateUserProfile(
-                      bio: bioController.text,
-                      name: nameController.text,
-                      image: _image,
-                    );
+                    // UserData.updateUserProfile(
+                    //   bio: bioController.text,
+                    //   name: nameController.text,
+                    //   image: _image,
+                    // );
                   },
                   title: 'Simpan Perubahan',
                 )
