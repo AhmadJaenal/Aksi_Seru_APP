@@ -1,10 +1,17 @@
+import 'dart:io';
+
+import 'package:aksi_seru_app/controller/user.dart';
+import 'package:aksi_seru_app/models/user_model.dart';
 import 'package:aksi_seru_app/shared/style.dart';
+import 'package:aksi_seru_app/utils/api.dart';
 import 'package:aksi_seru_app/widgets/custom_button.dart';
 import 'package:aksi_seru_app/widgets/custom_textfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:developer' as developer;
 
 class EditProfile extends StatefulWidget {
   const EditProfile({super.key});
@@ -17,12 +24,29 @@ class _EditProfileState extends State<EditProfile> {
   TextEditingController nameController = TextEditingController();
   TextEditingController bioController = TextEditingController();
 
+  final formKey = GlobalKey<FormState>();
+
+  File? _image;
+
+  Future<void> _getImageFromGallery() async {
+    final picker = ImagePicker();
+    final pickedImage = await picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedImage != null) {
+      setState(() {
+        _image = File(pickedImage.path);
+      });
+    }
+  }
+
   @override
   void dispose() {
     nameController.dispose();
     bioController.dispose();
     super.dispose();
   }
+
+  final user = Get.arguments['user'] as UserModel;
 
   @override
   Widget build(BuildContext context) {
@@ -65,44 +89,68 @@ class _EditProfileState extends State<EditProfile> {
         ),
         body: Padding(
           padding: EdgeInsets.all(AppMargin.defaultMargin),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Center(
-                child: Container(
-                  width: 80,
-                  height: 80,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      color: AppColors.greyColor,
-                      width: 3,
-                      style: BorderStyle.solid,
+          child: Form(
+            key: formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Center(
+                  child: GestureDetector(
+                    onTap: () {
+                      _getImageFromGallery();
+                    },
+                    child: Container(
+                      width: 80,
+                      height: 80,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: AppColors.greyColor,
+                          width: 3,
+                          style: BorderStyle.solid,
+                        ),
+                      ),
+                      child: _image == null
+                          ? const Icon(
+                              CupertinoIcons.person_fill,
+                              size: 34,
+                              color: AppColors.greyColor,
+                            )
+                          : ClipRRect(
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(50)),
+                              child: Image.file(_image!, fit: BoxFit.cover)),
                     ),
                   ),
-                  child: const Icon(
-                    CupertinoIcons.person_fill,
-                    size: 34,
-                    color: AppColors.greyColor,
+                ),
+                const Gap(6),
+                Center(
+                  child: Text(
+                    'Update foto profile',
+                    style: AppTextStyle.paragraphL.copyWith(
+                      color: AppColors.greyColor,
+                    ),
                   ),
                 ),
-              ),
-              const Gap(6),
-              Center(
-                child: Text(
-                  'Update foto profile',
-                  style: AppTextStyle.paragraphL.copyWith(
-                    color: AppColors.greyColor,
-                  ),
-                ),
-              ),
-              const Gap(16),
-              CustomTextField(hintText: 'Name', textController: nameController),
-              const Gap(12),
-              CustomTextField(hintText: 'Bio', textController: nameController),
-              const Gap(16),
-              PrimaryButton(ontap: () {}, title: 'Simpan Perubahan')
-            ],
+                const Gap(16),
+                CustomTextField(
+                    hintText: user.name, textController: nameController),
+                const Gap(12),
+                CustomTextField(
+                    hintText: user.bio, textController: bioController),
+                const Gap(16),
+                PrimaryButton(
+                  ontap: () {
+                    UserData.updateUserProfile(
+                      bio: bioController.text,
+                      name: nameController.text,
+                      image: _image,
+                    );
+                  },
+                  title: 'Simpan Perubahan',
+                )
+              ],
+            ),
           ),
         ),
       ),
