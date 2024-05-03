@@ -8,6 +8,7 @@ class _AuthEndPoints {
   final String loginWithEmail = 'api/users/login.php';
 }
 
-class User {
+class UserEndPoints {
   static String currentUser = 'api/users/current.php';
+  static String updateUserProfile = 'api/users/profile.php';
 }
