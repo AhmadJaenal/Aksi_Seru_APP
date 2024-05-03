@@ -246,8 +246,9 @@ class _VerifiedProfileState extends State<VerifiedProfile> {
                                       MiniButton(
                                         icon: 'icon_update_profile.png',
                                         title: 'Atur profil',
-                                        ontap: () =>
-                                            Get.toNamed('/edit-profile'),
+                                        ontap: () => Get.toNamed(
+                                            '/edit-profile',
+                                            arguments: {'user': user}),
                                         color: AppColors.primary1,
                                         iconColor: AppColors.primary1,
                                         titleColor: AppColors.primary1,

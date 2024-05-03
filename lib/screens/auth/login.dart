@@ -61,8 +61,8 @@ class Login extends StatelessWidget {
                   final bool isValidEmail = EmailValidator.validate(
                       loginController.emailController.text.trim());
                   if (formKey.currentState!.validate() && isValidEmail) {
-                    // loginController.loginWithEmail();
-                    Get.toNamed('/nav-bar');
+                    loginController.loginWithEmail();
+                    // Get.toNamed('/nav-bar');
                   } else {
                     CustomPopUp(
                       icon: Icons.alternate_email_rounded,

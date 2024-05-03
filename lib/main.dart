@@ -106,7 +106,7 @@ class _MyAppState extends State<MyApp> {
         ),
         GetPage(
           name: '/story',
-          page: () => CheckConnection(page: StoryView()),
+          page: () => const CheckConnection(page: StoryView()),
         ),
         GetPage(
           name: '/review-post',
