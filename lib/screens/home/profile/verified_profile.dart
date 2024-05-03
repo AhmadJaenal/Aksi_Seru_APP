@@ -9,6 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
+import 'dart:developer' as developer;
+
 class VerifiedProfile extends StatefulWidget {
   const VerifiedProfile({super.key});
 
@@ -59,14 +61,13 @@ class _VerifiedProfileState extends State<VerifiedProfile> {
     ],
   );
 
-  final UserData user = UserData();
-
+  final UserData userData = UserData();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.whiteColor,
       body: FutureBuilder(
-        future: user.getCurrentUser(),
+        future: userData.getCurrentUser(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
@@ -306,11 +307,35 @@ class _VerifiedProfileState extends State<VerifiedProfile> {
                               child: SizedBox(
                                 width: double.infinity,
                                 height: 180,
-                                child: ListView.builder(
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: 10,
-                                  itemBuilder: (context, index) =>
-                                      const UserProfile(),
+                                child: FutureBuilder(
+                                  future: UserData.getRandomUser(),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.done) {
+                                      if (snapshot.hasData) {
+                                        return ListView.builder(
+                                          scrollDirection: Axis.horizontal,
+                                          itemCount: snapshot.data!.length,
+                                          itemBuilder: (context, index) {
+                                            UserModel userData =
+                                                snapshot.data![index];
+                                            return UserProfile(
+                                              username: userData.username,
+                                              avatar: userData.avatar,
+                                            );
+                                          },
+                                        );
+                                      } else {
+                                        return const Center(
+                                          child: CircularProgressIndicator(),
+                                        );
+                                      }
+                                    } else {
+                                      return const Center(
+                                        child: Text("Tunggu"),
+                                      );
+                                    }
+                                  },
                                 ),
                               ),
                             ),

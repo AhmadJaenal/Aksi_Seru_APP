@@ -65,36 +65,66 @@ class UserData extends GetxController {
   //     developer.log('Error copying image: $e', name: 'Copy Image Error');
   //   }
 
-    // Upload image to server
-    // String? token = await getToken();
-    // var headers = {
-    //   'X-Authorization': '$token',
-    // };
-    // final uri =
-    //     Uri.parse(ApiEndPoints.baseUrl + UserEndPoints.updateUserProfile);
-    // String fileName = image!.path.split('/').last;
+  // Upload image to server
+  // String? token = await getToken();
+  // var headers = {
+  //   'X-Authorization': '$token',
+  // };
+  // final uri =
+  //     Uri.parse(ApiEndPoints.baseUrl + UserEndPoints.updateUserProfile);
+  // String fileName = image!.path.split('/').last;
 
-    // try {
-    //   var formData = dio.FormData.fromMap({
-    //     'name': name,
-    //     'bio': bio,
-    //     'avatar': await dio.MultipartFile.fromFile(
-    //       image.path,
-    //       filename: fileName,
-    //     ),
-    //   });
+  // try {
+  //   var formData = dio.FormData.fromMap({
+  //     'name': name,
+  //     'bio': bio,
+  //     'avatar': await dio.MultipartFile.fromFile(
+  //       image.path,
+  //       filename: fileName,
+  //     ),
+  //   });
 
-    //   final response = await Dio()
-    //       .put(ApiEndPoints.baseUrl + UserEndPoints.updateUserProfile,
-    //           data: formData,
-    //           options: Options(
-    //             headers: headers,
-    //           ));
+  //   final response = await Dio()
+  //       .put(ApiEndPoints.baseUrl + UserEndPoints.updateUserProfile,
+  //           data: formData,
+  //           options: Options(
+  //             headers: headers,
+  //           ));
 
-    //   developer.log(response.statusCode.toString(),
-    //       name: 'Response status code upload image');
-    // } catch (e) {
-    //   developer.log(e.toString(), name: 'error copy image');
-    // }
+  //   developer.log(response.statusCode.toString(),
+  //       name: 'Response status code upload image');
+  // } catch (e) {
+  //   developer.log(e.toString(), name: 'error copy image');
   // }
+  // }
+
+  static Future<List<UserModel>?> getRandomUser() async {
+    String? token = await getToken();
+    final uri = Uri.parse(ApiEndPoints.baseUrl + UserEndPoints.randomUser);
+    var headers = {
+      'X-Authorization': '$token',
+    };
+
+    try {
+      final response = await http.get(uri, headers: headers);
+      if (response.statusCode == 200) {
+        var jsonResponse = jsonDecode(response.body)['data'];
+        // developer.log(jsonResponse.toString(), name: 'Response');
+
+        List<UserModel> userData = [];
+        jsonResponse.forEach((data) {
+          UserModel user = UserModel.fromJson(data);
+          userData.add(user);
+        });
+
+        // developer.log(userData.toString(), name: 'userData');
+        return userData;
+      } else if (response.statusCode == 401) {
+        developer.log('Unauthorized');
+        return null;
+      }
+    } catch (e) {
+      developer.log('Error: $e', name: 'error get user');
+    }
+  }
 }

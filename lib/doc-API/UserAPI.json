@@ -425,9 +425,6 @@
                                                     "type": "string"
                                                 }
                                             }
-                                        },
-                                        "errors" : {
-                                            "type": "object"
                                         }
                                     }
                                 }
@@ -547,10 +544,11 @@
                                     "validationerror" : {
                                         "description": "Validation error",
                                         "value" : {
-                                            "erros" : {
-                                                "iduser" : [
+                                            "errors" : {
+                                                "message" : [
                                                     "The iduser field is required",
-                                                    "user has followed"
+                                                    "user has followed",
+                                                    "user not found"
                                                 ]
                                             }
                                         }
@@ -601,7 +599,7 @@
             }
         },
         "/api/users/unfollow.php" : {
-            "post" : {
+            "delete" : {
                 "tags": ["Success"],
                 "description": "Unfollow User",
                 "parameters": [
@@ -654,9 +652,10 @@
                                         "description": "Validation error",
                                         "value" : {
                                             "erros" : {
-                                                "iduser" : [
+                                                "message" : [
                                                     "The iduser field is required",
-                                                    "user not followed"
+                                                    "user not followed",
+                                                    "user not found"
                                                 ]
                                             }
                                         }
@@ -707,7 +706,7 @@
             }
         },
         "/api/users/delete-follower.php" : {
-            "post" : {
+            "delete" : {
                 "tags": ["Success"],
                 "description": "Follow User",
                 "parameters": [
@@ -760,9 +759,10 @@
                                         "description": "Validation error",
                                         "value" : {
                                             "erros" : {
-                                                "iduser" : [
+                                                "message" : [
                                                     "The iduser field is required",
-                                                    "follower not found"
+                                                    "follower not found",
+                                                    "user not found"
                                                 ]
                                             }
                                         }
@@ -812,7 +812,7 @@
                 }
             }
         },
-        "/api/users/list-following" : {
+        "/api/users/list-following.php" : {
             "get" : {
                 "tags": ["Success"],
                 "description": "Get list following",
@@ -864,7 +864,7 @@
                 }
             }
         },
-        "/api/users/list-followers" : {
+        "/api/users/list-followers.php" : {
             "get" : {
                 "tags": ["Success"],
                 "description": "Get list followers",
@@ -916,8 +916,117 @@
                 }
             }
         },
-        "/api/users/logout.php" : {
+        "/api/users/random-users.php" : {
             "get" : {
+                "tags": ["Success"],
+                "description": "Get random users",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header"
+                    }
+                ],
+                "responses": {
+                    "200" : {
+                        "description": "List Users",
+                        "content": {
+                            "application/json" : {
+                                "schema" : {
+                                    "type": "object",
+                                    "properties": {
+                                        "data" : {
+                                            "type": "array",
+                                            "items" : {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id" : {
+                                                        "type": "number"
+                                                    },
+                                                    "username" : {
+                                                        "type": "string"
+                                                    },
+                                                    "bio" : {
+                                                        "type": "string"
+                                                    },
+                                                    "countpost" : {
+                                                        "type": "number"
+                                                    },
+                                                    "countarticles" : {
+                                                        "type": "number"
+                                                    },
+                                                    "verified" : {
+                                                        "type": "boolean"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/users/search.php" : {
+            "post" : {
+                "tags": ["Success"],
+                "description": "Search Users",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header"
+                    }
+                ],
+                "responses": {
+                    "200" : {
+                        "description": "Search Results",
+                        "content": {
+                            "application/json" : {
+                                "schema" : {
+                                    "type": "object",
+                                    "properties": {
+                                        "data" : {
+                                            "type": "array",
+                                            "items" : {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id" : {
+                                                        "type": "number"
+                                                    },
+                                                    "username" : {
+                                                        "type": "string"
+                                                    },
+                                                    "bio" : {
+                                                        "type": "string"
+                                                    },
+                                                    "countpost" : {
+                                                        "type": "number"
+                                                    },
+                                                    "countarticles" : {
+                                                        "type": "number"
+                                                    },
+                                                    "verified" : {
+                                                        "type": "boolean"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+
+
+
+
+
+        "/api/users/logout.php" : {
+            "delete" : {
                 "tags": ["Success"],
                 "description": "Logout current user",
                 "parameters": [

@@ -1,9 +1,7 @@
 import 'dart:io';
 
-import 'package:aksi_seru_app/controller/user.dart';
 import 'package:aksi_seru_app/models/user_model.dart';
 import 'package:aksi_seru_app/shared/style.dart';
-import 'package:aksi_seru_app/utils/api.dart';
 import 'package:aksi_seru_app/widgets/custom_button.dart';
 import 'package:aksi_seru_app/widgets/custom_textfield.dart';
 import 'package:flutter/cupertino.dart';
@@ -11,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'dart:developer' as developer;
 
 class EditProfile extends StatefulWidget {
   const EditProfile({super.key});
@@ -141,11 +138,11 @@ class _EditProfileState extends State<EditProfile> {
                 const Gap(16),
                 PrimaryButton(
                   ontap: () {
-                    UserData.updateUserProfile(
-                      bio: bioController.text,
-                      name: nameController.text,
-                      image: _image,
-                    );
+                    // UserData.updateUserProfile(
+                    //   bio: bioController.text,
+                    //   name: nameController.text,
+                    //   image: _image,
+                    // );
                   },
                   title: 'Simpan Perubahan',
                 )
