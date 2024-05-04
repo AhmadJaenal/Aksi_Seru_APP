@@ -322,6 +322,7 @@ class _VerifiedProfileState extends State<VerifiedProfile> {
                                             return UserProfile(
                                               username: userData.username,
                                               avatar: userData.avatar,
+                                              idUser: userData.id,
                                             );
                                           },
                                         );

@@ -7,7 +7,13 @@ import 'package:get/get.dart';
 class UserProfile extends StatelessWidget {
   final String username;
   final String avatar;
-  const UserProfile({super.key, required this.username, required this.avatar});
+  final int idUser;
+  const UserProfile({
+    super.key,
+    required this.username,
+    required this.avatar,
+    required this.idUser,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -16,9 +22,7 @@ class UserProfile extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          avatar != ''
-              ? Image.asset(avatar, width: 80)
-              : Image.asset('assets/user_profile.png', width: 80),
+          Image.asset('assets/user_profile.png', width: 80),
           const Gap(8),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -34,7 +38,9 @@ class UserProfile extends StatelessWidget {
             ],
           ),
           const Gap(8),
-          const FollowButton(),
+          FollowButton(
+            idUser: idUser,
+          ),
         ],
       ),
     );

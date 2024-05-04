@@ -12,4 +12,5 @@ class UserEndPoints {
   static String currentUser = 'api/users/current.php';
   static String updateUserProfile = 'api/users/profile.php';
   static String randomUser = 'api/users/random-users.php';
+  static String followUser = 'api/users/follow.php';
 }

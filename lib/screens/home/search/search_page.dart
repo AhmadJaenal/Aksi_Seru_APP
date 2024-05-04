@@ -106,6 +106,7 @@ class SearchPage extends StatelessWidget {
                           return UserProfile(
                             username: userData.username,
                             avatar: userData.avatar,
+                            idUser: userData.id,
                           );
                         },
                       );
