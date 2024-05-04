@@ -180,7 +180,7 @@ class _MyAppState extends State<MyApp> {
         ),
         GetPage(
           name: '/list-followers',
-          page: () => CheckConnection(page: ListFollowers()),
+          page: () => const CheckConnection(page: ListFollowers()),
         ),
       ],
     );
