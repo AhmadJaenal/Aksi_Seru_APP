@@ -5,7 +5,9 @@ import 'package:aksi_seru_app/screens/home/profile/list_post.dart';
 import 'package:aksi_seru_app/shared/style.dart';
 import 'package:aksi_seru_app/widgets/custom_button.dart';
 import 'package:aksi_seru_app/widgets/user_profile.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
@@ -199,45 +201,53 @@ class _VerifiedProfileState extends State<VerifiedProfile> {
                                           ),
                                         ],
                                       ),
-                                      Column(
-                                        children: [
-                                          Text(
-                                            user.followers.toString(),
-                                            style: AppTextStyle.h3.copyWith(
-                                              fontWeight:
-                                                  AppFontWeight.semiBold,
-                                              color: AppColors.blackColor,
+                                      GestureDetector(
+                                        onTap: () =>
+                                            Get.toNamed('/list-followers'),
+                                        child: Column(
+                                          children: [
+                                            Text(
+                                              user.followers.toString(),
+                                              style: AppTextStyle.h3.copyWith(
+                                                fontWeight:
+                                                    AppFontWeight.semiBold,
+                                                color: AppColors.blackColor,
+                                              ),
                                             ),
-                                          ),
-                                          const Gap(8),
-                                          Text(
-                                            'Pengikut',
-                                            style: AppTextStyle.paragraphL
-                                                .copyWith(
-                                              color: AppColors.blackColor,
+                                            const Gap(8),
+                                            Text(
+                                              'Pengikut',
+                                              style: AppTextStyle.paragraphL
+                                                  .copyWith(
+                                                color: AppColors.blackColor,
+                                              ),
                                             ),
-                                          ),
-                                        ],
+                                          ],
+                                        ),
                                       ),
-                                      Column(
-                                        children: [
-                                          Text(
-                                            user.following.toString(),
-                                            style: AppTextStyle.h3.copyWith(
-                                              fontWeight:
-                                                  AppFontWeight.semiBold,
-                                              color: AppColors.blackColor,
+                                      GestureDetector(
+                                        onTap: () =>
+                                            Get.toNamed('/list-following'),
+                                        child: Column(
+                                          children: [
+                                            Text(
+                                              user.following.toString(),
+                                              style: AppTextStyle.h3.copyWith(
+                                                fontWeight:
+                                                    AppFontWeight.semiBold,
+                                                color: AppColors.blackColor,
+                                              ),
                                             ),
-                                          ),
-                                          const Gap(8),
-                                          Text(
-                                            'Diikuti',
-                                            style: AppTextStyle.paragraphL
-                                                .copyWith(
-                                              color: AppColors.blackColor,
+                                            const Gap(8),
+                                            Text(
+                                              'Diikuti',
+                                              style: AppTextStyle.paragraphL
+                                                  .copyWith(
+                                                color: AppColors.blackColor,
+                                              ),
                                             ),
-                                          ),
-                                        ],
+                                          ],
+                                        ),
                                       ),
                                     ],
                                   ),

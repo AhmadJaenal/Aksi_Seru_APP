@@ -165,7 +165,7 @@ class UserData extends GetxController {
 
   static Future<void> unFollowUser({String? idUser}) async {
     String? token = await getToken();
-    final uri = Uri.parse(ApiEndPoints.baseUrl + UserEndPoints.followUser);
+    final uri = Uri.parse(ApiEndPoints.baseUrl + UserEndPoints.unFollowUser);
     var headers = {
       'X-Authorization': '$token',
       'Content-Type': 'application/json'
@@ -177,6 +177,34 @@ class UserData extends GetxController {
       final response = await http.delete(uri, headers: headers, body: body);
       if (response.statusCode == 200) {
         developer.log(response.body, name: 'Response Follow User');
+      } else {
+        CustomPopUp(
+          icon: Icons.cancel_outlined,
+          message: 'Terjadi kesalahan diserver',
+          isSuccess: false,
+          onTap: () {
+            Get.back();
+          },
+          titleButton: 'Kembali',
+        );
+      }
+    } catch (e) {
+      developer.log('Error: $e', name: 'error follow user');
+    }
+  }
+
+  static Future<void> listFollowing() async {
+    String? token = await getToken();
+    final uri = Uri.parse(ApiEndPoints.baseUrl + UserEndPoints.listFollowing);
+
+    var headers = {
+      'X-Authorization': '$token',
+      'Content-Type': 'application/json'
+    };
+    try {
+      final response = await http.get(uri, headers: headers);
+      if (response.statusCode == 200) {
+        developer.log(response.body, name: 'Response List User');
       } else {
         CustomPopUp(
           icon: Icons.cancel_outlined,
