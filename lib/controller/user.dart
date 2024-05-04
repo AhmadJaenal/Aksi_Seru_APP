@@ -3,7 +3,9 @@ import 'dart:io';
 
 import 'package:aksi_seru_app/models/user_model.dart';
 import 'package:aksi_seru_app/utils/api.dart';
+import 'package:aksi_seru_app/widgets/custom_popup.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -125,6 +127,39 @@ class UserData extends GetxController {
       }
     } catch (e) {
       developer.log('Error: $e', name: 'error get user');
+    }
+  }
+
+  static Future<void> followUser({String? idUser}) async {
+    String? token = await getToken();
+    final uri = Uri.parse(ApiEndPoints.baseUrl + UserEndPoints.followUser);
+    var headers = {
+      'X-Authorization': '$token',
+      'Content-Type': 'application/json'
+    };
+    var body = jsonEncode({
+      'iduser': idUser,
+    });
+    try {
+      final response = await http.post(uri, headers: headers, body: body);
+      if (response.statusCode == 200) {
+        developer.log(response.body, name: 'Response Follow User');
+      } else {
+        developer.log(response.body, name: 'Response Follow User');
+        developer.log(response.statusCode.toString(),
+            name: 'Response Follow User status code');
+        CustomPopUp(
+          icon: Icons.cancel_outlined,
+          message: 'Terjadi kesalahan diserver',
+          isSuccess: false,
+          onTap: () {
+            Get.back();
+          },
+          titleButton: 'Kembali',
+        );
+      }
+    } catch (e) {
+      developer.log('Error: $e', name: 'error follow user');
     }
   }
 }
