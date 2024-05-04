@@ -162,4 +162,34 @@ class UserData extends GetxController {
       developer.log('Error: $e', name: 'error follow user');
     }
   }
+
+  static Future<void> unFollowUser({String? idUser}) async {
+    String? token = await getToken();
+    final uri = Uri.parse(ApiEndPoints.baseUrl + UserEndPoints.followUser);
+    var headers = {
+      'X-Authorization': '$token',
+      'Content-Type': 'application/json'
+    };
+    var body = jsonEncode({
+      'iduser': idUser,
+    });
+    try {
+      final response = await http.delete(uri, headers: headers, body: body);
+      if (response.statusCode == 200) {
+        developer.log(response.body, name: 'Response Follow User');
+      } else {
+        CustomPopUp(
+          icon: Icons.cancel_outlined,
+          message: 'Terjadi kesalahan diserver',
+          isSuccess: false,
+          onTap: () {
+            Get.back();
+          },
+          titleButton: 'Kembali',
+        );
+      }
+    } catch (e) {
+      developer.log('Error: $e', name: 'error follow user');
+    }
+  }
 }
