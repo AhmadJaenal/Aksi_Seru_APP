@@ -10,7 +10,6 @@ class ListFollowing extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    UserData.listFollowing();
     return SafeArea(
       child: Scaffold(
         appBar: PreferredSize(
@@ -40,52 +39,65 @@ class ListFollowing extends StatelessWidget {
             ),
           ),
         ),
-        body: ListView.builder(
-          physics: const BouncingScrollPhysics(),
-          itemCount: 10,
-          itemBuilder: (context, index) {
-            return Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: AppMargin.defaultMargin, vertical: 5),
-              child: SizedBox(
-                width: 128,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Image.asset('assets/user_profile.png', width: 60),
-                    const Gap(8),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+        body: FutureBuilder(
+          future: UserData.listFollowing(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              if (snapshot.hasData) {
+                return ListView.builder(
+                  physics: const BouncingScrollPhysics(),
+                  itemCount: 10,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: AppMargin.defaultMargin, vertical: 5),
+                      child: SizedBox(
+                        width: 128,
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Text(
-                              'Jenal',
-                              style: AppTextStyle.paragraphL.copyWith(
-                                color: AppColors.blackColor,
-                              ),
+                            Image.asset('assets/user_profile.png', width: 60),
+                            const Gap(8),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      'Jenal',
+                                      style: AppTextStyle.paragraphL.copyWith(
+                                        color: AppColors.blackColor,
+                                      ),
+                                    ),
+                                    const Gap(7),
+                                    const Verified(),
+                                  ],
+                                ),
+                                Text(
+                                  'Bio',
+                                  style: AppTextStyle.paragraphL.copyWith(
+                                    color: AppColors.blackColor,
+                                  ),
+                                ),
+                              ],
                             ),
-                            const Gap(7),
-                            const Verified(),
+                            const Spacer(),
+                            const FollowButton(
+                              idUser: 1,
+                            ),
                           ],
                         ),
-                        Text(
-                          'Bio',
-                          style: AppTextStyle.paragraphL.copyWith(
-                            color: AppColors.blackColor,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const Spacer(),
-                    const FollowButton(
-                      idUser: 1,
-                    ),
-                  ],
-                ),
-              ),
-            );
+                      ),
+                    );
+                  },
+                );
+              } else {
+                return const Center(child: CircularProgressIndicator());
+              }
+            } else {
+              return const Center(child: CircularProgressIndicator());
+            }
           },
         ),
       ),

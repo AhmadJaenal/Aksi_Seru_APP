@@ -15,5 +15,5 @@ class UserEndPoints {
   static String followUser = 'api/users/follow.php';
   static String unFollowUser = 'api/users/unfollow.php';
   static String listFollowing = 'api/users/list-following.php';
-  static String listFollowers = 'api/users/list-following.php';
+  static String listFollowers = 'api/users/list-followers.php';
 }

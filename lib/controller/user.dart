@@ -220,4 +220,40 @@ class UserData extends GetxController {
       developer.log('Error: $e', name: 'error follow user');
     }
   }
+
+  static Future<List<UserModel>?> listFollowers() async {
+    String? token = await getToken();
+    final uri = Uri.parse(ApiEndPoints.baseUrl + UserEndPoints.listFollowers);
+
+    var headers = {
+      'X-Authorization': '$token',
+      'Content-Type': 'application/json'
+    };
+    final response = await http.get(uri, headers: headers);
+    try {
+      if (response.statusCode == 200) {
+        var jsonResponse = jsonDecode(response.body)['data'];
+
+        List<UserModel> userData = [];
+        jsonResponse.forEach((data) {
+          UserModel user = UserModel.fromJson(data);
+          userData.add(user);
+        });
+        return userData;
+      } else {
+        CustomPopUp(
+          icon: Icons.cancel_outlined,
+          message: 'Terjadi kesalahan diserver',
+          isSuccess: false,
+          onTap: () {
+            Get.back();
+          },
+          titleButton: 'Kembali',
+        );
+        return null;
+      }
+    } catch (e) {
+      developer.log('Error: $e', name: 'error follow user');
+    }
+  }
 }
