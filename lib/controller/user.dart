@@ -254,6 +254,33 @@ class UserData extends GetxController {
       }
     } catch (e) {
       developer.log('Error: $e', name: 'error follow user');
+      return null;
+    }
+  }
+
+  static Stream<List<UserModel>> searchUser({String? username}) async* {
+    String? token = await getToken();
+    final uri = Uri.parse(ApiEndPoints.baseUrl + UserEndPoints.searchUser);
+    var headers = {
+      'X-Authorization': '$token',
+    };
+    var body = jsonEncode({
+      'search': username,
+    });
+
+    try {
+      final response = await http.post(uri, headers: headers, body: body);
+      List<UserModel> userData = [];
+      if (response.statusCode == 200) {
+        var jsonResponse = jsonDecode(response.body)['data'];
+        jsonResponse.forEach((data) {
+          UserModel user = UserModel.fromJson(data);
+          userData.add(user);
+        });
+        yield userData;
+      }
+    } catch (e) {
+      developer.log('Error: $e', name: 'error follow user');
     }
   }
 }

@@ -55,44 +55,10 @@ class ListFollowers extends StatelessWidget {
                     return Padding(
                       padding: EdgeInsets.symmetric(
                           horizontal: AppMargin.defaultMargin, vertical: 5),
-                      child: SizedBox(
-                        width: 128,
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Image.asset('assets/user_profile.png', width: 60),
-                            const Gap(8),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      userData.name,
-                                      style: AppTextStyle.paragraphL.copyWith(
-                                        color: AppColors.blackColor,
-                                      ),
-                                    ),
-                                    const Gap(7),
-                                    const Verified(),
-                                  ],
-                                ),
-                                Text(
-                                  userData.bio,
-                                  style: AppTextStyle.paragraphL.copyWith(
-                                    color: AppColors.blackColor,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const Spacer(),
-                            FollowButton(
-                              idUser: userData.id,
-                            ),
-                          ],
-                        ),
-                      ),
+                      child: OtherUserProfileWidget(
+                          id: userData.id,
+                          username: userData.username,
+                          bio: userData.bio),
                     );
                   },
                 );

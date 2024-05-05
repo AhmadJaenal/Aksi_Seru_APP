@@ -191,3 +191,57 @@ class ProfileTile extends StatelessWidget {
     );
   }
 }
+
+class OtherUserProfileWidget extends StatelessWidget {
+  final int id;
+  final String username;
+  final String bio;
+  const OtherUserProfileWidget({
+    super.key,
+    required this.id,
+    required this.username,
+    required this.bio,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 128,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Image.asset('assets/user_profile.png', width: 60),
+          const Gap(8),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    username,
+                    style: AppTextStyle.paragraphL.copyWith(
+                      color: AppColors.blackColor,
+                    ),
+                  ),
+                  const Gap(7),
+                  const Verified(),
+                ],
+              ),
+              Text(
+                bio,
+                style: AppTextStyle.paragraphL.copyWith(
+                  color: AppColors.blackColor,
+                ),
+              ),
+            ],
+          ),
+          const Spacer(),
+          FollowButton(
+            idUser: id,
+          ),
+        ],
+      ),
+    );
+  }
+}
