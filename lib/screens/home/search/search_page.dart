@@ -5,6 +5,7 @@ import 'package:aksi_seru_app/widgets/card_article.dart';
 import 'package:aksi_seru_app/widgets/custom_textfield.dart';
 import 'package:aksi_seru_app/widgets/user_profile.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:gap/gap.dart';
 
 class SearchPage extends StatelessWidget {
@@ -20,6 +21,7 @@ class SearchPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: AppColors.whiteColor,
       body: CustomScrollView(
@@ -49,13 +51,44 @@ class SearchPage extends StatelessWidget {
                             color: AppColors.primary1, letterSpacing: -2),
                       ),
                       Gap(AppMargin.defaultMargin),
-                      CustomTextFieldIcon(
-                        textController: _searchC,
-                        hintText: 'Cari inspirasi di sini!',
-                        icon: const Icon(
-                          Icons.search,
-                          color: AppColors.greyColor,
-                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SizedBox(
+                            width: width * .7,
+                            child: CustomTextFieldIcon(
+                              textController: _searchC,
+                              hintText: 'Cari inspirasi di sini!',
+                              icon: const Icon(
+                                Icons.search,
+                                color: AppColors.greyColor,
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 50,
+                            child: IconButton(
+                              style: ButtonStyle(
+                                shape: MaterialStateProperty.all<
+                                    RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                ),
+                                backgroundColor: MaterialStatePropertyAll(
+                                    AppColors.primary1),
+                                padding: const MaterialStatePropertyAll(
+                                    EdgeInsets.all(12)),
+                              ),
+                              onPressed: () {},
+                              icon: Image.asset(
+                                'assets/icon_search.png',
+                                width: 24,
+                                color: AppColors.whiteColor,
+                              ),
+                            ),
+                          )
+                        ],
                       ),
                     ],
                   ),
