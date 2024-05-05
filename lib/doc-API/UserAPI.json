@@ -1092,6 +1092,21 @@
                         "in": "header"
                     }
                 ],
+                "requestBody" : {
+                    "description": "search by name or username",
+                    "content": {
+                        "application/json" : {
+                            "schema" : {
+                                "type": "object",
+                                "properties": {
+                                    "search" : {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200" : {
                         "description": "Search Results",
@@ -1124,6 +1139,25 @@
                                                         "type": "boolean"
                                                     }
                                                 }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400" : {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json" : {
+                                "examples": {
+                                    "validationerror" : {
+                                        "description": "Validation error",
+                                        "value" : {
+                                            "erros" : {
+                                                "message" : [
+                                                    "The search field is required"
+                                                ]
                                             }
                                         }
                                     }
