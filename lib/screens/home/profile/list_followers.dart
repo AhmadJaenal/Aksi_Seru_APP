@@ -6,8 +6,6 @@ import 'package:aksi_seru_app/widgets/user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
-import 'dart:developer' as developer;
-
 class ListFollowers extends StatelessWidget {
   const ListFollowers({super.key});
 
@@ -63,7 +61,14 @@ class ListFollowers extends StatelessWidget {
                   },
                 );
               } else {
-                return const Center(child: CircularProgressIndicator());
+                return Center(
+                  child: Text(
+                    'Tidak ada yang diikuti',
+                    style: AppTextStyle.paragraphL.copyWith(
+                      color: AppColors.blackColor,
+                    ),
+                  ),
+                );
               }
             } else {
               return const Center(child: CircularProgressIndicator());

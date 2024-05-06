@@ -29,7 +29,7 @@ class ListFollowing extends StatelessWidget {
                 const BackButtonCustom(),
                 const Gap(16),
                 Text(
-                  'List Following',
+                  'Diikuti',
                   style: AppTextStyle.appbarTitle.copyWith(
                     color: AppColors.primary1,
                   ),
@@ -93,7 +93,14 @@ class ListFollowing extends StatelessWidget {
                   },
                 );
               } else {
-                return const Center(child: CircularProgressIndicator());
+                return Center(
+                  child: Text(
+                    'Tidak ada yang diikuti',
+                    style: AppTextStyle.paragraphL.copyWith(
+                      color: AppColors.blackColor,
+                    ),
+                  ),
+                );
               }
             } else {
               return const Center(child: CircularProgressIndicator());
