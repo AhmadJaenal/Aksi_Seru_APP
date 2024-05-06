@@ -4,8 +4,12 @@ import 'dart:io';
 import 'package:aksi_seru_app/models/user_model.dart';
 import 'package:aksi_seru_app/utils/api.dart';
 import 'package:aksi_seru_app/widgets/custom_popup.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:http_parser/http_parser.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'dart:developer' as developer;
@@ -41,61 +45,47 @@ class UserData extends GetxController {
     }
   }
 
-  // static updateUserProfile({String? name, bio, File? image}) async {
-  //   try {
-  //     String fileName = image!.path.split('/').last;
-  //     developer.log(fileName, name: 'Filename photo');
+  static updateUserProfile({String? name, bio, image}) async {
+    String? token = await getToken();
+    var headers = {
+      'X-Authorization': '$token',
+    };
 
-  //     Directory appDir = await getApplicationDocumentsDirectory();
+    final uri =
+        Uri.parse(ApiEndPoints.baseUrl + UserEndPoints.updateUserProfile);
 
-  //     String profileDirectoryPath = '${appDir.path}/assets';
+    var body = {
+      'name': name,
+      'bio': bio,
+      'avatar': image,
+    };
 
-  //     Directory profileDir = Directory(profileDirectoryPath);
-  //     if (!profileDir.existsSync()) {
-  //       profileDir.createSync(recursive: true);
-  //     }
-
-  //     String destinationPath = '$profileDirectoryPath/$fileName';
-
-  //     await image.rename(destinationPath);
-
-  //     developer.log('File copied to: $destinationPath', name: 'Filename Photo');
-  //   } catch (e) {
-  //     developer.log('Error copying image: $e', name: 'Copy Image Error');
-  //   }
-
-  // Upload image to server
-  // String? token = await getToken();
-  // var headers = {
-  //   'X-Authorization': '$token',
-  // };
-  // final uri =
-  //     Uri.parse(ApiEndPoints.baseUrl + UserEndPoints.updateUserProfile);
-  // String fileName = image!.path.split('/').last;
-
-  // try {
-  //   var formData = dio.FormData.fromMap({
-  //     'name': name,
-  //     'bio': bio,
-  //     'avatar': await dio.MultipartFile.fromFile(
-  //       image.path,
-  //       filename: fileName,
-  //     ),
-  //   });
-
-  //   final response = await Dio()
-  //       .put(ApiEndPoints.baseUrl + UserEndPoints.updateUserProfile,
-  //           data: formData,
-  //           options: Options(
-  //             headers: headers,
-  //           ));
-
-  //   developer.log(response.statusCode.toString(),
-  //       name: 'Response status code upload image');
-  // } catch (e) {
-  //   developer.log(e.toString(), name: 'error copy image');
-  // }
-  // }
+    try {
+      final response = await http.post(uri, headers: headers, body: body);
+      if (response.statusCode == 200) {
+        CustomPopUp(
+          icon: Icons.check_circle_outline_rounded,
+          message: 'Berhasil Perbaharui Profile',
+          onTap: () {
+            Get.offNamed('/verified-profile');
+          },
+          titleButton: 'Halaman Profile',
+        );
+      } else if (response.statusCode == 400) {
+        CustomPopUp(
+          icon: Icons.cancel_outlined,
+          isSuccess: false,
+          message: 'Profile Tidak Diperbaharui',
+          onTap: () {
+            Get.offNamed('/verified-profile');
+          },
+          titleButton: 'Halaman Profile',
+        );
+      }
+    } catch (e) {
+      developer.log(e.toString(), name: 'error copy image');
+    }
+  }
 
   static Future<List<UserModel>?> getRandomUser() async {
     String? token = await getToken();
