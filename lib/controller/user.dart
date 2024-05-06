@@ -4,14 +4,12 @@ import 'dart:io';
 import 'package:aksi_seru_app/models/user_model.dart';
 import 'package:aksi_seru_app/utils/api.dart';
 import 'package:aksi_seru_app/widgets/custom_popup.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'dart:developer' as developer;
 import 'package:dio/dio.dart' as dio;
-import 'package:path_provider/path_provider.dart';
 
 class UserData extends GetxController {
   static Future<String?> getToken() async {
@@ -22,7 +20,6 @@ class UserData extends GetxController {
 
   Future<UserModel?> getCurrentUser() async {
     String? token = await getToken();
-    // developer.log(token.toString(), name: 'token user profile');
     final uri = Uri.parse(ApiEndPoints.baseUrl + UserEndPoints.currentUser);
     var headers = {
       'X-Authorization': '$token',

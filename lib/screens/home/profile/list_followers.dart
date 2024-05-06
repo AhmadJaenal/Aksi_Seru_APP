@@ -30,7 +30,7 @@ class ListFollowers extends StatelessWidget {
                 const BackButtonCustom(),
                 const Gap(16),
                 Text(
-                  'Followers',
+                  'Pengikut',
                   style: AppTextStyle.appbarTitle.copyWith(
                     color: AppColors.primary1,
                   ),
