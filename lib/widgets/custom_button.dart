@@ -1,3 +1,4 @@
+import 'package:aksi_seru_app/controller/user.dart';
 import 'package:aksi_seru_app/shared/style.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -117,12 +118,15 @@ class DangerMiniButton extends StatelessWidget {
 }
 
 class FollowButton extends StatelessWidget {
-  const FollowButton({super.key});
+  final int idUser;
+  const FollowButton({super.key, required this.idUser});
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton.icon(
-      onPressed: () {},
+      onPressed: () {
+        UserData.followUser(idUser: idUser.toString());
+      },
       icon: Icon(Icons.add, color: AppColors.whiteColor),
       style: ElevatedButton.styleFrom(
         maximumSize: const Size(97, 40),

@@ -191,10 +191,10 @@ class DetailArticle extends StatelessWidget {
               // NOTE :: END CODE TITLE ARTICLE
 
               // NOTE :: START CODE PROFILE TILE
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [ProfileTile(), FollowButton()],
-              ),
+              // const Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //   children: [ProfileTile(), FollowButton()],
+              // ),
               // NOTE :: END CODE PROFILE TILE
               const Gap(16),
               // NOTE :: START CODE ARTICLE

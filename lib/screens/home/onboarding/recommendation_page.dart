@@ -97,6 +97,7 @@ class RecommendationPage extends StatelessWidget {
                               child: UserProfile(
                                 username: userData.username,
                                 avatar: userData.avatar,
+                                idUser: userData.id,
                               ),
                             );
                           },

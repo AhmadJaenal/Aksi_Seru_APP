@@ -7,7 +7,13 @@ import 'package:get/get.dart';
 class UserProfile extends StatelessWidget {
   final String username;
   final String avatar;
-  const UserProfile({super.key, required this.username, required this.avatar});
+  final int idUser;
+  const UserProfile({
+    super.key,
+    required this.username,
+    required this.avatar,
+    required this.idUser,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -16,9 +22,7 @@ class UserProfile extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          avatar != ''
-              ? Image.asset(avatar, width: 80)
-              : Image.asset('assets/user_profile.png', width: 80),
+          Image.asset('assets/user_profile.png', width: 80),
           const Gap(8),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -34,7 +38,9 @@ class UserProfile extends StatelessWidget {
             ],
           ),
           const Gap(8),
-          const FollowButton(),
+          FollowButton(
+            idUser: idUser,
+          ),
         ],
       ),
     );
@@ -182,6 +188,60 @@ class ProfileTile extends StatelessWidget {
           child: Verified(),
         ),
       ],
+    );
+  }
+}
+
+class OtherUserProfileWidget extends StatelessWidget {
+  final int id;
+  final String username;
+  final String bio;
+  const OtherUserProfileWidget({
+    super.key,
+    required this.id,
+    required this.username,
+    required this.bio,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 128,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Image.asset('assets/user_profile.png', width: 60),
+          const Gap(8),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    username,
+                    style: AppTextStyle.paragraphL.copyWith(
+                      color: AppColors.blackColor,
+                    ),
+                  ),
+                  const Gap(7),
+                  const Verified(),
+                ],
+              ),
+              Text(
+                bio,
+                style: AppTextStyle.paragraphL.copyWith(
+                  color: AppColors.blackColor,
+                ),
+              ),
+            ],
+          ),
+          const Spacer(),
+          FollowButton(
+            idUser: id,
+          ),
+        ],
+      ),
     );
   }
 }
