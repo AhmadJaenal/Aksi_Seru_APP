@@ -1,10 +1,11 @@
+import 'package:aksi_seru_app/controller/user.dart';
 import 'package:aksi_seru_app/shared/style.dart';
 import 'package:aksi_seru_app/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
-class UserProfile extends StatelessWidget {
+class UserProfile extends StatefulWidget {
   final String username;
   final String avatar;
   final int idUser;
@@ -15,6 +16,11 @@ class UserProfile extends StatelessWidget {
     required this.idUser,
   });
 
+  @override
+  State<UserProfile> createState() => _UserProfileState();
+}
+
+class _UserProfileState extends State<UserProfile> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -28,7 +34,7 @@ class UserProfile extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                username,
+                widget.username,
                 style: AppTextStyle.paragraphL.copyWith(
                   color: AppColors.blackColor,
                 ),
@@ -39,7 +45,11 @@ class UserProfile extends StatelessWidget {
           ),
           const Gap(8),
           FollowButton(
-            idUser: idUser,
+            onTap: () {
+              setState(() {
+                UserData.followUser(idUser: widget.idUser.toString());
+              });
+            },
           ),
         ],
       ),
@@ -192,7 +202,7 @@ class ProfileTile extends StatelessWidget {
   }
 }
 
-class OtherUserProfileWidget extends StatelessWidget {
+class OtherUserProfileWidget extends StatefulWidget {
   final int id;
   final String username;
   final String bio;
@@ -203,6 +213,11 @@ class OtherUserProfileWidget extends StatelessWidget {
     required this.bio,
   });
 
+  @override
+  State<OtherUserProfileWidget> createState() => _OtherUserProfileWidgetState();
+}
+
+class _OtherUserProfileWidgetState extends State<OtherUserProfileWidget> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -219,7 +234,7 @@ class OtherUserProfileWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    username,
+                    widget.username,
                     style: AppTextStyle.paragraphL.copyWith(
                       color: AppColors.blackColor,
                     ),
@@ -229,7 +244,7 @@ class OtherUserProfileWidget extends StatelessWidget {
                 ],
               ),
               Text(
-                bio,
+                widget.bio,
                 style: AppTextStyle.paragraphL.copyWith(
                   color: AppColors.blackColor,
                 ),
@@ -238,7 +253,11 @@ class OtherUserProfileWidget extends StatelessWidget {
           ),
           const Spacer(),
           FollowButton(
-            idUser: id,
+            onTap: () {
+              setState(() {
+                UserData.followUser(idUser: widget.id.toString());
+              });
+            },
           ),
         ],
       ),

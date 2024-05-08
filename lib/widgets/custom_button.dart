@@ -117,16 +117,19 @@ class DangerMiniButton extends StatelessWidget {
   }
 }
 
-class FollowButton extends StatelessWidget {
-  final int idUser;
-  const FollowButton({super.key, required this.idUser});
+class FollowButton extends StatefulWidget {
+  final Function() onTap;
+  const FollowButton({super.key, required this.onTap});
 
+  @override
+  State<FollowButton> createState() => _FollowButtonState();
+}
+
+class _FollowButtonState extends State<FollowButton> {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton.icon(
-      onPressed: () {
-        UserData.followUser(idUser: idUser.toString());
-      },
+      onPressed: widget.onTap,
       icon: Icon(Icons.add, color: AppColors.whiteColor),
       style: ElevatedButton.styleFrom(
         maximumSize: const Size(97, 40),
@@ -139,6 +142,39 @@ class FollowButton extends StatelessWidget {
       ),
       label: Text(
         'Ikuti',
+        style: AppTextStyle.paragraphL.copyWith(
+          color: AppColors.whiteColor,
+        ),
+      ),
+    );
+  }
+}
+
+class UnFollowButton extends StatefulWidget {
+  final Function() onTap;
+  const UnFollowButton({super.key, required this.onTap});
+
+  @override
+  State<UnFollowButton> createState() => _UnFollowButtonState();
+}
+
+class _UnFollowButtonState extends State<UnFollowButton> {
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton.icon(
+      onPressed: widget.onTap,
+      icon: Icon(Icons.remove, color: AppColors.whiteColor),
+      style: ElevatedButton.styleFrom(
+        maximumSize: const Size(110, 40),
+        elevation: 0,
+        backgroundColor: AppColors.primary1,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      ),
+      label: Text(
+        'Hapus',
         style: AppTextStyle.paragraphL.copyWith(
           color: AppColors.whiteColor,
         ),
@@ -178,9 +214,14 @@ class CustomIconButton extends StatelessWidget {
   }
 }
 
-class BackButtonCustom extends StatelessWidget {
+class BackButtonCustom extends StatefulWidget {
   const BackButtonCustom({super.key});
 
+  @override
+  State<BackButtonCustom> createState() => _BackButtonCustomState();
+}
+
+class _BackButtonCustomState extends State<BackButtonCustom> {
   @override
   Widget build(BuildContext context) {
     return IconButton(
@@ -193,7 +234,9 @@ class BackButtonCustom extends StatelessWidget {
         backgroundColor: MaterialStatePropertyAll(AppColors.primary1),
         padding: const MaterialStatePropertyAll(EdgeInsets.all(12)),
       ),
-      onPressed: () => Get.back(),
+      onPressed: () {
+        Get.back();
+      },
       icon: Icon(
         Icons.arrow_back_rounded,
         color: AppColors.whiteColor,

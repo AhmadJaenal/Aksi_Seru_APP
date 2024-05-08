@@ -54,9 +54,10 @@ class ListFollowers extends StatelessWidget {
                       padding: EdgeInsets.symmetric(
                           horizontal: AppMargin.defaultMargin, vertical: 5),
                       child: OtherUserProfileWidget(
-                          id: userData.id,
-                          username: userData.username,
-                          bio: userData.bio),
+                        id: userData.id,
+                        username: userData.username,
+                        bio: userData.bio,
+                      ),
                     );
                   },
                 );

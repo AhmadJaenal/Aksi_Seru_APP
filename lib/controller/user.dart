@@ -1,19 +1,13 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:aksi_seru_app/models/user_model.dart';
 import 'package:aksi_seru_app/utils/api.dart';
 import 'package:aksi_seru_app/widgets/custom_popup.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:http_parser/http_parser.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'dart:developer' as developer;
-import 'package:dio/dio.dart' as dio;
 
 class UserData extends GetxController {
   static Future<String?> getToken() async {
@@ -60,6 +54,7 @@ class UserData extends GetxController {
       'avatar': image,
     };
 
+    developer.log(image, name: 'nilai dari image');
     try {
       final response = await http.post(uri, headers: headers, body: body);
       if (response.statusCode == 200) {
@@ -72,6 +67,8 @@ class UserData extends GetxController {
           titleButton: 'Halaman Profile',
         );
       } else if (response.statusCode == 400) {
+        developer.log(response.statusCode.toString(),
+            name: 'response code update profile');
         CustomPopUp(
           icon: Icons.cancel_outlined,
           isSuccess: false,
@@ -180,7 +177,7 @@ class UserData extends GetxController {
     }
   }
 
-  static Future<void> listFollowing() async {
+  static Stream<List<UserModel>?> listFollowing() async* {
     String? token = await getToken();
     final uri = Uri.parse(ApiEndPoints.baseUrl + UserEndPoints.listFollowing);
 
@@ -191,7 +188,14 @@ class UserData extends GetxController {
     try {
       final response = await http.get(uri, headers: headers);
       if (response.statusCode == 200) {
-        developer.log(response.body, name: 'Response List User');
+        var jsonResponse = jsonDecode(response.body)['data'];
+
+        List<UserModel> userData = [];
+        jsonResponse.forEach((data) {
+          UserModel user = UserModel.fromJson(data);
+          userData.add(user);
+        });
+        yield userData;
       } else {
         CustomPopUp(
           icon: Icons.cancel_outlined,

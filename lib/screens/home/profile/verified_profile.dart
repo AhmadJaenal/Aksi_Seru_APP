@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:aksi_seru_app/controller/user.dart';
 import 'package:aksi_seru_app/models/user_model.dart';
 import 'package:aksi_seru_app/screens/home/profile/list_article.dart';
@@ -5,9 +8,7 @@ import 'package:aksi_seru_app/screens/home/profile/list_post.dart';
 import 'package:aksi_seru_app/shared/style.dart';
 import 'package:aksi_seru_app/widgets/custom_button.dart';
 import 'package:aksi_seru_app/widgets/user_profile.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
@@ -20,6 +21,7 @@ class VerifiedProfile extends StatefulWidget {
   State<VerifiedProfile> createState() => _VerifiedProfileState();
 }
 
+@override
 bool showRecommendUser = true;
 
 class _VerifiedProfileState extends State<VerifiedProfile> {
@@ -64,6 +66,7 @@ class _VerifiedProfileState extends State<VerifiedProfile> {
   );
 
   final UserData userData = UserData();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,6 +78,8 @@ class _VerifiedProfileState extends State<VerifiedProfile> {
             return const Center(child: CircularProgressIndicator());
           } else {
             UserModel user = snapshot.data!;
+            Uint8List image = base64Decode(user.avatar);
+
             return DefaultTabController(
               length: 2,
               initialIndex: 1,
@@ -117,9 +122,7 @@ class _VerifiedProfileState extends State<VerifiedProfile> {
                                   ClipRRect(
                                     borderRadius: const BorderRadius.all(
                                         Radius.circular(100)),
-                                    child: Image.asset(
-                                        'assets/user_profile.png',
-                                        width: 80),
+                                    child: Image.memory(image),
                                   ),
                                   const Gap(12),
                                   Row(
