@@ -1,0 +1,993 @@
+{
+    "openapi" : "3.0.3",
+    "info": {
+        "title": "Post API",
+        "description": "Post API",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "https://apitubesmppl.000webhostapp.com/"
+        }
+    ],
+    "paths": {
+        "/api/post/create.php" : {
+            "post" : {
+                "tags": ["Success"],
+                "description": "Create new post",
+                "requestBody" : {
+                    "content": {
+                        "multipart/form-data" : {
+                            "schema" : {
+                                "type": "object",
+                                "required": [
+                                    "image","caption"
+                                ],
+                                "properties": {
+                                    "image" : {
+                                        "type": "string",
+                                        "format": "binary",
+                                        "description": "Upload Image"
+                                    },
+                                    "caption" : {
+                                        "type": "string"
+                                    }     
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200" : {
+                        "description": "Succes create post",
+                        "content": {
+                            "application/json" : {
+                                "schema" : {
+                                    "type": "object",
+                                    "properties": {
+                                        "data" : {
+                                            "type": "object",
+                                            "properties": {
+                                                "id" : {
+                                                    "type": "number"
+                                                },
+                                                "user_id" : {
+                                                    "type": "number"
+                                                },
+                                                "caption" : {
+                                                    "type": "string"
+                                                },
+                                                "countlike" : {
+                                                    "type": "number"
+                                                },
+                                                "countcomment" : {
+                                                    "type": "number"
+                                                },
+                                                "urlimage" : {
+                                                    "type": "string"
+                                                },
+                                                "created_at" : {
+                                                    "type": "string"
+                                                }
+                                                ,
+                                                "updated_at" : {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400" : {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json" : {
+                                "examples": {
+                                    "validationerror" : {
+                                        "description": "Validation error",
+                                        "value" : {
+                                            "erros" : {
+                                                "image" : [
+                                                    "The image photo field is required"
+                                                ],
+                                                "caption" : [
+                                                    "The caption field is required"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401" : {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json" : {
+                                "examples": {
+                                    "validationerror" : {
+                                        "description": "Unauthorized",
+                                        "value" : {
+                                            "erros" : {
+                                                "message" : [
+                                                    "unauthorized"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "405" : {
+                        "description": "Method Not Allowed",
+                        "content": {
+                            "application/json" : {
+                                "examples": {
+                                    "validationerror" : {
+                                        "description": "Method Not Allowed",
+                                        "value" : {
+                                            "erros" : {
+                                                "message" : [
+                                                    "Method Not Allowed"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/post/update.php" : {
+            "post" : {
+                "tags": ["Success"],
+                "description": "Update post",
+                "requestBody" : {
+                    "content": {
+                        "multipart/form-data" : {
+                            "schema" : {
+                                "type": "object",
+                                "required": [
+                                    "id", "image","caption"
+                                ],
+                                "properties": {
+                                    "id" : {
+                                        "type": "number"
+                                    },
+                                    "image" : {
+                                        "type": "string",
+                                        "format": "binary",
+                                        "description": "Upload Image"
+                                    },
+                                    "caption" : {
+                                        "type": "string"
+                                    }     
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200" : {
+                        "description": "Succes update post",
+                        "content": {
+                            "application/json" : {
+                                "schema" : {
+                                    "type": "object",
+                                    "properties": {
+                                        "data" : {
+                                            "type": "object",
+                                            "properties": {
+                                                "id" : {
+                                                    "type": "number"
+                                                },
+                                                "user_id" : {
+                                                    "type": "number"
+                                                },
+                                                "caption" : {
+                                                    "type": "string"
+                                                },
+                                                "countlike" : {
+                                                    "type": "number"
+                                                },
+                                                "countcomment" : {
+                                                    "type": "number"
+                                                },
+                                                "urlimage" : {
+                                                    "type": "string"
+                                                },
+                                                "created_at" : {
+                                                    "type": "string"
+                                                }
+                                                ,
+                                                "updated_at" : {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400" : {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json" : {
+                                "examples": {
+                                    "validationerror" : {
+                                        "description": "Validation error",
+                                        "value" : {
+                                            "erros" : {
+                                                "id" : [
+                                                    "The id field is required"
+                                                ],
+                                                "message" : [
+                                                    "Use caption and image photo fields to create your post"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401" : {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json" : {
+                                "examples": {
+                                    "validationerror" : {
+                                        "description": "Unauthorized",
+                                        "value" : {
+                                            "erros" : {
+                                                "message" : [
+                                                    "unauthorized"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "405" : {
+                        "description": "Method Not Allowed",
+                        "content": {
+                            "application/json" : {
+                                "examples": {
+                                    "validationerror" : {
+                                        "description": "Method Not Allowed",
+                                        "value" : {
+                                            "erros" : {
+                                                "message" : [
+                                                    "Method Not Allowed"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/post/current.php" : {
+            "get" : {
+                "tags": ["Success"],
+                "description": "Get all posts created by a user",
+                "parameters": [
+                    {
+                        "name" : "Authorization",
+                        "in": "header"
+                    }
+                ],
+                "responses": {
+                    "200" : {
+                        "description": "Get all posts created by a user",
+                        "content": {
+                            "application/json" : {
+                                "schema" : {
+                                    "type": "object",
+                                    "properties": {
+                                        "post" : {
+                                            "type": "object",
+                                            "properties": {
+                                                "id" : {
+                                                    "type": "number"
+                                                },
+                                                "user_id" : {
+                                                    "type": "number"
+                                                },
+                                                "caption" : {
+                                                    "type": "string"
+                                                },
+                                                "countlike" : {
+                                                    "type": "number"
+                                                },
+                                                "countcomment" : {
+                                                    "type": "number"
+                                                },
+                                                "urlimage" : {
+                                                    "type": "string"
+                                                },
+                                                "created_at" : {
+                                                    "type": "string"
+                                                }
+                                                ,
+                                                "updated_at" : {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        },
+                                        "like" : {
+                                            "type": "object",
+                                            "properties": {
+                                                "id" : {
+                                                    "type": "number"
+                                                },
+                                                "user_id" : {
+                                                    "type": "number"
+                                                },
+                                                "caption" : {
+                                                    "type": "string"
+                                                },
+                                                "countlike" : {
+                                                    "type": "number"
+                                                },
+                                                "countcomment" : {
+                                                    "type": "number"
+                                                },
+                                                "urlimage" : {
+                                                    "type": "string"
+                                                },
+                                                "created_at" : {
+                                                    "type": "string"
+                                                }
+                                                ,
+                                                "updated_at" : {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        },"comment" : {
+                                            "type": "object",
+                                            "properties": {
+                                                "id" : {
+                                                    "type": "number"
+                                                },
+                                                "user_id" : {
+                                                    "type": "number"
+                                                },
+                                                "caption" : {
+                                                    "type": "string"
+                                                },
+                                                "countlike" : {
+                                                    "type": "number"
+                                                },
+                                                "countcomment" : {
+                                                    "type": "number"
+                                                },
+                                                "urlimage" : {
+                                                    "type": "string"
+                                                },
+                                                "created_at" : {
+                                                    "type": "string"
+                                                }
+                                                ,
+                                                "updated_at" : {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401" : {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json" : {
+                                "examples": {
+                                    "validationerror" : {
+                                        "description": "Unauthorized",
+                                        "value" : {
+                                            "erros" : {
+                                                "message" : [
+                                                    "unauthorized"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "405" : {
+                        "description": "Method Not Allowed",
+                        "content": {
+                            "application/json" : {
+                                "examples": {
+                                    "validationerror" : {
+                                        "description": "Method Not Allowed",
+                                        "value" : {
+                                            "erros" : {
+                                                "message" : [
+                                                    "Method Not Allowed"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/post/delete.php" : {
+            "delete" : {
+                "tags": ["Success"],
+                "description": "Delete post",
+                "parameters": [
+                    {
+                        "name" : "Authorization",
+                        "in": "header"
+                    }
+                ],
+                "requestBody" : {
+                    "content": {
+                        "application/json" : {
+                            "schema" : {
+                                "type": "object",
+                                "required": [
+                                    "id"
+                                ],
+                                "properties": {
+                                    "id" : {
+                                        "type": "number"
+                                    }     
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200" : {
+                        "description": "Succes delete post",
+                        "content": {
+                            "application/json" : {
+                                "schema" : {
+                                    "type": "object",
+                                    "properties": {
+                                        "data" : {
+                                            "type": "object",
+                                            "properties": {
+                                                "id" : {
+                                                    "type": "number"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400" : {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json" : {
+                                "examples": {
+                                    "validationerror" : {
+                                        "description": "Validation error",
+                                        "value" : {
+                                            "erros" : {
+                                                "id" : [
+                                                    "The id field is required"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401" : {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json" : {
+                                "examples": {
+                                    "validationerror" : {
+                                        "description": "Unauthorized",
+                                        "value" : {
+                                            "erros" : {
+                                                "message" : [
+                                                    "unauthorized"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "405" : {
+                        "description": "Method Not Allowed",
+                        "content": {
+                            "application/json" : {
+                                "examples": {
+                                    "validationerror" : {
+                                        "description": "Method Not Allowed",
+                                        "value" : {
+                                            "erros" : {
+                                                "message" : [
+                                                    "Method Not Allowed"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+
+
+        "/api/post/comment.php" : {
+            "post" : {
+                "tags": ["Success"],
+                "description": "Comment for a single post",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header"
+                    }
+                ],
+                "requestBody" : {
+                    "content": {
+                        "application/json" : {
+                            "schema" : {
+                                "type": "object",
+                                "required": [
+                                    "id"
+                                ],
+                                "properties": {
+                                    "id" : {
+                                        "type": "number"
+                                    }     
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200" : {
+                        "description": "Comment for a single post",
+                        "content": {
+                            "application/json" : {
+                                "schema" : {
+                                    "type": "object",
+                                    "properties": {
+                                        "data" : {
+                                            "type": "array",
+                                            "items" : {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id" : {
+                                                        "type": "number"
+                                                    },
+                                                    "username" : {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400" : {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json" : {
+                                "examples": {
+                                    "validationerror" : {
+                                        "description": "Validation error",
+                                        "value" : {
+                                            "erros" : {
+                                                "message" : [
+                                                    "The id and comment field is required"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401" : {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json" : {
+                                "examples": {
+                                    "validationerror" : {
+                                        "description": "Unauthorized",
+                                        "value" : {
+                                            "erros" : {
+                                                "message" : [
+                                                    "unauthorized"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "405" : {
+                        "description": "Method Not Allowed",
+                        "content": {
+                            "application/json" : {
+                                "examples": {
+                                    "validationerror" : {
+                                        "description": "Method Not Allowed",
+                                        "value" : {
+                                            "erros" : {
+                                                "message" : [
+                                                    "Method Not Allowed"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/post/delete-comment.php" : {
+            "delete" : {
+                "tags": ["Success"],
+                "description": "Delete Comment",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header"
+                    }
+                ],
+                "requestBody" : {
+                    "content": {
+                        "application/json" : {
+                            "schema" : {
+                                "type": "object",
+                                "required": [
+                                    "idcomment"
+                                ],
+                                "properties": {
+                                    "idcomment" : {
+                                        "type": "number"
+                                    }     
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200" : {
+                        "description": "Delete Comment",
+                        "content": {
+                            "application/json" : {
+                                "schema" : {
+                                    "type": "object",
+                                    "properties": {
+                                        "data" : {
+                                            "type": "array",
+                                            "items" : {
+                                                "type": "object",
+                                                "properties": {
+                                                    "idcomment" : {
+                                                        "type": "number"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400" : {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json" : {
+                                "examples": {
+                                    "validationerror" : {
+                                        "description": "Validation error",
+                                        "value" : {
+                                            "erros" : {
+                                                "message" : [
+                                                    "The idcomment field is required"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401" : {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json" : {
+                                "examples": {
+                                    "validationerror" : {
+                                        "description": "Unauthorized",
+                                        "value" : {
+                                            "erros" : {
+                                                "message" : [
+                                                    "unauthorized"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "405" : {
+                        "description": "Method Not Allowed",
+                        "content": {
+                            "application/json" : {
+                                "examples": {
+                                    "validationerror" : {
+                                        "description": "Method Not Allowed",
+                                        "value" : {
+                                            "erros" : {
+                                                "message" : [
+                                                    "Method Not Allowed"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    
+                }
+            }
+        },
+        "/api/post/like.php" : {
+            "post" : {
+                "tags": ["Success"],
+                "description": "Like post",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header"
+                    }
+                ],
+                "requestBody" : {
+                    "content": {
+                        "application/json" : {
+                            "schema" : {
+                                "type": "object",
+                                "required": [
+                                    "id"
+                                ],
+                                "properties": {
+                                    "id" : {
+                                        "type": "number"
+                                    }     
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200" : {
+                        "description": "Like post",
+                        "content": {
+                            "application/json" : {
+                                "schema" : {
+                                    "type": "object",
+                                    "properties": {
+                                        "data" : {
+                                            "type": "array",
+                                            "items" : {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id" : {
+                                                        "type": "number"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400" : {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json" : {
+                                "examples": {
+                                    "validationerror" : {
+                                        "description": "Validation error",
+                                        "value" : {
+                                            "erros" : {
+                                                "message" : [
+                                                    "The id field is required"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401" : {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json" : {
+                                "examples": {
+                                    "validationerror" : {
+                                        "description": "Unauthorized",
+                                        "value" : {
+                                            "erros" : {
+                                                "message" : [
+                                                    "unauthorized"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "405" : {
+                        "description": "Method Not Allowed",
+                        "content": {
+                            "application/json" : {
+                                "examples": {
+                                    "validationerror" : {
+                                        "description": "Method Not Allowed",
+                                        "value" : {
+                                            "erros" : {
+                                                "message" : [
+                                                    "Method Not Allowed"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/post/delete-like.php" : {
+            "delete" : {
+                "tags": ["Success"],
+                "description": "Delete like post",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header"
+                    }
+                ],
+                "requestBody" : {
+                    "content": {
+                        "application/json" : {
+                            "schema" : {
+                                "type": "object",
+                                "required": [
+                                    "idlike"
+                                ],
+                                "properties": {
+                                    "idlike" : {
+                                        "type": "number"
+                                    }     
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200" : {
+                        "description": "Delete Like post",
+                        "content": {
+                            "application/json" : {
+                                "schema" : {
+                                    "type": "object",
+                                    "properties": {
+                                        "data" : {
+                                            "type": "array",
+                                            "items" : {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id" : {
+                                                        "type": "number"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400" : {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json" : {
+                                "examples": {
+                                    "validationerror" : {
+                                        "description": "Validation error",
+                                        "value" : {
+                                            "erros" : {
+                                                "message" : [
+                                                    "The idlike field is required"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401" : {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json" : {
+                                "examples": {
+                                    "validationerror" : {
+                                        "description": "Unauthorized",
+                                        "value" : {
+                                            "erros" : {
+                                                "message" : [
+                                                    "unauthorized"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "405" : {
+                        "description": "Method Not Allowed",
+                        "content": {
+                            "application/json" : {
+                                "examples": {
+                                    "validationerror" : {
+                                        "description": "Method Not Allowed",
+                                        "value" : {
+                                            "erros" : {
+                                                "message" : [
+                                                    "Method Not Allowed"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
