@@ -31,6 +31,7 @@ import 'package:aksi_seru_app/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:developer' as developer;
 
 void main() {
   runApp(const MyApp());
@@ -60,11 +61,29 @@ class _MyAppState extends State<MyApp> {
     }
   }
 
+  String email = '';
+
+  Future<void> getValidationData() async {
+    final SharedPreferences sharedPreferences =
+        await SharedPreferences.getInstance();
+    var obtainEmail = sharedPreferences.getString('email');
+    setState(() {
+      email = obtainEmail!;
+      developer.log(obtainEmail, name: 'obtainemail');
+    });
+  }
+
+  @override
+  void initState() {
+    getValidationData();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const SplashScreen(),
+      home: email != '' ? CustomNavBottom() : SplashScreen(),
       getPages: [
         GetPage(
           name: '/splash-screen',
@@ -124,7 +143,7 @@ class _MyAppState extends State<MyApp> {
         ),
         GetPage(
           name: '/search-page',
-          page: () => CheckConnection(page: SearchPage()),
+          page: () => const CheckConnection(page: SearchPage()),
         ),
         GetPage(
           name: '/article-page',
