@@ -14,9 +14,14 @@ class UserEndPoints {
   static String randomUser = 'API_Aksi_Seru/api/users/random-users.php';
   static String followUser = 'API_Aksi_Seru/api/users/follow.php';
   static String unFollowUser = 'API_Aksi_Seru/api/users/unfollow.php';
+  static String deleteFollowers = 'API_Aksi_Seru/api/users/delete-follower.php';
   static String listFollowing = 'API_Aksi_Seru/api/users/list-following.php';
   static String listFollowers = 'API_Aksi_Seru/api/users/list-followers.php';
   static String searchUser = 'API_Aksi_Seru/api/users/search.php';
+}
+
+class Story {
+  static String createStory = 'API_Aksi_Seru/api/story/create.php';
 }
 
 // class ApiEndPoints {

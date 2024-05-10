@@ -39,7 +39,7 @@ class UserData extends GetxController {
     }
   }
 
-  static updateUserProfile({String? name, bio, image}) async {
+  static updateUserProfile({required String name, bio, image}) async {
     String? token = await getToken();
     var headers = {
       'X-Authorization': '$token',
@@ -48,26 +48,26 @@ class UserData extends GetxController {
     final uri =
         Uri.parse(ApiEndPoints.baseUrl + UserEndPoints.updateUserProfile);
 
-    var body = {
+    var data = jsonEncode({
       'name': name,
       'bio': bio,
       'avatar': image,
-    };
+    });
 
-    developer.log(image, name: 'nilai dari image');
     try {
-      final response = await http.post(uri, headers: headers, body: body);
+      final response = await http.post(uri, headers: headers, body: data);
       if (response.statusCode == 200) {
+        developer.log(response.statusCode.toString(), name: 'test');
         CustomPopUp(
           icon: Icons.check_circle_outline_rounded,
           message: 'Berhasil Perbaharui Profile',
           onTap: () {
-            Get.offNamed('/verified-profile');
+            Get.offNamed('/nav-bar');
           },
           titleButton: 'Halaman Profile',
         );
       } else if (response.statusCode == 400) {
-        developer.log(response.statusCode.toString(),
+        developer.log(response.body.toString(),
             name: 'response code update profile');
         CustomPopUp(
           icon: Icons.cancel_outlined,
@@ -79,6 +79,8 @@ class UserData extends GetxController {
           titleButton: 'Halaman Profile',
         );
       }
+      developer.log(response.body.toString(),
+          name: 'response code update profile');
     } catch (e) {
       developer.log(e.toString(), name: 'error copy image');
     }
@@ -177,6 +179,36 @@ class UserData extends GetxController {
     }
   }
 
+  static Future<void> deleteFollowers({String? idUser}) async {
+    String? token = await getToken();
+    final uri = Uri.parse(ApiEndPoints.baseUrl + UserEndPoints.deleteFollowers);
+    var headers = {
+      'X-Authorization': '$token',
+      'Content-Type': 'application/json'
+    };
+    var body = jsonEncode({
+      'iduser': idUser,
+    });
+    try {
+      final response = await http.delete(uri, headers: headers, body: body);
+      if (response.statusCode == 200) {
+        developer.log(response.body, name: 'Response Follow User');
+      } else {
+        CustomPopUp(
+          icon: Icons.cancel_outlined,
+          message: 'Terjadi kesalahan diserver',
+          isSuccess: false,
+          onTap: () {
+            Get.back();
+          },
+          titleButton: 'Kembali',
+        );
+      }
+    } catch (e) {
+      developer.log('Error: $e', name: 'error follow user');
+    }
+  }
+
   static Stream<List<UserModel>?> listFollowing() async* {
     String? token = await getToken();
     final uri = Uri.parse(ApiEndPoints.baseUrl + UserEndPoints.listFollowing);
@@ -212,7 +244,7 @@ class UserData extends GetxController {
     }
   }
 
-  static Future<List<UserModel>?> listFollowers() async {
+  static Stream<List<UserModel>?> listFollowers() async* {
     String? token = await getToken();
     final uri = Uri.parse(ApiEndPoints.baseUrl + UserEndPoints.listFollowers);
 
@@ -220,8 +252,8 @@ class UserData extends GetxController {
       'X-Authorization': '$token',
       'Content-Type': 'application/json'
     };
-    final response = await http.get(uri, headers: headers);
     try {
+      final response = await http.get(uri, headers: headers);
       if (response.statusCode == 200) {
         var jsonResponse = jsonDecode(response.body)['data'];
 
@@ -230,7 +262,7 @@ class UserData extends GetxController {
           UserModel user = UserModel.fromJson(data);
           userData.add(user);
         });
-        return userData;
+        yield userData;
       } else {
         CustomPopUp(
           icon: Icons.cancel_outlined,
@@ -241,11 +273,9 @@ class UserData extends GetxController {
           },
           titleButton: 'Kembali',
         );
-        return null;
       }
     } catch (e) {
       developer.log('Error: $e', name: 'error follow user');
-      return null;
     }
   }
 

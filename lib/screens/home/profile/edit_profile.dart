@@ -8,7 +8,6 @@ import 'package:aksi_seru_app/widgets/custom_button.dart';
 import 'package:aksi_seru_app/widgets/custom_textfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -33,8 +32,11 @@ class _EditProfileState extends State<EditProfile> {
   Future<void> _getImageFromGallery() async {
     final picker = ImagePicker();
     final pickedImage = await picker.pickImage(source: ImageSource.gallery);
+    int fileSizeInBytes =
+        await pickedImage!.length(); // Tunggu hasil dari Future<int>
+    double fileSizeInKB = fileSizeInBytes / 1024; // Konversi ke Kilobytes
 
-    if (pickedImage != null) {
+    if (pickedImage != null && fileSizeInKB < 2000) {
       setState(() {
         _image = File(pickedImage.path);
       });
@@ -137,12 +139,24 @@ class _EditProfileState extends State<EditProfile> {
                     ),
                   ),
                 ),
+                Center(
+                  child: Text(
+                    'Besar file < 2Mb',
+                    style: AppTextStyle.paragraphL.copyWith(
+                      color: AppColors.greyColor,
+                    ),
+                  ),
+                ),
                 const Gap(16),
                 CustomTextField(
-                    hintText: user.name, textController: nameController),
+                  hintText: user.name,
+                  textController: nameController,
+                ),
                 const Gap(12),
                 CustomTextField(
-                    hintText: user.bio, textController: bioController),
+                  hintText: user.bio,
+                  textController: bioController,
+                ),
                 const Gap(16),
                 PrimaryButton(
                   ontap: () {
@@ -150,7 +164,7 @@ class _EditProfileState extends State<EditProfile> {
                       UserData.updateUserProfile(
                         bio: bioController.text,
                         name: nameController.text,
-                        image: imagebase64,
+                        image: imagebase64 ?? user.avatar,
                       );
                     }
                   },

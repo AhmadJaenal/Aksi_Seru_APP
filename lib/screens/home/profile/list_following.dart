@@ -33,7 +33,27 @@ class _ListFollowingState extends State<ListFollowing> {
             padding: EdgeInsets.all(AppMargin.defaultMargin),
             child: Row(
               children: [
-                const BackButtonCustom(),
+                IconButton(
+                  style: ButtonStyle(
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    backgroundColor:
+                        MaterialStatePropertyAll(AppColors.primary1),
+                    padding: const MaterialStatePropertyAll(EdgeInsets.all(12)),
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      Get.back();
+                    });
+                  },
+                  icon: Icon(
+                    Icons.arrow_back_rounded,
+                    color: AppColors.whiteColor,
+                  ),
+                ),
                 const Gap(16),
                 Text(
                   'Diikuti',

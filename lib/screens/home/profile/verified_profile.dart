@@ -1,11 +1,13 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:aksi_seru_app/controller/storyController.dart';
 import 'package:aksi_seru_app/controller/user.dart';
 import 'package:aksi_seru_app/models/user_model.dart';
 import 'package:aksi_seru_app/screens/home/profile/list_article.dart';
 import 'package:aksi_seru_app/screens/home/profile/list_post.dart';
 import 'package:aksi_seru_app/shared/style.dart';
+import 'package:aksi_seru_app/utils/api.dart';
 import 'package:aksi_seru_app/widgets/custom_button.dart';
 import 'package:aksi_seru_app/widgets/user_profile.dart';
 import 'package:flutter/material.dart';
@@ -78,7 +80,8 @@ class _VerifiedProfileState extends State<VerifiedProfile> {
             return const Center(child: CircularProgressIndicator());
           } else {
             UserModel user = snapshot.data!;
-            Uint8List image = base64Decode(user.avatar);
+            // Uint8List image = base64Decode(user.avatar);
+            developer.log(user.avatar);
 
             return DefaultTabController(
               length: 2,
@@ -90,6 +93,8 @@ class _VerifiedProfileState extends State<VerifiedProfile> {
                       child: Gap(12),
                     ),
                     SliverAppBar(
+                      leading: Container(),
+                      leadingWidth: 10,
                       title: Text(
                         user.name,
                         style: AppTextStyle.appbarTitle.copyWith(
@@ -122,9 +127,12 @@ class _VerifiedProfileState extends State<VerifiedProfile> {
                                   ClipRRect(
                                     borderRadius: const BorderRadius.all(
                                         Radius.circular(100)),
-                                    child: Image.memory(image),
+                                    child: Image.asset(
+                                      'assets/user_profile.png',
+                                      width: 70,
+                                    ),
                                   ),
-                                  const Gap(12),
+                                  const Gap(16),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
@@ -290,7 +298,8 @@ class _VerifiedProfileState extends State<VerifiedProfile> {
                               visible: showRecommendUser,
                               child: Align(
                                 alignment: Alignment.centerLeft,
-                                child: Container(
+                                child: AnimatedContainer(
+                                  duration: const Duration(seconds: 1),
                                   width: double.infinity,
                                   padding: EdgeInsets.symmetric(
                                       horizontal: AppMargin.defaultMargin,

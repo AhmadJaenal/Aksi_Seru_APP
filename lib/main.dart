@@ -83,7 +83,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      home: email != '' ? CustomNavBottom() : SplashScreen(),
+      home: email != '' ? const CustomNavBottom() : const SplashScreen(),
       getPages: [
         GetPage(
           name: '/splash-screen',
