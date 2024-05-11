@@ -123,14 +123,23 @@ class _VerifiedProfileState extends State<VerifiedProfile> {
                               padding: EdgeInsets.all(AppMargin.defaultMargin),
                               child: Column(
                                 children: [
-                                  ClipRRect(
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(100)),
-                                    child: Image.network(
-                                      avatar,
-                                      fit: BoxFit.cover,
-                                      width: 70,
-                                      height: 70,
+                                  Container(
+                                    decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        border: Border.all(
+                                          width: 2,
+                                          color: AppColors.greyColor
+                                              .withOpacity(.4),
+                                        )),
+                                    child: ClipRRect(
+                                      borderRadius: const BorderRadius.all(
+                                          Radius.circular(100)),
+                                      child: Image.network(
+                                        avatar,
+                                        fit: BoxFit.cover,
+                                        width: 70,
+                                        height: 70,
+                                      ),
                                     ),
                                   ),
                                   const Gap(16),
