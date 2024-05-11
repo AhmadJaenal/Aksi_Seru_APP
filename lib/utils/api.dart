@@ -4,24 +4,24 @@ class ApiEndPoints {
 }
 
 class _AuthEndPoints {
-  final String registerWithEmail = 'API_Aksi_Seru/api/users/register.php';
-  final String loginWithEmail = 'API_Aksi_Seru/api/users/login.php';
+  final String registerWithEmail = 'api/api/users/register.php';
+  final String loginWithEmail = 'api/api/users/login.php';
 }
 
 class UserEndPoints {
-  static String currentUser = 'API_Aksi_Seru/api/users/current.php';
-  static String updateUserProfile = 'API_Aksi_Seru/api/users/profile.php';
-  static String randomUser = 'API_Aksi_Seru/api/users/random-users.php';
-  static String followUser = 'API_Aksi_Seru/api/users/follow.php';
-  static String unFollowUser = 'API_Aksi_Seru/api/users/unfollow.php';
-  static String deleteFollowers = 'API_Aksi_Seru/api/users/delete-follower.php';
-  static String listFollowing = 'API_Aksi_Seru/api/users/list-following.php';
-  static String listFollowers = 'API_Aksi_Seru/api/users/list-followers.php';
-  static String searchUser = 'API_Aksi_Seru/api/users/search.php';
+  static String currentUser = 'api/api/users/current.php';
+  static String updateUserProfile = 'api/api/users/profile.php';
+  static String randomUser = 'api/api/users/random-users.php';
+  static String followUser = 'api/api/users/follow.php';
+  static String unFollowUser = 'api/api/users/unfollow.php';
+  static String deleteFollowers = 'api/api/users/delete-follower.php';
+  static String listFollowing = 'api/api/users/list-following.php';
+  static String listFollowers = 'api/api/users/list-followers.php';
+  static String searchUser = 'api/api/users/search.php';
 }
 
 class Story {
-  static String createStory = 'API_Aksi_Seru/api/story/create.php';
+  static String createStory = 'api/api/story/create.php';
 }
 
 // class ApiEndPoints {
