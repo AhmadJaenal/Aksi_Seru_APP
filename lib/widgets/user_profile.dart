@@ -84,41 +84,46 @@ class CardCreateStories extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.end,
-      children: [
-        Image.asset('assets/user_profile.png', width: 80),
-        Transform.translate(
-          offset: const Offset(0, -23),
-          child: Container(
-            width: 18,
-            height: 18,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: AppColors.primary1,
-              border: Border.all(
-                width: 2,
+    return GestureDetector(
+      onTap: () {
+        Get.toNamed('/create-story');
+      },
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Image.asset('assets/user_profile.png', width: 80),
+          Transform.translate(
+            offset: const Offset(0, -23),
+            child: Container(
+              width: 18,
+              height: 18,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: AppColors.primary1,
+                border: Border.all(
+                  width: 2,
+                  color: AppColors.whiteColor,
+                ),
+              ),
+              child: Icon(
+                Icons.add,
                 color: AppColors.whiteColor,
+                size: 12,
+                weight: 2,
               ),
             ),
-            child: Icon(
-              Icons.add,
-              color: AppColors.whiteColor,
-              size: 12,
-              weight: 2,
-            ),
           ),
-        ),
-        Transform.translate(
-          offset: const Offset(0, -10),
-          child: Text(
-            'Buat cerita',
-            style: AppTextStyle.paragraphL.copyWith(
-              color: AppColors.blackColor,
+          Transform.translate(
+            offset: const Offset(0, -10),
+            child: Text(
+              'Buat cerita',
+              style: AppTextStyle.paragraphL.copyWith(
+                color: AppColors.blackColor,
+              ),
             ),
-          ),
-        )
-      ],
+          )
+        ],
+      ),
     );
   }
 }

@@ -1,5 +1,6 @@
 class ApiEndPoints {
-  static String baseUrl = 'http://192.168.160.106/';
+  static String ip = '192.168.160.106';
+  static String baseUrl = 'http://$ip/';
   static _AuthEndPoints authEndPoints = _AuthEndPoints();
 }
 

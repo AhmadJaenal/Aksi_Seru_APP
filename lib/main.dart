@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:aksi_seru_app/screens/auth/create_password.dart';
 import 'package:aksi_seru_app/screens/auth/create_username.dart';
 import 'package:aksi_seru_app/screens/auth/login.dart';
@@ -16,7 +18,7 @@ import 'package:aksi_seru_app/screens/home/errors/check_connection.dart';
 import 'package:aksi_seru_app/screens/home/feed/create_post.dart';
 import 'package:aksi_seru_app/screens/home/feed/feed_page.dart';
 import 'package:aksi_seru_app/screens/home/feed/review_post.dart';
-import 'package:aksi_seru_app/screens/home/feed/story.dart';
+import 'package:aksi_seru_app/screens/home/feed/story_view.dart';
 import 'package:aksi_seru_app/screens/home/notification/notif_page.dart';
 import 'package:aksi_seru_app/screens/home/onboarding/recommendation_page.dart';
 import 'package:aksi_seru_app/screens/home/profile/edit_profile.dart';
@@ -32,9 +34,20 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:developer' as developer;
 
+import 'screens/home/feed/create_story.dart';
 import 'screens/home/nav/nav_bottom.dart';
 
+class PostHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
+  }
+}
+
 void main() {
+  HttpOverrides.global = PostHttpOverrides();
   runApp(const MyApp());
 }
 
@@ -69,7 +82,6 @@ class _MyAppState extends State<MyApp> {
     var obtainEmail = sharedPreferences.getString('email');
     setState(() {
       email = obtainEmail!;
-      developer.log(obtainEmail, name: 'obtainemail');
     });
     return email;
   }
@@ -123,7 +135,11 @@ class _MyAppState extends State<MyApp> {
           page: () => CheckConnection(page: CreatePost()),
         ),
         GetPage(
-          name: '/story',
+          name: '/create-story',
+          page: () => const CheckConnection(page: CreateStory()),
+        ),
+        GetPage(
+          name: '/story-view',
           page: () => const CheckConnection(page: StoryView()),
         ),
         GetPage(

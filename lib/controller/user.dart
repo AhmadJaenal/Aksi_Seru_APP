@@ -27,7 +27,6 @@ class UserData extends GetxController {
       final response = await http.get(uri, headers: headers);
       if (response.statusCode == 200) {
         Map<String, dynamic> jsonResponse = jsonDecode(response.body)['data'];
-        // developer.log(jsonResponse.toString(), name: 'json response');
 
         UserModel user = UserModel.fromJson(jsonResponse);
         return user;
