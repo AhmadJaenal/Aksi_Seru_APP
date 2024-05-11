@@ -171,11 +171,7 @@ class _SearchPageState extends State<SearchPage> {
                           itemCount: snapshot.data!.length,
                           itemBuilder: (context, index) {
                             UserModel userData = snapshot.data![index];
-                            return UserProfile(
-                              username: userData.username,
-                              avatar: userData.avatar,
-                              idUser: userData.id,
-                            );
+                            return UserProfile(userData: userData);
                           },
                         );
                       } else {
@@ -212,13 +208,11 @@ class _SearchPageState extends State<SearchPage> {
                       child: ListView.builder(
                         itemCount: snapshot.data!.length,
                         itemBuilder: (context, index) {
-                          UserModel user = snapshot.data![index];
+                          UserModel userData = snapshot.data![index];
                           return Padding(
                             padding: const EdgeInsets.symmetric(vertical: 5),
                             child: OtherUserProfileWidget(
-                              id: user.id,
-                              username: user.username,
-                              bio: user.bio,
+                              userData: userData,
                             ),
                           );
                         },

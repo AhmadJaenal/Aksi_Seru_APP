@@ -1,12 +1,13 @@
 import 'package:aksi_seru_app/controller/user.dart';
+import 'package:aksi_seru_app/getX/counter_follow_user.dart';
 import 'package:aksi_seru_app/models/user_model.dart';
 import 'package:aksi_seru_app/screens/home/profile/list_article.dart';
+import 'package:aksi_seru_app/screens/home/profile/list_following.dart';
 import 'package:aksi_seru_app/screens/home/profile/list_post.dart';
 import 'package:aksi_seru_app/shared/style.dart';
 import 'package:aksi_seru_app/utils/api.dart';
 import 'package:aksi_seru_app/widgets/custom_button.dart';
 import 'package:aksi_seru_app/widgets/user_profile.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
@@ -19,6 +20,10 @@ class VerifiedProfile extends StatefulWidget {
   @override
   State<VerifiedProfile> createState() => _VerifiedProfileState();
 }
+
+final CounterFollowUser counterFollowUser = Get.put(CounterFollowUser());
+final ListFollowingCounter listFollowingCounter =
+    Get.put(ListFollowingCounter());
 
 @override
 bool showRecommendUser = true;
@@ -77,10 +82,12 @@ class _VerifiedProfileState extends State<VerifiedProfile> {
             return const Center(child: CircularProgressIndicator());
           } else {
             UserModel user = snapshot.data!;
-            // Uint8List image = base64Decode(user.avatar);
             List<String> userAvatar = user.avatar.split('localhost');
             String avatar =
                 "${userAvatar[0]}${ApiEndPoints.ip}${userAvatar[1]}";
+
+            counterFollowUser.setCountUserFollow(user.following);
+
             developer.log(avatar.toString());
             return DefaultTabController(
               length: 2,
@@ -251,12 +258,16 @@ class _VerifiedProfileState extends State<VerifiedProfile> {
                                             Get.toNamed('/list-following'),
                                         child: Column(
                                           children: [
-                                            Text(
-                                              user.following.toString(),
-                                              style: AppTextStyle.h3.copyWith(
-                                                fontWeight:
-                                                    AppFontWeight.semiBold,
-                                                color: AppColors.blackColor,
+                                            Obx(
+                                              () => Text(
+                                                counterFollowUser
+                                                    .counterUserFollowing
+                                                    .toString(),
+                                                style: AppTextStyle.h3.copyWith(
+                                                  fontWeight:
+                                                      AppFontWeight.semiBold,
+                                                  color: AppColors.blackColor,
+                                                ),
                                               ),
                                             ),
                                             const Gap(8),
@@ -352,9 +363,7 @@ class _VerifiedProfileState extends State<VerifiedProfile> {
                                             UserModel userData =
                                                 snapshot.data![index];
                                             return UserProfile(
-                                              username: userData.username,
-                                              avatar: userData.avatar,
-                                              idUser: userData.id,
+                                              userData: userData,
                                             );
                                           },
                                         );

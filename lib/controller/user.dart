@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:aksi_seru_app/getX/counter_follow_user.dart';
 import 'package:aksi_seru_app/models/user_model.dart';
 import 'package:aksi_seru_app/utils/api.dart';
 import 'package:aksi_seru_app/widgets/custom_popup.dart';
@@ -115,7 +116,11 @@ class UserData extends GetxController {
     }
   }
 
-  static Future<void> followUser({String? idUser}) async {
+  static Future<void> followUser({UserModel? userData}) async {
+    final CounterFollowUser counterFollowUser = Get.put(CounterFollowUser());
+    final ListFollowingCounter listFollowingCounter =
+        Get.put(ListFollowingCounter());
+
     String? token = await getToken();
     final uri = Uri.parse(ApiEndPoints.baseUrl + UserEndPoints.followUser);
     var headers = {
@@ -123,16 +128,14 @@ class UserData extends GetxController {
       'Content-Type': 'application/json'
     };
     var body = jsonEncode({
-      'iduser': idUser,
+      'iduser': userData!.id,
     });
     try {
       final response = await http.post(uri, headers: headers, body: body);
       if (response.statusCode == 200) {
-        developer.log(response.body, name: 'Response Follow User');
+        counterFollowUser.follow();
+        listFollowingCounter.follow(userData);
       } else {
-        developer.log(response.body, name: 'Response Follow User');
-        developer.log(response.statusCode.toString(),
-            name: 'Response Follow User status code');
         CustomPopUp(
           icon: Icons.cancel_outlined,
           message: 'Terjadi kesalahan diserver',
@@ -149,6 +152,10 @@ class UserData extends GetxController {
   }
 
   static Future<void> unFollowUser({String? idUser}) async {
+    final ListFollowingCounter listFollowingCounter =
+        Get.put(ListFollowingCounter());
+    final CounterFollowUser counterFollowUser = Get.put(CounterFollowUser());
+
     String? token = await getToken();
     final uri = Uri.parse(ApiEndPoints.baseUrl + UserEndPoints.unFollowUser);
     var headers = {
@@ -161,7 +168,8 @@ class UserData extends GetxController {
     try {
       final response = await http.delete(uri, headers: headers, body: body);
       if (response.statusCode == 200) {
-        developer.log(response.body, name: 'Response Follow User');
+        counterFollowUser.unfollow();
+        listFollowingCounter.unFollow(int.parse(idUser!));
       } else {
         CustomPopUp(
           icon: Icons.cancel_outlined,
@@ -208,9 +216,11 @@ class UserData extends GetxController {
     }
   }
 
-  static Stream<List<UserModel>?> listFollowing() async* {
+  static Future<List<UserModel>?> listFollowing() async {
     String? token = await getToken();
     final uri = Uri.parse(ApiEndPoints.baseUrl + UserEndPoints.listFollowing);
+    final ListFollowingCounter listFollowingCounter =
+        Get.put(ListFollowingCounter());
 
     var headers = {
       'X-Authorization': '$token',
@@ -226,7 +236,9 @@ class UserData extends GetxController {
           UserModel user = UserModel.fromJson(data);
           userData.add(user);
         });
-        yield userData;
+        listFollowingCounter.setUserData(userData);
+
+        return userData;
       } else {
         CustomPopUp(
           icon: Icons.cancel_outlined,
@@ -237,9 +249,11 @@ class UserData extends GetxController {
           },
           titleButton: 'Kembali',
         );
+        return null;
       }
     } catch (e) {
       developer.log('Error: $e', name: 'error follow user');
+      return null;
     }
   }
 

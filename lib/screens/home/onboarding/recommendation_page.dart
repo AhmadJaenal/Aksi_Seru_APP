@@ -95,9 +95,7 @@ class RecommendationPage extends StatelessWidget {
                                           right: AppMargin.defaultMargin)
                                       : const EdgeInsets.only(left: 8),
                               child: UserProfile(
-                                username: userData.username,
-                                avatar: userData.avatar,
-                                idUser: userData.id,
+                                userData: userData,
                               ),
                             );
                           },

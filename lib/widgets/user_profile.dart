@@ -1,4 +1,5 @@
 import 'package:aksi_seru_app/controller/user.dart';
+import 'package:aksi_seru_app/models/user_model.dart';
 import 'package:aksi_seru_app/shared/style.dart';
 import 'package:aksi_seru_app/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
@@ -6,14 +7,11 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
 class UserProfile extends StatefulWidget {
-  final String username;
-  final String avatar;
-  final int idUser;
+  final UserModel userData;
+
   const UserProfile({
+    required this.userData,
     super.key,
-    required this.username,
-    required this.avatar,
-    required this.idUser,
   });
 
   @override
@@ -34,7 +32,7 @@ class _UserProfileState extends State<UserProfile> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                widget.username,
+                widget.userData.username,
                 style: AppTextStyle.paragraphL.copyWith(
                   color: AppColors.blackColor,
                 ),
@@ -46,9 +44,7 @@ class _UserProfileState extends State<UserProfile> {
           const Gap(8),
           FollowButton(
             onTap: () {
-              setState(() {
-                UserData.followUser(idUser: widget.idUser.toString());
-              });
+              UserData.followUser(userData: widget.userData);
             },
           ),
         ],
@@ -208,14 +204,11 @@ class ProfileTile extends StatelessWidget {
 }
 
 class OtherUserProfileWidget extends StatefulWidget {
-  final int id;
-  final String username;
-  final String bio;
+  final UserModel userData;
+
   const OtherUserProfileWidget({
     super.key,
-    required this.id,
-    required this.username,
-    required this.bio,
+    required this.userData,
   });
 
   @override
@@ -239,7 +232,7 @@ class _OtherUserProfileWidgetState extends State<OtherUserProfileWidget> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    widget.username,
+                    widget.userData.username,
                     style: AppTextStyle.paragraphL.copyWith(
                       color: AppColors.blackColor,
                     ),
@@ -249,7 +242,7 @@ class _OtherUserProfileWidgetState extends State<OtherUserProfileWidget> {
                 ],
               ),
               Text(
-                widget.bio,
+                widget.userData.bio,
                 style: AppTextStyle.paragraphL.copyWith(
                   color: AppColors.blackColor,
                 ),
@@ -260,7 +253,7 @@ class _OtherUserProfileWidgetState extends State<OtherUserProfileWidget> {
           FollowButton(
             onTap: () {
               setState(() {
-                UserData.followUser(idUser: widget.id.toString());
+                UserData.followUser(userData: widget.userData);
               });
             },
           ),
