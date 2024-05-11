@@ -58,12 +58,6 @@ class CreatePassword extends StatelessWidget {
                   if (_confirmPasswordController.text ==
                       registerationController.passwordController.text) {
                     if (formKey.currentState!.validate()) {
-                      // developer.log(
-                      //     'confirm password ${_confirmPasswordController.text} = ${registerationController.passwordController.text}');
-                      // developer
-                      //     .log(registerationController.passwordController.text);
-                      // developer.log(_confirmPasswordController.text);
-                      // developer.log(email);
                       Get.offAndToNamed('/success-register', arguments: {
                         'email': email,
                         'password':

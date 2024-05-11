@@ -119,7 +119,7 @@ class LoginController extends GetxController {
           await prefs.setString('token', token);
           emailController.clear();
           passwordController.clear();
-          Get.offAllNamed('/recommendation-page');
+          Get.toNamed('/recommendation-page');
         }
       } else {
         Map<String, dynamic> jsonResponse = jsonDecode(response.body)['errors'];

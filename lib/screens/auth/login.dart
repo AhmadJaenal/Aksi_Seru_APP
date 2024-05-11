@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:aksi_seru_app/controller/auth.dart';
 import 'package:aksi_seru_app/shared/style.dart';
 import 'package:aksi_seru_app/widgets/custom_button.dart';
@@ -68,7 +70,6 @@ class Login extends StatelessWidget {
                         'email', loginController.emailController.text);
 
                     loginController.loginWithEmail();
-                    // Get.toNamed('/nav-bar');
                   } else {
                     CustomPopUp(
                       icon: Icons.alternate_email_rounded,
@@ -94,7 +95,7 @@ class Login extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   GestureDetector(
-                    onTap: () => Get.offAndToNamed('/register'),
+                    onTap: () => Get.toNamed('/register'),
                     child: Text(
                       'Daftar ',
                       style: AppTextStyle.paragraphL.copyWith(
