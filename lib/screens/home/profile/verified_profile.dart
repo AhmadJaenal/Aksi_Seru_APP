@@ -1,7 +1,3 @@
-import 'dart:convert';
-import 'dart:typed_data';
-
-import 'package:aksi_seru_app/controller/storyController.dart';
 import 'package:aksi_seru_app/controller/user.dart';
 import 'package:aksi_seru_app/models/user_model.dart';
 import 'package:aksi_seru_app/screens/home/profile/list_article.dart';
@@ -10,6 +6,7 @@ import 'package:aksi_seru_app/shared/style.dart';
 import 'package:aksi_seru_app/utils/api.dart';
 import 'package:aksi_seru_app/widgets/custom_button.dart';
 import 'package:aksi_seru_app/widgets/user_profile.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
@@ -81,8 +78,10 @@ class _VerifiedProfileState extends State<VerifiedProfile> {
           } else {
             UserModel user = snapshot.data!;
             // Uint8List image = base64Decode(user.avatar);
-            developer.log(user.avatar);
-
+            List<String> userAvatar = user.avatar.split('localhost');
+            String avatar =
+                "${userAvatar[0]}${ApiEndPoints.ip}${userAvatar[1]}";
+            developer.log(avatar.toString());
             return DefaultTabController(
               length: 2,
               initialIndex: 1,
@@ -127,9 +126,11 @@ class _VerifiedProfileState extends State<VerifiedProfile> {
                                   ClipRRect(
                                     borderRadius: const BorderRadius.all(
                                         Radius.circular(100)),
-                                    child: Image.asset(
-                                      'assets/user_profile.png',
+                                    child: Image.network(
+                                      avatar,
+                                      fit: BoxFit.cover,
                                       width: 70,
+                                      height: 70,
                                     ),
                                   ),
                                   const Gap(16),
