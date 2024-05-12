@@ -1,10 +1,12 @@
 import 'package:aksi_seru_app/controller/user.dart';
+import 'package:aksi_seru_app/getX/show_recommend_user.dart';
 import 'package:aksi_seru_app/models/user_model.dart';
 import 'package:aksi_seru_app/shared/style.dart';
 import 'package:aksi_seru_app/widgets/custom_textfield.dart';
 import 'package:aksi_seru_app/widgets/user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get.dart';
 
 import 'dart:developer' as developer;
 
@@ -22,11 +24,14 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   void dispose() {
+    showRecommendUser.showRecommend = true.obs;
+
     _searchC.dispose();
     super.dispose();
   }
 
-  bool showRecommendedUser = true;
+  final ShowRecommendUserState showRecommendUser =
+      Get.put(ShowRecommendUserState());
 
   @override
   Widget build(BuildContext context) {
@@ -112,86 +117,85 @@ class _SearchPageState extends State<SearchPage> {
             ),
           ),
           SliverToBoxAdapter(
-            child: Padding(
-              padding: EdgeInsets.only(
-                left: AppMargin.defaultMargin,
-                top: 16,
-                bottom: 16,
-                right: 16,
-              ),
-              child: Visibility(
-                visible: showRecommendedUser,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Mungkin kamu kenal',
-                      style: AppTextStyle.h3.copyWith(
-                        color: AppColors.blackColor,
-                        fontWeight: AppFontWeight.semiBold,
+            child: Obx(
+              () => showRecommendUser.showRecommend()
+                  ? Padding(
+                      padding: EdgeInsets.only(
+                        left: AppMargin.defaultMargin,
+                        top: 16,
+                        bottom: 16,
+                        right: 16,
                       ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          showRecommendedUser = !showRecommendedUser;
-                        });
-                      },
-                      child: const Icon(Icons.close),
-                    ),
-                  ],
-                ),
-              ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Mungkin kamu kenal',
+                            style: AppTextStyle.h3.copyWith(
+                              color: AppColors.blackColor,
+                              fontWeight: AppFontWeight.semiBold,
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () => showRecommendUser.show(),
+                            child: const Icon(Icons.close),
+                          ),
+                        ],
+                      ),
+                    )
+                  : Container(),
             ),
           ),
           SliverToBoxAdapter(
-            child: Visibility(
-              visible: showRecommendedUser,
-              child: Container(
-                padding:
-                    EdgeInsets.symmetric(vertical: AppMargin.defaultMargin),
-                width: double.infinity,
-                height: 220,
-                decoration: BoxDecoration(
-                  color: AppColors.whiteColor,
-                  border: Border(
-                    bottom: BorderSide(
-                      color: AppColors.greyColor.withOpacity(.2),
-                      width: 1,
-                    ),
-                  ),
-                ),
-                child: FutureBuilder(
-                  future: UserData.getRandomUser(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.done) {
-                      if (snapshot.hasData) {
-                        return ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: snapshot.data!.length,
-                          itemBuilder: (context, index) {
-                            UserModel userData = snapshot.data![index];
-                            return UserProfile(userData: userData);
-                          },
-                        );
-                      } else {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      }
-                    } else {
-                      return Center(
-                        child: Text(
-                          "Tunggu",
-                          style: AppTextStyle.paragraphL.copyWith(
-                            color: AppColors.blackColor,
+            child: Obx(
+              () => showRecommendUser.showRecommend()
+                  ? Container(
+                      padding: EdgeInsets.symmetric(
+                          vertical: AppMargin.defaultMargin),
+                      width: double.infinity,
+                      height: 220,
+                      decoration: BoxDecoration(
+                        color: AppColors.whiteColor,
+                        border: Border(
+                          bottom: BorderSide(
+                            color: AppColors.greyColor.withOpacity(.2),
+                            width: 1,
                           ),
                         ),
-                      );
-                    }
-                  },
-                ),
-              ),
+                      ),
+                      child: FutureBuilder(
+                        future: UserData.getRandomUser(),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.done) {
+                            if (snapshot.hasData) {
+                              return ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: snapshot.data!.length,
+                                itemBuilder: (context, index) {
+                                  UserModel userData = snapshot.data![index];
+                                  return UserProfile(userData: userData);
+                                },
+                              );
+                            } else {
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            }
+                          } else {
+                            return Center(
+                              child: Text(
+                                "Tunggu",
+                                style: AppTextStyle.paragraphL.copyWith(
+                                  color: AppColors.blackColor,
+                                ),
+                              ),
+                            );
+                          }
+                        },
+                      ),
+                    )
+                  : Container(),
             ),
           ),
           SliverToBoxAdapter(
@@ -201,11 +205,11 @@ class _SearchPageState extends State<SearchPage> {
               child: StreamBuilder(
                 stream: UserData.searchUser(username: _searchC.text),
                 builder: (context, snapshot) {
-                  developer.log(snapshot.data.toString(), name: 'test');
                   if (snapshot.hasData && snapshot.data!.isNotEmpty) {
                     return SizedBox(
-                      height: MediaQuery.of(context).size.height * .6,
+                      height: MediaQuery.of(context).size.height * .65,
                       child: ListView.builder(
+                        physics: const BouncingScrollPhysics(),
                         itemCount: snapshot.data!.length,
                         itemBuilder: (context, index) {
                           UserModel userData = snapshot.data![index];
