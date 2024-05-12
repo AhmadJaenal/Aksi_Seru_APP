@@ -1,19 +1,16 @@
 import 'package:aksi_seru_app/controller/user.dart';
+import 'package:aksi_seru_app/getX/counter_follow_user.dart';
 import 'package:aksi_seru_app/models/user_model.dart';
 import 'package:aksi_seru_app/shared/style.dart';
 import 'package:aksi_seru_app/widgets/custom_button.dart';
 import 'package:aksi_seru_app/widgets/user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get.dart';
 
-class ListFollowers extends StatefulWidget {
+class ListFollowers extends StatelessWidget {
   const ListFollowers({super.key});
 
-  @override
-  State<ListFollowers> createState() => _ListFollowersState();
-}
-
-class _ListFollowersState extends State<ListFollowers> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -45,74 +42,83 @@ class _ListFollowersState extends State<ListFollowers> {
             ),
           ),
         ),
-        body: StreamBuilder(
-          stream: UserData.listFollowers(),
+        body: FutureBuilder(
+          future: UserData.listFollowers(),
           builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return ListView.builder(
-                physics: const BouncingScrollPhysics(),
-                itemCount: snapshot.data!.length,
-                itemBuilder: (context, index) {
-                  UserModel userData = snapshot.data![index];
-                  return Padding(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: AppMargin.defaultMargin, vertical: 5),
-                    child: SizedBox(
-                      width: 128,
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Image.asset('assets/user_profile.png', width: 60),
-                          const Gap(8),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    userData.username,
-                                    style: AppTextStyle.paragraphL.copyWith(
-                                      color: AppColors.blackColor,
+            if (snapshot.connectionState == ConnectionState.done) {
+              if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                return GetX<ListFollowersCounter>(
+                  builder: (controller) {
+                    return ListView.builder(
+                      physics: const BouncingScrollPhysics(),
+                      itemCount: controller.length,
+                      itemBuilder: (context, index) {
+                        UserModel userData = snapshot.data![index];
+                        return Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: AppMargin.defaultMargin, vertical: 5),
+                          child: SizedBox(
+                            width: 128,
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Image.asset('assets/user_profile.png',
+                                    width: 60),
+                                const Gap(8),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          userData.username,
+                                          style:
+                                              AppTextStyle.paragraphL.copyWith(
+                                            color: AppColors.blackColor,
+                                          ),
+                                        ),
+                                        const Gap(7),
+                                        const Verified(),
+                                      ],
                                     ),
-                                  ),
-                                  const Gap(7),
-                                  const Verified(),
-                                ],
-                              ),
-                              Text(
-                                userData.bio,
-                                style: AppTextStyle.paragraphL.copyWith(
-                                  color: AppColors.blackColor,
+                                    Text(
+                                      userData.bio,
+                                      style: AppTextStyle.paragraphL.copyWith(
+                                        color: AppColors.blackColor,
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ),
-                            ],
+                                const Spacer(),
+                                UnFollowButton(
+                                  onTap: () {
+                                    UserData.deleteFollowers(
+                                      idUser: userData.id.toString(),
+                                    );
+                                  },
+                                ),
+                              ],
+                            ),
                           ),
-                          const Spacer(),
-                          UnFollowButton(
-                            onTap: () {
-                              setState(() {
-                                UserData.deleteFollowers(
-                                  idUser: userData.id.toString(),
-                                );
-                              });
-                            },
-                          ),
-                        ],
-                      ),
+                        );
+                      },
+                    );
+                  },
+                );
+              } else {
+                return Center(
+                  child: Text(
+                    'Tidak ada yang diikuti',
+                    style: AppTextStyle.paragraphL.copyWith(
+                      color: AppColors.blackColor,
                     ),
-                  );
-                },
-              );
-            } else {
-              return Center(
-                child: Text(
-                  'Tidak ada yang diikuti',
-                  style: AppTextStyle.paragraphL.copyWith(
-                    color: AppColors.blackColor,
                   ),
-                ),
-              );
+                );
+              }
+            } else {
+              return const Center(child: CircularProgressIndicator());
             }
           },
         ),

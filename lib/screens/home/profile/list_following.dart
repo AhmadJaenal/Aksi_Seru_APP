@@ -9,18 +9,9 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'dart:developer' as developer;
 
-class ListFollowing extends StatefulWidget {
+class ListFollowing extends StatelessWidget {
   const ListFollowing({super.key});
 
-  @override
-  State<ListFollowing> createState() => _ListFollowingState();
-}
-
-final CounterFollowUser counterFollowUser = Get.put(CounterFollowUser());
-final ListFollowingCounter listFollowingCounter =
-    Get.put(ListFollowingCounter());
-
-class _ListFollowingState extends State<ListFollowing> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -51,9 +42,7 @@ class _ListFollowingState extends State<ListFollowing> {
                     padding: const MaterialStatePropertyAll(EdgeInsets.all(12)),
                   ),
                   onPressed: () {
-                    setState(() {
-                      Get.back();
-                    });
+                    Get.back();
                   },
                   icon: Icon(
                     Icons.arrow_back_rounded,
@@ -156,3 +145,7 @@ class _ListFollowingState extends State<ListFollowing> {
     );
   }
 }
+
+final CounterFollowUser counterFollowUser = Get.put(CounterFollowUser());
+final ListFollowingCounter listFollowersCounter =
+    Get.put(ListFollowingCounter());

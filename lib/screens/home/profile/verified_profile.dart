@@ -60,6 +60,7 @@ class VerifiedProfile extends StatelessWidget {
 
   final ShowRecommendUserState showRecommendUser =
       Get.put(ShowRecommendUserState());
+  final ListFollowersCounter listFollowers = ListFollowersCounter();
 
   final UserData userData = UserData();
 
@@ -79,6 +80,7 @@ class VerifiedProfile extends StatelessWidget {
                 "${userAvatar[0]}${ApiEndPoints.ip}${userAvatar[1]}";
 
             counterFollowUser.setCountUserFollow(user.following);
+            counterFollowUser.setCountUserFollowers(user.followers);
 
             developer.log(avatar.toString());
             return DefaultTabController(
@@ -227,12 +229,16 @@ class VerifiedProfile extends StatelessWidget {
                                             Get.toNamed('/list-followers'),
                                         child: Column(
                                           children: [
-                                            Text(
-                                              user.followers.toString(),
-                                              style: AppTextStyle.h3.copyWith(
-                                                fontWeight:
-                                                    AppFontWeight.semiBold,
-                                                color: AppColors.blackColor,
+                                            Obx(
+                                              () => Text(
+                                                counterFollowUser
+                                                    .counterUserFollowers
+                                                    .toString(),
+                                                style: AppTextStyle.h3.copyWith(
+                                                  fontWeight:
+                                                      AppFontWeight.semiBold,
+                                                  color: AppColors.blackColor,
+                                                ),
                                               ),
                                             ),
                                             const Gap(8),
@@ -410,7 +416,3 @@ class VerifiedProfile extends StatelessWidget {
     );
   }
 }
-
-final CounterFollowUser counterFollowUser = Get.put(CounterFollowUser());
-final ListFollowingCounter listFollowingCounter =
-    Get.put(ListFollowingCounter());
