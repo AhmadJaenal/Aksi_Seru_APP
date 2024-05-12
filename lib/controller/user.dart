@@ -187,6 +187,10 @@ class UserData extends GetxController {
   }
 
   static Future<void> deleteFollowers({String? idUser}) async {
+    final ListFollowersCounter listFollowersCounter =
+        Get.put(ListFollowersCounter());
+    final CounterFollowUser counterFollowUser = Get.put(CounterFollowUser());
+
     String? token = await getToken();
     final uri = Uri.parse(ApiEndPoints.baseUrl + UserEndPoints.deleteFollowers);
     var headers = {
@@ -199,6 +203,8 @@ class UserData extends GetxController {
     try {
       final response = await http.delete(uri, headers: headers, body: body);
       if (response.statusCode == 200) {
+        listFollowersCounter.deleteFollowers(int.parse(idUser!));
+        counterFollowUser.deleteFollower();
         developer.log(response.body, name: 'Response Follow User');
       } else {
         CustomPopUp(
@@ -257,8 +263,10 @@ class UserData extends GetxController {
     }
   }
 
-  static Stream<List<UserModel>?> listFollowers() async* {
+  static Future<List<UserModel>?> listFollowers() async {
     String? token = await getToken();
+    final ListFollowersCounter listFollowersCounter =
+        Get.put(ListFollowersCounter());
     final uri = Uri.parse(ApiEndPoints.baseUrl + UserEndPoints.listFollowers);
 
     var headers = {
@@ -275,7 +283,8 @@ class UserData extends GetxController {
           UserModel user = UserModel.fromJson(data);
           userData.add(user);
         });
-        yield userData;
+        listFollowersCounter.setUserData(userData);
+        return userData;
       } else {
         CustomPopUp(
           icon: Icons.cancel_outlined,
@@ -286,9 +295,11 @@ class UserData extends GetxController {
           },
           titleButton: 'Kembali',
         );
+        return null;
       }
     } catch (e) {
       developer.log('Error: $e', name: 'error follow user');
+      return null;
     }
   }
 
