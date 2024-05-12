@@ -7,6 +7,7 @@ class ApiEndPoints {
 class _AuthEndPoints {
   final String registerWithEmail = 'api/api/users/register.php';
   final String loginWithEmail = 'api/api/users/login.php';
+  final String logout = 'api/api/users/logout.php';
 }
 
 class UserEndPoints {
