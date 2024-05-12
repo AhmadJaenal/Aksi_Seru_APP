@@ -193,7 +193,7 @@
                     }
                 },
                 "responses": {
-                    "201" : {
+                    "200" : {
                         "description": "Success login",
                         "content": {
                             "application/json" : {
