@@ -122,9 +122,10 @@ class _VerifiedProfileState extends State<VerifiedProfile> {
                         const Gap(12),
                       ],
                       bottom: PreferredSize(
-                        preferredSize:
-                            Size.fromHeight(showRecommendUser ? 680 : 440),
+                        preferredSize: Size.fromHeight(
+                            showRecommendUser.showRecommend() ? 680 : 440),
                         child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Container(
                               padding: EdgeInsets.all(AppMargin.defaultMargin),
