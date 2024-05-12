@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:aksi_seru_app/controller/post_controller.dart';
 import 'package:aksi_seru_app/shared/style.dart';
 import 'package:aksi_seru_app/widgets/custom_button.dart';
 import 'package:aksi_seru_app/widgets/custom_textfield.dart';
@@ -15,7 +14,7 @@ import 'dart:developer' as developer;
 import 'package:image_picker/image_picker.dart';
 
 class CreatePost extends StatefulWidget {
-  CreatePost({super.key});
+  const CreatePost({super.key});
 
   @override
   State<CreatePost> createState() => _CreatePostState();
@@ -46,8 +45,10 @@ class _CreatePostState extends State<CreatePost> {
     imagebase64 = base64StringImage;
   }
 
+  @override
   void dispose() {
     _captionC.dispose();
+    super.dispose();
   }
 
   @override
