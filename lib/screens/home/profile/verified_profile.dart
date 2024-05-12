@@ -1,5 +1,6 @@
 import 'package:aksi_seru_app/controller/user.dart';
 import 'package:aksi_seru_app/getX/counter_follow_user.dart';
+import 'package:aksi_seru_app/getX/show_recommend_user.dart';
 import 'package:aksi_seru_app/models/user_model.dart';
 import 'package:aksi_seru_app/screens/home/profile/list_article.dart';
 import 'package:aksi_seru_app/screens/home/profile/list_following.dart';
@@ -14,21 +15,9 @@ import 'package:get/get.dart';
 
 import 'dart:developer' as developer;
 
-class VerifiedProfile extends StatefulWidget {
-  const VerifiedProfile({super.key});
+class VerifiedProfile extends StatelessWidget {
+  VerifiedProfile({super.key});
 
-  @override
-  State<VerifiedProfile> createState() => _VerifiedProfileState();
-}
-
-final CounterFollowUser counterFollowUser = Get.put(CounterFollowUser());
-final ListFollowingCounter listFollowingCounter =
-    Get.put(ListFollowingCounter());
-
-@override
-bool showRecommendUser = true;
-
-class _VerifiedProfileState extends State<VerifiedProfile> {
   TabBar tabBar = TabBar(
     padding: EdgeInsets.symmetric(horizontal: AppMargin.defaultMargin),
     labelStyle: AppTextStyle.paragraphM.copyWith(color: AppColors.primary1),
@@ -68,6 +57,9 @@ class _VerifiedProfileState extends State<VerifiedProfile> {
       ),
     ],
   );
+
+  final ShowRecommendUserState showRecommendUser =
+      Get.put(ShowRecommendUserState());
 
   final UserData userData = UserData();
 
@@ -302,10 +294,7 @@ class _VerifiedProfileState extends State<VerifiedProfile> {
                                         icon: 'icon_arrow_up.png',
                                         title: 'Saran pengguna',
                                         ontap: () {
-                                          setState(() {
-                                            showRecommendUser =
-                                                !showRecommendUser;
-                                          });
+                                          showRecommendUser.show();
                                         },
                                         color: AppColors.primary1,
                                         iconColor: AppColors.primary1,
@@ -316,71 +305,76 @@ class _VerifiedProfileState extends State<VerifiedProfile> {
                                 ],
                               ),
                             ),
-                            Visibility(
-                              visible: showRecommendUser,
-                              child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: AnimatedContainer(
-                                  duration: const Duration(seconds: 1),
-                                  width: double.infinity,
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: AppMargin.defaultMargin,
-                                      vertical: 16),
-                                  decoration: BoxDecoration(
-                                    border: Border(
-                                      top: BorderSide(
-                                        color:
-                                            AppColors.greyColor.withOpacity(.2),
-                                        width: 1,
+                            Obx(
+                              () => showRecommendUser.showRecommend()
+                                  ? Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: AnimatedContainer(
+                                        duration: const Duration(seconds: 1),
+                                        width: double.infinity,
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: AppMargin.defaultMargin,
+                                            vertical: 16),
+                                        decoration: BoxDecoration(
+                                          border: Border(
+                                            top: BorderSide(
+                                              color: AppColors.greyColor
+                                                  .withOpacity(.2),
+                                              width: 1,
+                                            ),
+                                          ),
+                                        ),
+                                        child: Text(
+                                          'Saran pengguna',
+                                          style: AppTextStyle.h3.copyWith(
+                                            color: AppColors.blackColor,
+                                            fontWeight: AppFontWeight.semiBold,
+                                          ),
+                                          textAlign: TextAlign.left,
+                                        ),
                                       ),
-                                    ),
-                                  ),
-                                  child: Text(
-                                    'Saran pengguna',
-                                    style: AppTextStyle.h3.copyWith(
-                                      color: AppColors.blackColor,
-                                      fontWeight: AppFontWeight.semiBold,
-                                    ),
-                                    textAlign: TextAlign.left,
-                                  ),
-                                ),
-                              ),
+                                    )
+                                  : Container(),
                             ),
-                            Visibility(
-                              visible: showRecommendUser,
-                              child: SizedBox(
-                                width: double.infinity,
-                                height: 180,
-                                child: FutureBuilder(
-                                  future: UserData.getRandomUser(),
-                                  builder: (context, snapshot) {
-                                    if (snapshot.connectionState ==
-                                        ConnectionState.done) {
-                                      if (snapshot.hasData) {
-                                        return ListView.builder(
-                                          scrollDirection: Axis.horizontal,
-                                          itemCount: snapshot.data!.length,
-                                          itemBuilder: (context, index) {
-                                            UserModel userData =
-                                                snapshot.data![index];
-                                            return UserProfile(
-                                              userData: userData,
+                            Obx(
+                              () => showRecommendUser.showRecommend()
+                                  ? SizedBox(
+                                      width: double.infinity,
+                                      height: 180,
+                                      child: FutureBuilder(
+                                        future: UserData.getRandomUser(),
+                                        builder: (context, snapshot) {
+                                          if (snapshot.connectionState ==
+                                              ConnectionState.done) {
+                                            if (snapshot.hasData) {
+                                              return ListView.builder(
+                                                scrollDirection:
+                                                    Axis.horizontal,
+                                                itemCount:
+                                                    snapshot.data!.length,
+                                                itemBuilder: (context, index) {
+                                                  UserModel userData =
+                                                      snapshot.data![index];
+                                                  return UserProfile(
+                                                    userData: userData,
+                                                  );
+                                                },
+                                              );
+                                            } else {
+                                              return const Center(
+                                                child:
+                                                    CircularProgressIndicator(),
+                                              );
+                                            }
+                                          } else {
+                                            return const Center(
+                                              child: Text("Tunggu"),
                                             );
-                                          },
-                                        );
-                                      } else {
-                                        return const Center(
-                                          child: CircularProgressIndicator(),
-                                        );
-                                      }
-                                    } else {
-                                      return const Center(
-                                        child: Text("Tunggu"),
-                                      );
-                                    }
-                                  },
-                                ),
-                              ),
+                                          }
+                                        },
+                                      ),
+                                    )
+                                  : Container(),
                             ),
                             Container(
                               padding:
@@ -416,3 +410,7 @@ class _VerifiedProfileState extends State<VerifiedProfile> {
     );
   }
 }
+
+final CounterFollowUser counterFollowUser = Get.put(CounterFollowUser());
+final ListFollowingCounter listFollowingCounter =
+    Get.put(ListFollowingCounter());
