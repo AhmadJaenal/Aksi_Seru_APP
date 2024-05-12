@@ -184,7 +184,7 @@ class _MyAppState extends State<MyApp> {
         ),
         GetPage(
           name: '/verified-profile',
-          page: () => const CheckConnection(page: VerifiedProfile()),
+          page: () => CheckConnection(page: VerifiedProfile()),
         ),
         GetPage(
           name: '/public-profile',

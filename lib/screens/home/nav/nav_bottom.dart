@@ -16,10 +16,10 @@ class _CustomNavBottomState extends State<CustomNavBottom> {
   int _selectedIndex = 0;
   final List<Widget> _pages = [
     FeedPage(),
-    SearchPage(),
+    const SearchPage(),
     ArticlePage(),
     FeedPage(),
-    const VerifiedProfile(),
+    VerifiedProfile(),
   ];
 
   @override
