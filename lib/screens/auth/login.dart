@@ -9,7 +9,6 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class Login extends StatelessWidget {
   Login({super.key});
@@ -64,11 +63,6 @@ class Login extends StatelessWidget {
                   final bool isValidEmail = EmailValidator.validate(
                       loginController.emailController.text.trim());
                   if (formKey.currentState!.validate() && isValidEmail) {
-                    final SharedPreferences sharedPreferences =
-                        await SharedPreferences.getInstance();
-                    sharedPreferences.setString(
-                        'email', loginController.emailController.text);
-
                     loginController.loginWithEmail();
                   } else {
                     CustomPopUp(

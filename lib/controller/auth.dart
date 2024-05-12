@@ -101,29 +101,28 @@ class LoginController extends GetxController {
   Future<void> loginWithEmail() async {
     var header = {'Content-Type': 'application/json'};
 
+    var url = Uri.parse(
+        ApiEndPoints.baseUrl + ApiEndPoints.authEndPoints.loginWithEmail);
+    Map<String, String> body = {
+      'email': emailController.text.trim(),
+      'password': passwordController.text,
+    };
+    http.Response response =
+        await http.post(url, body: jsonEncode(body), headers: header);
+    developer.log(response.body, name: 'status code');
     try {
-      var url = Uri.parse(
-          ApiEndPoints.baseUrl + ApiEndPoints.authEndPoints.loginWithEmail);
-      Map<String, String> body = {
-        'email': emailController.text.trim(),
-        'password': passwordController.text,
-      };
-      http.Response response =
-          await http.post(url, body: jsonEncode(body), headers: header);
-      if (response.statusCode == 200) {
-        Map<String, dynamic> jsonResponse = jsonDecode(response.body)['data'];
+      if (response.statusCode == 201 || response.statusCode == 200) {
+        var jsonResponse = jsonDecode(response.body)['data'];
         String token = jsonResponse['token'];
-        developer.log(token, name: 'user token login email');
-        if (token.isNotEmpty) {
-          final SharedPreferences prefs = await _prefs;
-          await prefs.setString('token', token);
-          emailController.clear();
-          passwordController.clear();
-          Get.toNamed('/recommendation-page');
-        }
+
+        final SharedPreferences prefs = await _prefs;
+        await prefs.setString('token', token);
+        emailController.clear();
+        passwordController.clear();
+        Get.toNamed('/recommendation-page');
       } else {
         Map<String, dynamic> jsonResponse = jsonDecode(response.body)['errors'];
-        String messageError = jsonResponse['message'][0];
+        String messageError = jsonResponse['message'];
 
         developer.log(messageError, name: 'response failed login');
         CustomPopUp(
