@@ -32,9 +32,8 @@ class _EditProfileState extends State<EditProfile> {
   Future<void> _getImageFromGallery() async {
     final picker = ImagePicker();
     final pickedImage = await picker.pickImage(source: ImageSource.gallery);
-    int fileSizeInBytes =
-        await pickedImage!.length(); // Tunggu hasil dari Future<int>
-    double fileSizeInKB = fileSizeInBytes / 1024; // Konversi ke Kilobytes
+    int fileSizeInBytes = await pickedImage!.length();
+    double fileSizeInKB = fileSizeInBytes / 1024;
 
     if (pickedImage != null && fileSizeInKB < 2000) {
       setState(() {

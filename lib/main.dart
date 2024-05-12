@@ -64,11 +64,6 @@ class _MyAppState extends State<MyApp> {
     await prefs.setString('token', '');
   }
 
-  // Future<void> setEmail() async {
-  //   final SharedPreferences prefs = await _prefs;
-  //   await prefs.setString('email', '');
-  // }
-
   Future<Widget> getToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? token = prefs.getString('token');
@@ -151,7 +146,7 @@ class _MyAppState extends State<MyApp> {
         ),
         GetPage(
           name: '/review-post',
-          page: () => const CheckConnection(page: ReviewPost()),
+          page: () => CheckConnection(page: ReviewPost()),
         ),
         GetPage(
           name: '/notification-page',

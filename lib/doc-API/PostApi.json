@@ -17,7 +17,7 @@
                 "description": "Create new post",
                 "requestBody" : {
                     "content": {
-                        "multipart/form-data" : {
+                        "application/json" : {
                             "schema" : {
                                 "type": "object",
                                 "required": [
@@ -26,7 +26,7 @@
                                 "properties": {
                                     "image" : {
                                         "type": "string",
-                                        "format": "binary",
+                                        "format": "byte",
                                         "description": "Upload Image"
                                     },
                                     "caption" : {
@@ -149,7 +149,7 @@
                 "description": "Update post",
                 "requestBody" : {
                     "content": {
-                        "multipart/form-data" : {
+                        "application/json" : {
                             "schema" : {
                                 "type": "object",
                                 "required": [
@@ -161,7 +161,7 @@
                                     },
                                     "image" : {
                                         "type": "string",
-                                        "format": "binary",
+                                        "format": "byte",
                                         "description": "Upload Image"
                                     },
                                     "caption" : {
@@ -228,7 +228,7 @@
                                                     "The id field is required"
                                                 ],
                                                 "message" : [
-                                                    "Use caption and image photo fields to create your post"
+                                                    "Use caption and image photo fields to update your post"
                                                 ]
                                             }
                                         }
@@ -557,12 +557,15 @@
                             "schema" : {
                                 "type": "object",
                                 "required": [
-                                    "id"
+                                    "id", "comment"
                                 ],
                                 "properties": {
                                     "id" : {
                                         "type": "number"
-                                    }     
+                                    },
+                                    "comment" : {
+                                        "type": "string"
+                                    }  
                                 }
                             }
                         }

@@ -22,8 +22,8 @@ class UserEndPoints {
   static String searchUser = 'api/api/users/search.php';
 }
 
-class Story {
-  static String createStory = 'api/api/story/create.php';
+class Post {
+  static String createPost = 'api/api/post/create.php';
 }
 
 // class ApiEndPoints {

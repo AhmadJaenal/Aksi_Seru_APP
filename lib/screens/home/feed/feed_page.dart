@@ -90,11 +90,7 @@ class FeedPage extends StatelessWidget {
                                   EdgeInsets.all(12)),
                             ),
                             onPressed: () {
-                              if (formKey.currentState!.validate()) {
-                                Get.toNamed('/create-post');
-                              } else {
-                                developer.log('validasi gagal');
-                              }
+                              Get.toNamed('/create-post');
                             },
                             icon:
                                 Image.asset('assets/icon_image.png', width: 24),

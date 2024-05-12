@@ -109,20 +109,24 @@ class LoginController extends GetxController {
     };
     http.Response response =
         await http.post(url, body: jsonEncode(body), headers: header);
-    developer.log(response.body, name: 'status code');
-    try {
-      if (response.statusCode == 201 || response.statusCode == 200) {
-        var jsonResponse = jsonDecode(response.body)['data'];
-        String token = jsonResponse['token'];
 
-        final SharedPreferences prefs = await _prefs;
-        await prefs.setString('token', token);
-        emailController.clear();
-        passwordController.clear();
-        Get.toNamed('/recommendation-page');
+    try {
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        Map<String, dynamic> jsonResponse = jsonDecode(response.body)['data'];
+        String token = jsonResponse['token'];
+        String email = jsonResponse['email'];
+        developer.log(token, name: 'user token login email');
+        if (token.isNotEmpty) {
+          final SharedPreferences prefs = await _prefs;
+          await prefs.setString('token', token);
+          await prefs.setString('email', email);
+          emailController.clear();
+          passwordController.clear();
+          Get.toNamed('/recommendation-page');
+        }
       } else {
         Map<String, dynamic> jsonResponse = jsonDecode(response.body)['errors'];
-        String messageError = jsonResponse['message'];
+        String messageError = jsonResponse['message'][0];
 
         developer.log(messageError, name: 'response failed login');
         CustomPopUp(

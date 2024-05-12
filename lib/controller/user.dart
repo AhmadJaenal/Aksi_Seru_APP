@@ -57,7 +57,6 @@ class UserData extends GetxController {
     try {
       final response = await http.post(uri, headers: headers, body: data);
       if (response.statusCode == 200) {
-        developer.log(response.statusCode.toString(), name: 'test');
         CustomPopUp(
           icon: Icons.check_circle_outline_rounded,
           message: 'Berhasil Perbaharui Profile',

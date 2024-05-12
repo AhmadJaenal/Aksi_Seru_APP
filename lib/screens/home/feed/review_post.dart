@@ -1,15 +1,26 @@
+import 'dart:io';
+
+import 'package:aksi_seru_app/controller/post_controller.dart';
 import 'package:aksi_seru_app/shared/style.dart';
 import 'package:aksi_seru_app/widgets/custom_button.dart';
 import 'package:aksi_seru_app/widgets/user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+import 'dart:developer' as developer;
 
 class ReviewPost extends StatelessWidget {
-  const ReviewPost({super.key});
+  ReviewPost({super.key});
+
+  List<dynamic> dataPost = Get.arguments;
+
+  PostController postController = PostController();
 
   @override
   Widget build(BuildContext context) {
+    String caption = dataPost[0];
+    File image = dataPost[1];
+    String base64Image = dataPost[2];
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: false,
@@ -46,7 +57,7 @@ class ReviewPost extends StatelessWidget {
                 ),
                 const Gap(16),
                 Text(
-                  'Bagikan postingan',
+                  'Bagikan',
                   style: AppTextStyle.appbarTitle.copyWith(
                     color: AppColors.primary1,
                   ),
@@ -91,17 +102,32 @@ class ReviewPost extends StatelessWidget {
               ),
               const Gap(12),
               Text(
-                'Terhubung dengan menjaga keindahan alam🍂',
+                caption,
                 style: AppTextStyle.paragraphL.copyWith(
                   color: AppColors.blackColor,
                 ),
               ),
               const Gap(12),
-              Image.asset('assets/image_post.png'),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Image.file(
+                  image,
+                  height: 400,
+                  fit: BoxFit.cover,
+                ),
+              ),
               const Gap(12),
               const Spacer(),
               PrimaryButton(
-                  ontap: () => Get.offAllNamed('/nav-bar'), title: 'Bagikan')
+                title: 'Bagikan',
+                ontap: () {
+                  postController.createPost(
+                    base64Image: base64Image,
+                    caption: caption,
+                  );
+                  // Get.offAllNamed('/nav-bar'), title: 'Bagikan')
+                },
+              ),
             ],
           ),
         ),

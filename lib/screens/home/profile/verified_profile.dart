@@ -3,7 +3,6 @@ import 'package:aksi_seru_app/controller/user.dart';
 import 'package:aksi_seru_app/getX/counter_follow_user.dart';
 import 'package:aksi_seru_app/getX/show_recommend_user.dart';
 import 'package:aksi_seru_app/models/user_model.dart';
-import 'package:aksi_seru_app/screens/auth/login.dart';
 import 'package:aksi_seru_app/screens/home/profile/list_article.dart';
 import 'package:aksi_seru_app/screens/home/profile/list_following.dart';
 import 'package:aksi_seru_app/screens/home/profile/list_post.dart';
