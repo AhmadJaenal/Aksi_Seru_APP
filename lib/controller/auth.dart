@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:aksi_seru_app/controller/user.dart';
 import 'package:aksi_seru_app/utils/api.dart';
 import 'package:aksi_seru_app/widgets/custom_popup.dart';
 import 'package:flutter/material.dart';
@@ -40,7 +41,6 @@ class RegisterationController extends GetxController {
       developer.log('status code ${response.statusCode}');
 
       if (response.statusCode == 201) {
-        final json = jsonDecode(response.body);
         usernameController.clear();
         nameController.clear();
         passwordController.clear();
@@ -147,6 +147,33 @@ class LoginController extends GetxController {
         titleButton: 'Login kembali',
       );
       developer.log('Error: $e', name: 'error catch');
+    }
+  }
+}
+
+class LogoutController extends GetxController {
+  Future<void> deleteDataUserLogin() async {
+    String? token = await UserData.getToken();
+    final uri = Uri.parse(
+      ApiEndPoints.baseUrl + ApiEndPoints.authEndPoints.logout,
+    );
+
+    var headers = {
+      'X-Authorization': '$token',
+    };
+
+    final SharedPreferences sharedPreferences =
+        await SharedPreferences.getInstance();
+    try {
+      http.Response response = await http.delete(uri, headers: headers);
+      if (response.statusCode == 200) {
+        sharedPreferences.setString('email', '');
+        sharedPreferences.setString('token', '');
+        Get.offAndToNamed('/login');
+      }
+      developer.log(response.statusCode.toString(), name: 'response logout');
+    } catch (e) {
+      developer.log(e.toString(), name: 'error logout');
     }
   }
 }
