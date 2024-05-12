@@ -1,7 +1,9 @@
+import 'package:aksi_seru_app/controller/auth.dart';
 import 'package:aksi_seru_app/controller/user.dart';
 import 'package:aksi_seru_app/getX/counter_follow_user.dart';
 import 'package:aksi_seru_app/getX/show_recommend_user.dart';
 import 'package:aksi_seru_app/models/user_model.dart';
+import 'package:aksi_seru_app/screens/auth/login.dart';
 import 'package:aksi_seru_app/screens/home/profile/list_article.dart';
 import 'package:aksi_seru_app/screens/home/profile/list_following.dart';
 import 'package:aksi_seru_app/screens/home/profile/list_post.dart';
@@ -63,9 +65,10 @@ class VerifiedProfile extends StatelessWidget {
   final ListFollowersCounter listFollowers = ListFollowersCounter();
 
   final UserData userData = UserData();
-
+  LogoutController logoutController = LogoutController();
   @override
   Widget build(BuildContext context) {
+    final double height = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: AppColors.whiteColor,
       body: FutureBuilder(
@@ -109,7 +112,62 @@ class VerifiedProfile extends StatelessWidget {
                           icon: Image.asset('assets/icon_share.png', width: 24),
                         ),
                         IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            showModalBottomSheet(
+                              isScrollControlled: true,
+                              context: context,
+                              builder: (context) {
+                                return SizedBox(
+                                  width: double.infinity,
+                                  height: height * .65,
+                                  child: Column(
+                                    children: [
+                                      const Gap(16),
+                                      Container(
+                                        width: 60,
+                                        height: 5,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                          color: AppColors.greyColor,
+                                        ),
+                                      ),
+                                      const Gap(24),
+                                      Text(
+                                        'Keluar',
+                                        style: AppTextStyle.paragraphL.copyWith(
+                                          color: AppColors.blackColor,
+                                        ),
+                                      ),
+                                      const Gap(24),
+                                      Container(
+                                        width: double.infinity,
+                                        padding: EdgeInsets.all(
+                                            AppMargin.defaultMargin),
+                                        decoration: BoxDecoration(
+                                          border: Border.symmetric(
+                                            horizontal: BorderSide(
+                                              color: AppColors.greyColor
+                                                  .withOpacity(.2),
+                                              width: 1,
+                                            ),
+                                          ),
+                                        ),
+                                        child: DangerMiniButton(
+                                          icon: 'icon_block.png',
+                                          title: 'Keluar dari akun anda?',
+                                          ontap: () {
+                                            logoutController
+                                                .deleteDataUserLogin();
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                            );
+                          },
                           icon:
                               Image.asset('assets/icon_option.png', width: 24),
                         ),
