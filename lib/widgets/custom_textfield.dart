@@ -207,7 +207,6 @@ class CustomTextFieldMessage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
     return TextFormField(
       validator: (value) {
         if (value!.isEmpty) {

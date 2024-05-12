@@ -32,7 +32,6 @@ import 'package:aksi_seru_app/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:developer' as developer;
 
 import 'screens/home/feed/create_story.dart';
 import 'screens/home/nav/nav_bottom.dart';
@@ -96,7 +95,9 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      home: email != '' ? const CustomNavBottom() : const SplashScreen(),
+      home: email != ''
+          ? const CheckConnection(page: CustomNavBottom())
+          : const CheckConnection(page: SplashScreen()),
       getPages: [
         GetPage(
           name: '/splash-screen',
