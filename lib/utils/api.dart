@@ -25,6 +25,8 @@ class UserEndPoints {
 class Post {
   static String createPost = 'api/api/post/create.php';
   static String getPostByUser = 'api/api/post/current.php';
+  static String likePost = 'api/api/post/like.php';
+  static String unlikePost = 'api/api/post/delete-like.php';
 }
 
 // class ApiEndPoints {
