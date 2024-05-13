@@ -96,7 +96,6 @@ class UserData extends GetxController {
       final response = await http.get(uri, headers: headers);
       if (response.statusCode == 200) {
         var jsonResponse = jsonDecode(response.body)['data'];
-        // developer.log(jsonResponse.toString(), name: 'Response');
 
         List<UserModel> userData = [];
         jsonResponse.forEach((data) {
@@ -104,7 +103,6 @@ class UserData extends GetxController {
           userData.add(user);
         });
 
-        // developer.log(userData.toString(), name: 'userData');
         return userData;
       } else if (response.statusCode == 401) {
         developer.log('Unauthorized');
