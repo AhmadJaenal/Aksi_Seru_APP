@@ -76,4 +76,50 @@ class PostController extends GetxController {
       return null;
     }
   }
+
+  static Future<void> likePost({int? id}) async {
+    String? token = await UserData.getToken();
+
+    var headers = {
+      'X-Authorization': '$token',
+    };
+    var body = jsonEncode({'id': id});
+    final uri = Uri.parse(ApiEndPoints.baseUrl + Post.likePost);
+
+    try {
+      final response = await http.post(uri, headers: headers, body: body);
+
+      Map<String, dynamic> jsonResponse = jsonDecode(response.body)['data'];
+      if (response.statusCode == 200) {
+        developer.log(jsonResponse.toString(), name: 'success like');
+      } else {
+        developer.log(jsonResponse.toString(), name: 'failed like');
+      }
+    } catch (e) {
+      developer.log(e.toString(), name: 'catch post');
+    }
+  }
+
+  static Future<void> unLikePost({int? id}) async {
+    String? token = await UserData.getToken();
+
+    var headers = {
+      'X-Authorization': '$token',
+    };
+    var body = jsonEncode({'idlike': id});
+    final uri = Uri.parse(ApiEndPoints.baseUrl + Post.unlikePost);
+
+    try {
+      final response = await http.post(uri, headers: headers, body: body);
+
+      Map<String, dynamic> jsonResponse = jsonDecode(response.body)['data'];
+      if (response.statusCode == 200) {
+        developer.log(jsonResponse.toString(), name: 'success unlike');
+      } else {
+        developer.log(jsonResponse.toString(), name: 'failed unlike');
+      }
+    } catch (e) {
+      developer.log(e.toString(), name: 'catch post');
+    }
+  }
 }
