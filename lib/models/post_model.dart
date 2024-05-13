@@ -1,25 +1,30 @@
+import 'dart:developer' as developer;
+
 class PostModel {
   final int idPost;
+  final int userId;
+  final String caption;
   final String url;
   final int countLike;
   final int countComment;
-  final String date;
 
   PostModel({
     required this.idPost,
+    required this.userId,
+    required this.caption,
     required this.url,
     required this.countLike,
     required this.countComment,
-    required this.date,
   });
 
   factory PostModel.fromJson(Map<String, dynamic> json) {
     return PostModel(
-      idPost: json['idPost'],
-      url: json['url'],
-      countLike: json['countLike'],
-      countComment: json['countComment'],
-      date: json['date'],
+      idPost: json['post'][0]['id'],
+      userId: json['post'][0]['user_id'],
+      caption: json['post'][0]['caption'],
+      url: json['post'][0]['urlimage'],
+      countLike: json['post'][0]['countlike'],
+      countComment: json['post'][0]['countcomment'],
     );
   }
 }
