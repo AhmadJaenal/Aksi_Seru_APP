@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:aksi_seru_app/controller/user.dart';
+import 'package:aksi_seru_app/models/post_model.dart';
 import 'package:aksi_seru_app/utils/api.dart';
 import 'package:aksi_seru_app/widgets/custom_popup.dart';
 import 'package:flutter/material.dart';
@@ -48,7 +49,7 @@ class PostController extends GetxController {
     }
   }
 
-  static Future<void> getPostByUser() async {
+  static Future<List<PostModel>?> getPostByUser() async {
     String? token = await UserData.getToken();
 
     var headers = {
@@ -59,14 +60,20 @@ class PostController extends GetxController {
     try {
       final response = await http.get(uri, headers: headers);
 
-      developer.log(response.statusCode.toString(), name: 'status code');
+      Map<String, dynamic> jsonResponse = jsonDecode(response.body)['data'];
       if (response.statusCode == 200) {
-        developer.log(response.body, name: 'get post by user');
+        List<PostModel> listPost = [];
+        jsonResponse.forEach((key, value) {
+          listPost.add(PostModel.fromJson(value));
+        });
+        return listPost;
       } else {
-        developer.log(response.body, name: 'get post by user');
+        developer.log(response.body, name: 'failed get post by user');
+        return null;
       }
     } catch (e) {
       developer.log(e.toString(), name: 'catch post');
+      return null;
     }
   }
 }
