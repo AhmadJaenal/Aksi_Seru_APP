@@ -1,3 +1,4 @@
+import 'package:aksi_seru_app/getX/post.dart';
 import 'package:aksi_seru_app/models/post_model.dart';
 import 'package:aksi_seru_app/shared/style.dart';
 import 'package:aksi_seru_app/utils/api.dart';
@@ -26,14 +27,18 @@ class CardPost extends StatelessWidget {
 
   String imagePost = '';
 
+  LikeUnlikePost likeUnlikePost = LikeUnlikePost();
+
   @override
   Widget build(BuildContext context) {
     if (postModel.url != '') {
       List<String> userAvatar = postModel.url.split('localhost');
       imagePost = "${userAvatar[0]}${ApiEndPoints.ip}${userAvatar[1]}";
     }
+
     final double height = MediaQuery.of(context).size.height;
     final double width = MediaQuery.of(context).size.width;
+
     return Container(
       width: double.infinity,
       padding: EdgeInsets.symmetric(
@@ -189,30 +194,23 @@ class CardPost extends StatelessWidget {
             ),
           ),
           const Gap(12),
-          // Container(
-          //   width: double.infinity,
-          //   height: 342,
-          //   decoration: BoxDecoration(
-          //     color: AppColors.greyColor.withOpacity(.2),
-          //     borderRadius: BorderRadius.circular(12),
-          //     image: const DecorationImage(
-          //       fit: BoxFit.fitHeight,
-          //       image: AssetImage(
-          //         'assets/image_post.pngp',
-          //       ),
-          //     ),
-          //   ),
-          // ),
-
           ClipRRect(
             borderRadius: BorderRadius.circular(12),
-            child: Image.network(imagePost),
+            child: GestureDetector(
+              onDoubleTap: () {
+                likeUnlikePost.setLikeUnlike(id: postModel.idPost);
+              },
+              child: Image.network(imagePost),
+            ),
           ),
-
           const Gap(16),
           Row(
             children: [
-              Image.asset('assets/icon_liked.png', width: 24),
+              Obx(
+                () => likeUnlikePost.isLiked()
+                    ? Image.asset('assets/icon_like.png', width: 24)
+                    : Image.asset('assets/icon_unLike.png', width: 24),
+              ),
               const Gap(16),
               GestureDetector(
                   onTap: () {
