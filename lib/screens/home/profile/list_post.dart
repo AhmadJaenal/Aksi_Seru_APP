@@ -1,9 +1,12 @@
 import 'package:aksi_seru_app/controller/post_controller.dart';
+import 'package:aksi_seru_app/models/post_model.dart';
 import 'package:aksi_seru_app/shared/style.dart';
 import 'package:aksi_seru_app/widgets/card_post.dart';
 import 'package:aksi_seru_app/widgets/custom_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+import 'dart:developer' as developer;
 
 class ListPost extends StatelessWidget {
   ListPost({super.key});
@@ -67,11 +70,40 @@ class ListPost extends StatelessWidget {
               ),
             ),
           ),
-          SliverList(
-              delegate: SliverChildBuilderDelegate(
-            childCount: 10,
-            (context, index) => CardPost(),
-          ))
+          SliverToBoxAdapter(
+            child: SizedBox(
+              width: double.infinity,
+              height: MediaQuery.of(context).size.height * .7,
+              child: FutureBuilder(
+                future: PostController.getPostByUser(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    if (snapshot.hasData) {
+                      return ListView.builder(
+                        physics: const BouncingScrollPhysics(),
+                        itemCount: snapshot.data!.length,
+                        itemBuilder: (context, index) {
+                          PostModel userPost = snapshot.data![index];
+                          return CardPost(postModel: userPost);
+                        },
+                      );
+                    } else {
+                      return Center(
+                        child: Text(
+                          'Tidak ada data',
+                          style: AppTextStyle.appbarTitle.copyWith(
+                            color: AppColors.blackColor,
+                          ),
+                        ),
+                      );
+                    }
+                  } else {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                },
+              ),
+            ),
+          )
         ],
       ),
     );
