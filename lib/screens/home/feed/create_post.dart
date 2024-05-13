@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:aksi_seru_app/shared/style.dart';
 import 'package:aksi_seru_app/widgets/custom_button.dart';
+import 'package:aksi_seru_app/widgets/custom_popup.dart';
 import 'package:aksi_seru_app/widgets/custom_textfield.dart';
 import 'package:aksi_seru_app/widgets/user_profile.dart';
 import 'package:flutter/material.dart';
@@ -39,6 +40,16 @@ class _CreatePostState extends State<CreatePost> {
       setState(() {
         _image = File(pickedImage.path);
       });
+    } else {
+      CustomPopUp(
+        icon: Icons.photo_size_select_actual_outlined,
+        message: 'Ukuran foto harus kurang dari 2000kb',
+        isSuccess: false,
+        onTap: () {
+          Get.back();
+        },
+        titleButton: 'Kembali',
+      );
     }
     List<int> imageBytes = File(_image!.path).readAsBytesSync();
     var base64StringImage = base64Encode(imageBytes);
@@ -122,19 +133,10 @@ class _CreatePostState extends State<CreatePost> {
                   iconColor: AppColors.primary1,
                   titleColor: AppColors.primary1,
                 ),
-                const Gap(8),
-                MiniButton(
-                  icon: 'icon_location.png',
-                  title: 'Tambahkan lokasi',
-                  ontap: () {},
-                  color: AppColors.primary1,
-                  iconColor: AppColors.primary1,
-                  titleColor: AppColors.primary1,
-                ),
                 const Spacer(),
                 PrimaryButton(
                   ontap: () {
-                    if (formKey.currentState!.validate()) {
+                    if (formKey.currentState!.validate() && _image != null) {
                       Get.toNamed(
                         '/review-post',
                         arguments: [
@@ -144,7 +146,15 @@ class _CreatePostState extends State<CreatePost> {
                         ],
                       );
                     } else {
-                      developer.log('validasi gagal');
+                      CustomPopUp(
+                        icon: Icons.image_not_supported_outlined,
+                        message: 'Foto tidak boleh kosong',
+                        isSuccess: false,
+                        onTap: () {
+                          Get.back();
+                        },
+                        titleButton: 'Kembali',
+                      );
                     }
                   },
                   title: 'Lanjut',

@@ -24,6 +24,7 @@ class UserEndPoints {
 
 class Post {
   static String createPost = 'api/api/post/create.php';
+  static String getPostByUser = 'api/api/post/current.php';
 }
 
 // class ApiEndPoints {

@@ -59,6 +59,8 @@ class VerifiedProfile extends StatelessWidget {
     ],
   );
 
+  String avatar = '';
+
   final ShowRecommendUserState showRecommendUser =
       Get.put(ShowRecommendUserState());
   final ListFollowersCounter listFollowers = ListFollowersCounter();
@@ -77,14 +79,15 @@ class VerifiedProfile extends StatelessWidget {
             return const Center(child: CircularProgressIndicator());
           } else {
             UserModel user = snapshot.data!;
-            List<String> userAvatar = user.avatar.split('localhost');
-            String avatar =
-                "${userAvatar[0]}${ApiEndPoints.ip}${userAvatar[1]}";
+            developer.log(user.avatar, name: 'user avatar');
+            if (user.avatar != '') {
+              List<String> userAvatar = user.avatar.split('localhost');
+              avatar = "${userAvatar[0]}${ApiEndPoints.ip}${userAvatar[1]}";
+            }
 
             counterFollowUser.setCountUserFollow(user.following);
             counterFollowUser.setCountUserFollowers(user.followers);
 
-            developer.log(avatar.toString());
             return DefaultTabController(
               length: 2,
               initialIndex: 1,
@@ -193,12 +196,19 @@ class VerifiedProfile extends StatelessWidget {
                                     child: ClipRRect(
                                       borderRadius: const BorderRadius.all(
                                           Radius.circular(100)),
-                                      child: Image.network(
-                                        avatar,
-                                        fit: BoxFit.cover,
-                                        width: 70,
-                                        height: 70,
-                                      ),
+                                      child: avatar != ''
+                                          ? Image.network(
+                                              avatar,
+                                              fit: BoxFit.cover,
+                                              width: 70,
+                                              height: 70,
+                                            )
+                                          : Image.asset(
+                                              'assets/user_profile.png',
+                                              fit: BoxFit.cover,
+                                              width: 70,
+                                              height: 70,
+                                            ),
                                     ),
                                   ),
                                   const Gap(16),

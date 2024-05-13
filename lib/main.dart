@@ -88,7 +88,6 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     getValidationData();
-    // setEmail();
     super.initState();
   }
 
@@ -134,7 +133,7 @@ class _MyAppState extends State<MyApp> {
         ),
         GetPage(
           name: '/create-post',
-          page: () => CheckConnection(page: CreatePost()),
+          page: () => const CheckConnection(page: CreatePost()),
         ),
         GetPage(
           name: '/create-story',

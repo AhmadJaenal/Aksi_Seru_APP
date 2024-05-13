@@ -47,4 +47,26 @@ class PostController extends GetxController {
       developer.log(e.toString(), name: 'catch post');
     }
   }
+
+  static Future<void> getPostByUser() async {
+    String? token = await UserData.getToken();
+
+    var headers = {
+      'X-Authorization': '$token',
+    };
+    final uri = Uri.parse(ApiEndPoints.baseUrl + Post.getPostByUser);
+
+    try {
+      final response = await http.get(uri, headers: headers);
+
+      developer.log(response.statusCode.toString(), name: 'status code');
+      if (response.statusCode == 200) {
+        developer.log(response.body, name: 'get post by user');
+      } else {
+        developer.log(response.body, name: 'get post by user');
+      }
+    } catch (e) {
+      developer.log(e.toString(), name: 'catch post');
+    }
+  }
 }

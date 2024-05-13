@@ -1,3 +1,4 @@
+import 'package:aksi_seru_app/controller/post_controller.dart';
 import 'package:aksi_seru_app/shared/style.dart';
 import 'package:aksi_seru_app/widgets/card_post.dart';
 import 'package:aksi_seru_app/widgets/custom_textfield.dart';
@@ -18,6 +19,7 @@ class ListPost extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
+    PostController.getPostByUser();
     return Scaffold(
       backgroundColor: AppColors.whiteColor,
       body: CustomScrollView(
