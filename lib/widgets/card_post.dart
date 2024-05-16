@@ -1,22 +1,24 @@
 import 'package:aksi_seru_app/getX/post.dart';
 import 'package:aksi_seru_app/models/post_model.dart';
+import 'package:aksi_seru_app/models/user_model.dart';
 import 'package:aksi_seru_app/shared/style.dart';
 import 'package:aksi_seru_app/utils/api.dart';
 import 'package:aksi_seru_app/widgets/custom_button.dart';
 import 'package:aksi_seru_app/widgets/custom_textfield.dart';
 import 'package:aksi_seru_app/widgets/user_profile.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
 class CardPost extends StatelessWidget {
   final PostModel postModel;
-  // final LikeModel likeModel;
+  final List<LikeModel> likeModel;
 
   CardPost({
     super.key,
     required this.postModel,
-    // required this.likeModel,
+    required this.likeModel,
   });
 
   final TextEditingController _commentPostC = TextEditingController();
@@ -78,109 +80,9 @@ class CardPost extends StatelessWidget {
               ),
               const Spacer(),
               GestureDetector(
-                  onTap: () {
-                    showModalBottomSheet(
-                      isScrollControlled: true,
-                      context: context,
-                      builder: (context) {
-                        return SizedBox(
-                          width: double.infinity,
-                          height: height * .65,
-                          child: Column(
-                            children: [
-                              const Gap(16),
-                              Container(
-                                width: 60,
-                                height: 5,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(12),
-                                  color: AppColors.greyColor,
-                                ),
-                              ),
-                              const Gap(24),
-                              Text(
-                                'Opsi',
-                                style: AppTextStyle.paragraphL.copyWith(
-                                  color: AppColors.blackColor,
-                                ),
-                              ),
-                              const Gap(24),
-                              Container(
-                                width: double.infinity,
-                                padding:
-                                    EdgeInsets.all(AppMargin.defaultMargin),
-                                decoration: BoxDecoration(
-                                  border: Border.symmetric(
-                                    horizontal: BorderSide(
-                                      color:
-                                          AppColors.greyColor.withOpacity(.2),
-                                      width: 1,
-                                    ),
-                                  ),
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    MiniButton(
-                                      icon: 'icon_bookmark.png',
-                                      title: 'Simpan',
-                                      ontap: () {},
-                                    ),
-                                    const Gap(12),
-                                    MiniButton(
-                                      icon: 'icon_share.png',
-                                      title: 'Bagikan artikel',
-                                      ontap: () {},
-                                    ),
-                                    const Gap(12),
-                                    MiniButton(
-                                      icon: 'icon_closed_eye.png',
-                                      title: 'Sembunyikan',
-                                      ontap: () {},
-                                    ),
-                                    const Gap(12),
-                                    MiniButton(
-                                      icon: 'icon_information.png',
-                                      title: 'Tentang kreator',
-                                      ontap: () {},
-                                    ),
-                                    const Gap(12),
-                                  ],
-                                ),
-                              ),
-                              const Gap(12),
-                              Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: AppMargin.defaultMargin),
-                                child: Align(
-                                  alignment: Alignment.bottomLeft,
-                                  child: DangerMiniButton(
-                                    icon: 'icon_dislike.png',
-                                    title: 'Laporkan artikel',
-                                    ontap: () {},
-                                  ),
-                                ),
-                              ),
-                              const Gap(12),
-                              Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: AppMargin.defaultMargin),
-                                child: Align(
-                                  alignment: Alignment.bottomLeft,
-                                  child: DangerMiniButton(
-                                    icon: 'icon_block.png',
-                                    title: 'Blokir Mavropanos',
-                                    ontap: () {},
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                    );
-                  },
-                  child: Image.asset('assets/icon_option.png', width: 24))
+                onTap: () {},
+                child: Image.asset('assets/icon_option.png', width: 24),
+              )
             ],
           ),
           const Gap(12),
@@ -224,10 +126,71 @@ class CardPost extends StatelessWidget {
             ],
           ),
           const Gap(12),
-          Text(
-            'Carl Guerreiro dan 120 lainnya',
-            style: AppTextStyle.paragraphL.copyWith(
-              color: AppColors.blackColor,
+          GestureDetector(
+            onTap: () {
+              showModalBottomSheet(
+                isScrollControlled: true,
+                context: context,
+                builder: (context) {
+                  return SizedBox(
+                    width: double.infinity,
+                    height: height * .65,
+                    child: ListView.builder(
+                      itemCount: likeModel.length,
+                      itemBuilder: (context, index) {
+                        LikeModel userData = likeModel[index];
+                        return Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: AppMargin.defaultMargin, vertical: 5),
+                          child: SizedBox(
+                            width: 128,
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Image.asset('assets/user_profile.png',
+                                    width: 60),
+                                const Gap(8),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          userData.id.toString(),
+                                          style:
+                                              AppTextStyle.paragraphL.copyWith(
+                                            color: AppColors.blackColor,
+                                          ),
+                                        ),
+                                        const Gap(7),
+                                        const Verified(),
+                                      ],
+                                    ),
+                                    Text(
+                                      'userData.bio',
+                                      style: AppTextStyle.paragraphL.copyWith(
+                                        color: AppColors.blackColor,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                },
+              );
+            },
+            child: Text(
+              'Disukai ${postModel.countLike} orang',
+              style: AppTextStyle.paragraphL.copyWith(
+                color: AppColors.blackColor,
+              ),
             ),
           ),
           const Gap(16),
