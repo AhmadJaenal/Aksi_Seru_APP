@@ -49,7 +49,7 @@ class PostController extends GetxController {
     }
   }
 
-  static Future<List<PostModel>?> getPostByUser() async {
+  static Future<List?> getPostByUser() async {
     String? token = await UserData.getToken();
 
     var headers = {
@@ -62,20 +62,22 @@ class PostController extends GetxController {
 
       Map<String, dynamic> jsonResponse = jsonDecode(response.body)['data'];
       if (response.statusCode == 200) {
-        List<PostModel> listPost = [];
-        // List<LikeModel> listLike = [];
+        List listPostAndLike = [];
         jsonResponse.forEach((key, value) {
-          listPost.add(PostModel.fromJson(value));
-          // listLike.add(LikeModel.fromJson(value));
+          developer.log(value['like'].toString(), name: 'snapshot like');
+          listPostAndLike.add([
+            PostModel.fromJson(value['post'][0]),
+            LikeModel.fromJsonList(value['like']),
+          ]);
         });
 
-        return listPost;
+        return listPostAndLike;
       } else {
         developer.log(response.body, name: 'failed get post by user');
         return null;
       }
     } catch (e) {
-      developer.log(e.toString(), name: 'catch post');
+      developer.log(e.toString(), name: 'catch post test');
       return null;
     }
   }
