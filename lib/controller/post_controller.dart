@@ -63,9 +63,12 @@ class PostController extends GetxController {
       Map<String, dynamic> jsonResponse = jsonDecode(response.body)['data'];
       if (response.statusCode == 200) {
         List<PostModel> listPost = [];
+        // List<LikeModel> listLike = [];
         jsonResponse.forEach((key, value) {
           listPost.add(PostModel.fromJson(value));
+          // listLike.add(LikeModel.fromJson(value));
         });
+
         return listPost;
       } else {
         developer.log(response.body, name: 'failed get post by user');
