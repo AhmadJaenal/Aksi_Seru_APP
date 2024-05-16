@@ -19,12 +19,12 @@ class PostModel {
 
   factory PostModel.fromJson(Map<String, dynamic> json) {
     return PostModel(
-      idPost: json['post'][0]['id'],
-      userId: json['post'][0]['user_id'],
-      caption: json['post'][0]['caption'],
-      url: json['post'][0]['urlimage'],
-      countLike: json['post'][0]['countlike'],
-      countComment: json['post'][0]['countcomment'],
+      idPost: json['id'],
+      userId: json['user_id'],
+      caption: json['caption'],
+      url: json['urlimage'],
+      countLike: json['countlike'],
+      countComment: json['countcomment'],
     );
   }
 }
@@ -40,11 +40,13 @@ class LikeModel {
     required this.postId,
   });
   factory LikeModel.fromJson(Map<String, dynamic> json) {
-    developer.log(json['like'].toString(), name: 'json response');
     return LikeModel(
-      id: json['like'][0]['id'],
-      userId: json['like'][0]['user_id'],
-      postId: json['like'][0]['post_id'],
+      id: json['id'],
+      userId: json['user_id'],
+      postId: json['post_id'],
     );
+  }
+  static List<LikeModel> fromJsonList(List<dynamic> jsonList) {
+    return jsonList.map((json) => LikeModel.fromJson(json)).toList();
   }
 }
