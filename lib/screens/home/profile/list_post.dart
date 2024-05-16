@@ -83,8 +83,13 @@ class ListPost extends StatelessWidget {
                         physics: const BouncingScrollPhysics(),
                         itemCount: snapshot.data!.length,
                         itemBuilder: (context, index) {
-                          PostModel userPost = snapshot.data![index];
-                          return CardPost(postModel: userPost);
+                          PostModel userPost = snapshot.data![index][0];
+                          List<LikeModel> likePost = snapshot.data![index][1];
+
+                          return CardPost(
+                            postModel: userPost,
+                            likeModel: likePost,
+                          );
                         },
                       );
                     } else {
