@@ -28,3 +28,23 @@ class PostModel {
     );
   }
 }
+
+class LikeModel {
+  final int id;
+  final int userId;
+  final int postId;
+
+  LikeModel({
+    required this.id,
+    required this.userId,
+    required this.postId,
+  });
+  factory LikeModel.fromJson(Map<String, dynamic> json) {
+    developer.log(json['like'].toString(), name: 'json response');
+    return LikeModel(
+      id: json['like'][0]['id'],
+      userId: json['like'][0]['user_id'],
+      postId: json['like'][0]['post_id'],
+    );
+  }
+}
