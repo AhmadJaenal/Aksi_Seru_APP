@@ -11,10 +11,12 @@ import 'package:get/get.dart';
 
 class CardPost extends StatelessWidget {
   final PostModel postModel;
+  // final LikeModel likeModel;
 
   CardPost({
     super.key,
     required this.postModel,
+    // required this.likeModel,
   });
 
   final TextEditingController _commentPostC = TextEditingController();
