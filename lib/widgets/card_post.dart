@@ -1,15 +1,12 @@
 import 'package:aksi_seru_app/controller/post_controller.dart';
 import 'package:aksi_seru_app/getX/post.dart';
 import 'package:aksi_seru_app/models/post_model.dart';
-import 'package:aksi_seru_app/models/user_model.dart';
 import 'package:aksi_seru_app/shared/style.dart';
 import 'package:aksi_seru_app/utils/api.dart';
 import 'package:aksi_seru_app/widgets/custom_button.dart';
 import 'package:aksi_seru_app/widgets/custom_textfield.dart';
 import 'package:aksi_seru_app/widgets/user_profile.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
@@ -18,11 +15,13 @@ import 'dart:developer' as developer;
 class CardPost extends StatelessWidget {
   final PostModel postModel;
   final List<LikeModel> likeModel;
+  final List<CommentModel> commentModel;
 
   CardPost({
     super.key,
     required this.postModel,
     required this.likeModel,
+    required this.commentModel,
   });
 
   final TextEditingController _commentPostC = TextEditingController();
@@ -46,6 +45,9 @@ class CardPost extends StatelessWidget {
 
     final double height = MediaQuery.of(context).size.height;
     final double width = MediaQuery.of(context).size.width;
+
+    CommentState commentState = Get.put(CommentState());
+    commentState.setComment(commentModel);
 
     return Container(
       width: double.infinity,
@@ -171,7 +173,116 @@ class CardPost extends StatelessWidget {
               const Gap(16),
               GestureDetector(
                   onTap: () {
-                    sectionCommentPost(context, height, width);
+                    showModalBottomSheet(
+                      isScrollControlled: true,
+                      context: context,
+                      builder: (context) {
+                        return ClipRRect(
+                          borderRadius: const BorderRadiusDirectional.vertical(
+                            top: Radius.circular(12),
+                          ),
+                          child: SizedBox(
+                            height: height * .9,
+                            child: CustomScrollView(
+                              slivers: [
+                                SliverAppBar(
+                                  expandedHeight: 100,
+                                  collapsedHeight: 100,
+                                  pinned: true,
+                                  automaticallyImplyLeading: false,
+                                  backgroundColor: AppColors.whiteColor,
+                                  flexibleSpace: Container(
+                                    decoration: const BoxDecoration(
+                                      borderRadius:
+                                          BorderRadiusDirectional.vertical(
+                                        top: Radius.circular(12),
+                                      ),
+                                    ),
+                                    child: Column(
+                                      children: [
+                                        const Gap(16),
+                                        Center(
+                                          child: Container(
+                                            width: 60,
+                                            height: 5,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
+                                              color: AppColors.greyColor,
+                                            ),
+                                          ),
+                                        ),
+                                        const Gap(24),
+                                        Center(
+                                          child: Text(
+                                            'Postingan Mavropanos',
+                                            style: AppTextStyle.paragraphL
+                                                .copyWith(
+                                              color: AppColors.blackColor,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                // NOTE :: START CODE SECTION CAPTION POST
+                                SliverToBoxAdapter(
+                                  child: Container(
+                                    padding: EdgeInsets.all(
+                                      AppMargin.defaultMargin,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: AppColors.whiteColor,
+                                      border: Border.symmetric(
+                                        horizontal: BorderSide(
+                                          color: AppColors.greyColor
+                                              .withOpacity(.2),
+                                          width: 1,
+                                        ),
+                                      ),
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        const CardCaption(),
+                                        const Gap(12),
+                                        Text(
+                                          'Ruangan ini sangat nyaman dan terang. Saya menyukai desainnya yang minimalis dan modern. Pencahayaan alami yang masuk melalui jendela membuat ruangan terasa segar dan terbuka. Furnitur yang dipilih dengan baik memberikan kesan bersih dan rapi. Saya juga menghargai ruang kosong yang menciptakan perasaan lapang dan tenang. Secara keseluruhan, ruangan ini memberikan suasana yang menyenangkan untuk bekerja atau bersantai.🍀🍂🥀🌻🌷',
+                                          style:
+                                              AppTextStyle.paragraphL.copyWith(
+                                            color: AppColors.blackColor,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                // NOTE :: END CODE SECTION CAPTION POST,
+
+                                // NOTE :: STAR CODE SECTION COMMENT POST
+                                Obx(
+                                  () => SliverList(
+                                    delegate: SliverChildBuilderDelegate(
+                                      (context, index) {
+                                        final comment =
+                                            commentState.comment[index];
+                                        return CardComment(
+                                          comment: comment.comment,
+                                        );
+                                      },
+                                      childCount: commentState.length,
+                                    ),
+                                  ),
+                                )
+                                // NOTE :: END CODE SECTION COMMENT POST
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    );
                   },
                   child: Image.asset('assets/icon_comment.png', width: 24)),
               const Gap(16),
@@ -180,65 +291,7 @@ class CardPost extends StatelessWidget {
           ),
           const Gap(12),
           GestureDetector(
-            onTap: () {
-              showModalBottomSheet(
-                isScrollControlled: true,
-                context: context,
-                builder: (context) {
-                  return SizedBox(
-                    width: double.infinity,
-                    height: height * .65,
-                    child: ListView.builder(
-                      itemCount: likeModel.length,
-                      itemBuilder: (context, index) {
-                        LikeModel userData = likeModel[index];
-                        return Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: AppMargin.defaultMargin, vertical: 5),
-                          child: SizedBox(
-                            width: 128,
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Image.asset('assets/user_profile.png',
-                                    width: 60),
-                                const Gap(8),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          userData.id.toString(),
-                                          style:
-                                              AppTextStyle.paragraphL.copyWith(
-                                            color: AppColors.blackColor,
-                                          ),
-                                        ),
-                                        const Gap(7),
-                                        const Verified(),
-                                      ],
-                                    ),
-                                    Text(
-                                      'userData.bio',
-                                      style: AppTextStyle.paragraphL.copyWith(
-                                        color: AppColors.blackColor,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  );
-                },
-              );
-            },
+            onTap: () {},
             child: Text(
               'Disukai ${postModel.countLike} orang',
               style: AppTextStyle.paragraphL.copyWith(
@@ -249,7 +302,109 @@ class CardPost extends StatelessWidget {
           const Gap(16),
           GestureDetector(
             onTap: () {
-              sectionCommentPost(context, height, width);
+              showModalBottomSheet(
+                isScrollControlled: true,
+                context: context,
+                builder: (context) {
+                  return ClipRRect(
+                    borderRadius: const BorderRadiusDirectional.vertical(
+                      top: Radius.circular(12),
+                    ),
+                    child: SizedBox(
+                      height: height * .5,
+                      child: CustomScrollView(
+                        slivers: [
+                          SliverAppBar(
+                            expandedHeight: 100,
+                            collapsedHeight: 100,
+                            pinned: true,
+                            automaticallyImplyLeading: false,
+                            backgroundColor: AppColors.whiteColor,
+                            flexibleSpace: Container(
+                              decoration: const BoxDecoration(
+                                borderRadius: BorderRadiusDirectional.vertical(
+                                  top: Radius.circular(12),
+                                ),
+                              ),
+                              child: Column(
+                                children: [
+                                  const Gap(16),
+                                  Center(
+                                    child: Container(
+                                      width: 60,
+                                      height: 5,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(12),
+                                        color: AppColors.greyColor,
+                                      ),
+                                    ),
+                                  ),
+                                  const Gap(24),
+                                  Center(
+                                    child: Text(
+                                      'Postingan Mavropanos',
+                                      style: AppTextStyle.paragraphL.copyWith(
+                                        color: AppColors.blackColor,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          // NOTE :: START CODE SECTION CAPTION POST
+                          SliverToBoxAdapter(
+                            child: Container(
+                              padding: EdgeInsets.all(
+                                AppMargin.defaultMargin,
+                              ),
+                              decoration: BoxDecoration(
+                                color: AppColors.whiteColor,
+                                border: Border.symmetric(
+                                  horizontal: BorderSide(
+                                    color: AppColors.greyColor.withOpacity(.2),
+                                    width: 1,
+                                  ),
+                                ),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const CardCaption(),
+                                  const Gap(12),
+                                  Text(
+                                    'Ruangan ini sangat nyaman dan terang. Saya menyukai desainnya yang minimalis dan modern. Pencahayaan alami yang masuk melalui jendela membuat ruangan terasa segar dan terbuka. Furnitur yang dipilih dengan baik memberikan kesan bersih dan rapi. Saya juga menghargai ruang kosong yang menciptakan perasaan lapang dan tenang. Secara keseluruhan, ruangan ini memberikan suasana yang menyenangkan untuk bekerja atau bersantai.🍀🍂🥀🌻🌷',
+                                    style: AppTextStyle.paragraphL.copyWith(
+                                      color: AppColors.blackColor,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          // NOTE :: END CODE SECTION CAPTION POST,
+
+                          // NOTE :: STAR CODE SECTION COMMENT POST
+                          Obx(
+                            () => SliverList(
+                              delegate: SliverChildBuilderDelegate(
+                                (context, index) {
+                                  final comment = commentState.comment[index];
+                                  return CardComment(
+                                    comment: comment.comment,
+                                  );
+                                },
+                                childCount: commentState.length,
+                              ),
+                            ),
+                          )
+                          // NOTE :: END CODE SECTION COMMENT POST
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              );
             },
             child: Row(
               children: [
@@ -280,6 +435,7 @@ class CardPost extends StatelessWidget {
           ),
           const Gap(16),
           Form(
+            key: formKey,
             child: Row(
               children: [
                 Expanded(
@@ -291,7 +447,19 @@ class CardPost extends StatelessWidget {
                 const Gap(10),
                 PrimaryMiniIconButton(
                   icon: Icon(Icons.send, color: AppColors.whiteColor),
-                  onTap: () {},
+                  onTap: () async {
+                    if (formKey.currentState!.validate()) {
+                      final newComment = await PostController.commentPost(
+                        comment: _commentPostC.text,
+                        id: postModel.idPost,
+                      );
+
+                      if (newComment != null) {
+                        commentState.addComment(newComment);
+                      }
+                      _commentPostC.clear();
+                    }
+                  },
                 ),
               ],
             ),
@@ -307,131 +475,6 @@ class CardPost extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-
-  Future<dynamic> sectionCommentPost(
-      BuildContext context, double height, double width) {
-    return showModalBottomSheet(
-      isScrollControlled: true,
-      context: context,
-      builder: (context) {
-        return ClipRRect(
-          borderRadius: const BorderRadiusDirectional.vertical(
-            top: Radius.circular(12),
-          ),
-          child: SizedBox(
-            height: height * .8,
-            child: CustomScrollView(
-              slivers: [
-                SliverAppBar(
-                  expandedHeight: 100,
-                  collapsedHeight: 100,
-                  pinned: true,
-                  automaticallyImplyLeading: false,
-                  backgroundColor: AppColors.whiteColor,
-                  flexibleSpace: Container(
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadiusDirectional.vertical(
-                        top: Radius.circular(12),
-                      ),
-                    ),
-                    child: Column(
-                      children: [
-                        const Gap(16),
-                        Center(
-                          child: Container(
-                            width: 60,
-                            height: 5,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12),
-                              color: AppColors.greyColor,
-                            ),
-                          ),
-                        ),
-                        const Gap(24),
-                        Center(
-                          child: Text(
-                            'Postingan Mavropanos',
-                            style: AppTextStyle.paragraphL.copyWith(
-                              color: AppColors.blackColor,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                // NOTE :: START CODE SECTION CAPTION POST
-                SliverToBoxAdapter(
-                  child: Container(
-                    padding: EdgeInsets.all(
-                      AppMargin.defaultMargin,
-                    ),
-                    decoration: BoxDecoration(
-                      color: AppColors.whiteColor,
-                      border: Border.symmetric(
-                        horizontal: BorderSide(
-                          color: AppColors.greyColor.withOpacity(.2),
-                          width: 1,
-                        ),
-                      ),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        CardCaption(),
-                        const Gap(12),
-                        Text(
-                          'Ruangan ini sangat nyaman dan terang. Saya menyukai desainnya yang minimalis dan modern. Pencahayaan alami yang masuk melalui jendela membuat ruangan terasa segar dan terbuka. Furnitur yang dipilih dengan baik memberikan kesan bersih dan rapi. Saya juga menghargai ruang kosong yang menciptakan perasaan lapang dan tenang. Secara keseluruhan, ruangan ini memberikan suasana yang menyenangkan untuk bekerja atau bersantai.🍀🍂🥀🌻🌷',
-                          style: AppTextStyle.paragraphL.copyWith(
-                            color: AppColors.blackColor,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                // NOTE :: END CODE SECTION CAPTION POST,
-
-                // NOTE :: STAR CODE SECTION COMMENT POST
-                // SliverList(
-                //   delegate: SliverChildBuilderDelegate(
-                //     childCount: 10,
-                //     (context, index) {
-                //       return CardComment();
-                //     },
-                //   ),
-                // )
-
-                SliverToBoxAdapter(
-                  child: FutureBuilder(
-                    future: PostController.getCommentPost(),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.done) {
-                        if (snapshot.hasData) {
-                          return const Center(child: Text('test komentar'));
-                        } else {
-                          return const Padding(
-                            padding: EdgeInsets.only(top: 50),
-                            child: Center(child: Text('Tidak ada komentar')),
-                          );
-                        }
-                      } else {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      }
-                    },
-                  ),
-                ),
-
-                // NOTE :: END CODE SECTION COMMENT POST
-              ],
-            ),
-          ),
-        );
-      },
     );
   }
 }
@@ -488,8 +531,10 @@ class CardCaption extends StatelessWidget {
 }
 
 class CardComment extends StatelessWidget {
+  final String comment;
   const CardComment({
     super.key,
+    required this.comment,
   });
 
   @override
@@ -497,7 +542,10 @@ class CardComment extends StatelessWidget {
     double width = MediaQuery.of(context).size.width;
     return Container(
       color: AppColors.whiteColor,
-      padding: EdgeInsets.all(AppMargin.defaultMargin),
+      padding: EdgeInsets.symmetric(
+        horizontal: AppMargin.defaultMargin,
+        vertical: 12,
+      ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -532,7 +580,7 @@ class CardComment extends StatelessWidget {
               SizedBox(
                 width: width * .6,
                 child: Text(
-                  'Ruangan ini sangat nyaman dan terang. Saya menyukai desainnya yang minimalis dan modern. Pencahayaan alami yang masuk melalui jendela membuat ruangan terasa segar dan terbuka. Furnitur yang dipilih dengan baik memberikan kesan bersih dan rapi. Saya juga menghargai ruang kosong yang menciptakan perasaan lapang dan tenang. Secara keseluruhan, ruangan ini memberikan suasana yang menyenangkan untuk bekerja atau bersantai.🍀🍂🥀🌻🌷',
+                  comment,
                   style: AppTextStyle.paragraphL.copyWith(
                       color: AppColors.blackColor,
                       fontWeight: AppFontWeight.reguler),
