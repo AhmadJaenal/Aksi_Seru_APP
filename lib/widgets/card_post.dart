@@ -1,3 +1,4 @@
+import 'package:aksi_seru_app/controller/post_controller.dart';
 import 'package:aksi_seru_app/getX/post.dart';
 import 'package:aksi_seru_app/models/post_model.dart';
 import 'package:aksi_seru_app/models/user_model.dart';
@@ -6,10 +7,13 @@ import 'package:aksi_seru_app/utils/api.dart';
 import 'package:aksi_seru_app/widgets/custom_button.dart';
 import 'package:aksi_seru_app/widgets/custom_textfield.dart';
 import 'package:aksi_seru_app/widgets/user_profile.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+
+import 'dart:developer' as developer;
 
 class CardPost extends StatelessWidget {
   final PostModel postModel;
@@ -80,7 +84,56 @@ class CardPost extends StatelessWidget {
               ),
               const Spacer(),
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  showModalBottomSheet(
+                    isScrollControlled: true,
+                    context: context,
+                    builder: (context) {
+                      return SizedBox(
+                        width: double.infinity,
+                        height: height * .65,
+                        child: Column(
+                          children: [
+                            const Gap(16),
+                            Container(
+                              width: 60,
+                              height: 5,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12),
+                                color: AppColors.greyColor,
+                              ),
+                            ),
+                            const Gap(24),
+                            Text(
+                              'Postingan',
+                              style: AppTextStyle.paragraphL.copyWith(
+                                color: AppColors.blackColor,
+                              ),
+                            ),
+                            const Gap(24),
+                            Container(
+                              width: double.infinity,
+                              padding: EdgeInsets.all(AppMargin.defaultMargin),
+                              decoration: BoxDecoration(
+                                border: Border.symmetric(
+                                  horizontal: BorderSide(
+                                    color: AppColors.greyColor.withOpacity(.2),
+                                    width: 1,
+                                  ),
+                                ),
+                              ),
+                              child: MiniButton(
+                                icon: 'icon_block.png',
+                                title: 'Edit Postingan',
+                                ontap: () {},
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  );
+                },
                 child: Image.asset('assets/icon_option.png', width: 24),
               )
             ],
@@ -102,7 +155,7 @@ class CardPost extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
             child: GestureDetector(
               onDoubleTap: () {
-                likeUnlikePost.setLikeUnlike(id: postModel.idPost);
+                PostController.likePost(id: postModel.idPost);
               },
               child: Image.network(imagePost),
             ),
@@ -194,31 +247,36 @@ class CardPost extends StatelessWidget {
             ),
           ),
           const Gap(16),
-          Row(
-            children: [
-              Image.asset('assets/user_profile.png', width: 32),
-              const Gap(6),
-              Text(
-                'Gionna Van Den Berg',
-                style: AppTextStyle.paragraphL.copyWith(
-                  color: AppColors.blackColor,
-                  fontWeight: AppFontWeight.bold,
-                ),
-              ),
-              const Gap(2),
-              const Verified(width: 12),
-              const Gap(8),
-              Expanded(
-                child: Text(
-                  'Keren sekali bunggggggggggggggggggggggggggg',
+          GestureDetector(
+            onTap: () {
+              sectionCommentPost(context, height, width);
+            },
+            child: Row(
+              children: [
+                Image.asset('assets/user_profile.png', width: 32),
+                const Gap(6),
+                Text(
+                  'Gionna Van Den Berg',
                   style: AppTextStyle.paragraphL.copyWith(
                     color: AppColors.blackColor,
+                    fontWeight: AppFontWeight.bold,
                   ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
                 ),
-              ),
-            ],
+                const Gap(2),
+                const Verified(width: 12),
+                const Gap(8),
+                Expanded(
+                  child: Text(
+                    'Keren sekali bunggggggggggggggggggggggggggg',
+                    style: AppTextStyle.paragraphL.copyWith(
+                      color: AppColors.blackColor,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ],
+            ),
           ),
           const Gap(16),
           Form(
@@ -231,13 +289,9 @@ class CardPost extends StatelessWidget {
                   ),
                 ),
                 const Gap(10),
-                Text(
-                  'Lihat 2 komentar',
-                  style: AppTextStyle.paragraphL.copyWith(
-                    color: AppColors.greyColor,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
+                PrimaryMiniIconButton(
+                  icon: Icon(Icons.send, color: AppColors.whiteColor),
+                  onTap: () {},
                 ),
               ],
             ),
@@ -326,47 +380,7 @@ class CardPost extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                          children: [
-                            Image.asset('assets/user_profile.png', width: 48),
-                            const Gap(8),
-                            RichText(
-                              text: TextSpan(
-                                style: AppTextStyle.paragraphL.copyWith(
-                                  color: AppColors.blackColor,
-                                ),
-                                children: <TextSpan>[
-                                  const TextSpan(
-                                    text: 'Mavropanos\n',
-                                  ),
-                                  TextSpan(
-                                    text: 'Artikel kreator',
-                                    style: AppTextStyle.paragraphM.copyWith(
-                                      color: AppColors.blackColor,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            const Gap(4),
-                            const Padding(
-                              padding: EdgeInsets.only(bottom: 15),
-                              child: Verified(),
-                            ),
-                            const Gap(12),
-                            Padding(
-                              padding: const EdgeInsets.only(bottom: 15),
-                              child: Text(
-                                '4 jam yang lalu',
-                                style: AppTextStyle.paragraphL.copyWith(
-                                  color: AppColors.greyColor,
-                                ),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                          ],
-                        ),
+                        CardCaption(),
                         const Gap(12),
                         Text(
                           'Ruangan ini sangat nyaman dan terang. Saya menyukai desainnya yang minimalis dan modern. Pencahayaan alami yang masuk melalui jendela membuat ruangan terasa segar dan terbuka. Furnitur yang dipilih dengan baik memberikan kesan bersih dan rapi. Saya juga menghargai ruang kosong yang menciptakan perasaan lapang dan tenang. Secara keseluruhan, ruangan ini memberikan suasana yang menyenangkan untuk bekerja atau bersantai.🍀🍂🥀🌻🌷',
@@ -381,80 +395,36 @@ class CardPost extends StatelessWidget {
                 // NOTE :: END CODE SECTION CAPTION POST,
 
                 // NOTE :: STAR CODE SECTION COMMENT POST
-                SliverList(
-                    delegate: SliverChildBuilderDelegate(childCount: 10,
-                        (context, index) {
-                  return Container(
-                    color: AppColors.whiteColor,
-                    padding: EdgeInsets.all(AppMargin.defaultMargin),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Image.asset('assets/user_profile.png', width: 48),
-                        const Gap(8),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text(
-                                  'Gionna Van Den Berg',
-                                  style: AppTextStyle.paragraphL.copyWith(
-                                      color: AppColors.blackColor,
-                                      fontWeight: AppFontWeight.medium),
-                                ),
-                                const Gap(4),
-                                const Verified(width: 12),
-                                const Gap(10),
-                                Text(
-                                  '3 jam',
-                                  style: AppTextStyle.paragraphL.copyWith(
-                                    color: AppColors.greyColor,
-                                  ),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ],
-                            ),
-                            const Gap(2),
-                            SizedBox(
-                              width: width * .6,
-                              child: Text(
-                                'Ruangan ini sangat nyaman dan terang. Saya menyukai desainnya yang minimalis dan modern. Pencahayaan alami yang masuk melalui jendela membuat ruangan terasa segar dan terbuka. Furnitur yang dipilih dengan baik memberikan kesan bersih dan rapi. Saya juga menghargai ruang kosong yang menciptakan perasaan lapang dan tenang. Secara keseluruhan, ruangan ini memberikan suasana yang menyenangkan untuk bekerja atau bersantai.🍀🍂🥀🌻🌷',
-                                style: AppTextStyle.paragraphL.copyWith(
-                                    color: AppColors.blackColor,
-                                    fontWeight: AppFontWeight.reguler),
-                              ),
-                            ),
-                            const Gap(8),
-                            Row(
-                              children: [
-                                Text(
-                                  'Suka',
-                                  style: AppTextStyle.paragraphL
-                                      .copyWith(color: AppColors.greyColor),
-                                ),
-                                const Gap(16),
-                                Text(
-                                  'Balas',
-                                  style: AppTextStyle.paragraphL
-                                      .copyWith(color: AppColors.greyColor),
-                                )
-                              ],
-                            ),
-                            const Gap(8),
-                            Text(
-                              'Lihat 1 balasan',
-                              style: AppTextStyle.paragraphL
-                                  .copyWith(color: AppColors.blackColor),
-                            )
-                          ],
-                        ),
-                      ],
-                    ),
-                  );
-                }))
+                // SliverList(
+                //   delegate: SliverChildBuilderDelegate(
+                //     childCount: 10,
+                //     (context, index) {
+                //       return CardComment();
+                //     },
+                //   ),
+                // )
+
+                SliverToBoxAdapter(
+                  child: FutureBuilder(
+                    future: PostController.getCommentPost(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.done) {
+                        if (snapshot.hasData) {
+                          return const Center(child: Text('test komentar'));
+                        } else {
+                          return const Padding(
+                            padding: EdgeInsets.only(top: 50),
+                            child: Center(child: Text('Tidak ada komentar')),
+                          );
+                        }
+                      } else {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                    },
+                  ),
+                ),
 
                 // NOTE :: END CODE SECTION COMMENT POST
               ],
@@ -462,6 +432,138 @@ class CardPost extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+}
+
+class CardCaption extends StatelessWidget {
+  const CardCaption({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Image.asset('assets/user_profile.png', width: 48),
+        const Gap(8),
+        RichText(
+          text: TextSpan(
+            style: AppTextStyle.paragraphL.copyWith(
+              color: AppColors.blackColor,
+            ),
+            children: <TextSpan>[
+              const TextSpan(
+                text: 'Mavropanos\n',
+              ),
+              TextSpan(
+                text: 'Artikel kreator',
+                style: AppTextStyle.paragraphM.copyWith(
+                  color: AppColors.blackColor,
+                ),
+              ),
+            ],
+          ),
+        ),
+        const Gap(4),
+        const Padding(
+          padding: EdgeInsets.only(bottom: 15),
+          child: Verified(),
+        ),
+        const Gap(12),
+        Padding(
+          padding: const EdgeInsets.only(bottom: 15),
+          child: Text(
+            '4 jam yang lalu',
+            style: AppTextStyle.paragraphL.copyWith(
+              color: AppColors.greyColor,
+            ),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class CardComment extends StatelessWidget {
+  const CardComment({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    return Container(
+      color: AppColors.whiteColor,
+      padding: EdgeInsets.all(AppMargin.defaultMargin),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Image.asset('assets/user_profile.png', width: 48),
+          const Gap(8),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    'Gionna Van Den Berg',
+                    style: AppTextStyle.paragraphL.copyWith(
+                        color: AppColors.blackColor,
+                        fontWeight: AppFontWeight.medium),
+                  ),
+                  const Gap(4),
+                  const Verified(width: 12),
+                  const Gap(10),
+                  Text(
+                    '3 jam',
+                    style: AppTextStyle.paragraphL.copyWith(
+                      color: AppColors.greyColor,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
+              const Gap(2),
+              SizedBox(
+                width: width * .6,
+                child: Text(
+                  'Ruangan ini sangat nyaman dan terang. Saya menyukai desainnya yang minimalis dan modern. Pencahayaan alami yang masuk melalui jendela membuat ruangan terasa segar dan terbuka. Furnitur yang dipilih dengan baik memberikan kesan bersih dan rapi. Saya juga menghargai ruang kosong yang menciptakan perasaan lapang dan tenang. Secara keseluruhan, ruangan ini memberikan suasana yang menyenangkan untuk bekerja atau bersantai.🍀🍂🥀🌻🌷',
+                  style: AppTextStyle.paragraphL.copyWith(
+                      color: AppColors.blackColor,
+                      fontWeight: AppFontWeight.reguler),
+                ),
+              ),
+              const Gap(8),
+              Row(
+                children: [
+                  Text(
+                    'Suka',
+                    style: AppTextStyle.paragraphL
+                        .copyWith(color: AppColors.greyColor),
+                  ),
+                  const Gap(16),
+                  Text(
+                    'Balas',
+                    style: AppTextStyle.paragraphL
+                        .copyWith(color: AppColors.greyColor),
+                  )
+                ],
+              ),
+              const Gap(8),
+              Text(
+                'Lihat 1 balasan',
+                style: AppTextStyle.paragraphL
+                    .copyWith(color: AppColors.blackColor),
+              )
+            ],
+          ),
+        ],
+      ),
     );
   }
 }
