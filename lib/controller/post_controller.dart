@@ -82,9 +82,9 @@ class PostController extends GetxController {
     }
   }
 
-  static Future<void> commentPost({int? id, String? comment}) async {
+  static Future<CommentModel?> commentPost(
+      {required String comment, required int id}) async {
     String? token = await UserData.getToken();
-
     var headers = {
       'X-Authorization': '$token',
     };
@@ -95,17 +95,21 @@ class PostController extends GetxController {
       "comment": comment,
     });
 
+    developer.log(body.toString(), name: 'body');
+
     try {
       final response = await http.post(uri, headers: headers, body: body);
 
-      Map<String, dynamic> jsonResponse = jsonDecode(response.body)['data'];
       if (response.statusCode == 200) {
-        developer.log(jsonResponse.toString(), name: 'success comment in post');
+        final data = jsonDecode(response.body)['data'];
+        return CommentModel.fromJson(data);
       } else {
-        developer.log(jsonResponse.toString(), name: 'failed comment in post');
+        developer.log(response.body, name: 'Failed to comment on post');
+        return null;
       }
     } catch (e) {
-      developer.log(e.toString(), name: 'catch post test');
+      developer.log(e.toString(), name: 'Catch comment post error');
+      return null;
     }
   }
 
