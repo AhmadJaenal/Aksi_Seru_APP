@@ -44,6 +44,33 @@ class PrimaryButton extends StatelessWidget {
   }
 }
 
+class PrimaryMiniIconButton extends StatelessWidget {
+  final Icon icon;
+  final Function() onTap;
+  const PrimaryMiniIconButton({
+    super.key,
+    required this.icon,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      style: ButtonStyle(
+        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
+        backgroundColor: MaterialStatePropertyAll(AppColors.primary1),
+        padding: const MaterialStatePropertyAll(EdgeInsets.all(12)),
+      ),
+      onPressed: onTap,
+      icon: icon,
+    );
+  }
+}
+
 class MiniButton extends StatelessWidget {
   final String icon;
   final String title;
