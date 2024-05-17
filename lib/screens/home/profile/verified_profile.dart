@@ -79,7 +79,6 @@ class VerifiedProfile extends StatelessWidget {
             return const Center(child: CircularProgressIndicator());
           } else {
             UserModel user = snapshot.data!;
-            developer.log(user.avatar, name: 'user avatar');
             if (user.avatar != '') {
               List<String> userAvatar = user.avatar.split('localhost');
               avatar = "${userAvatar[0]}${ApiEndPoints.ip}${userAvatar[1]}";
