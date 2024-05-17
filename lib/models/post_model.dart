@@ -50,3 +50,25 @@ class LikeModel {
     return jsonList.map((json) => LikeModel.fromJson(json)).toList();
   }
 }
+class CommentModel {
+  final int id;
+  final int postId;
+  final int comment;
+
+  CommentModel({
+    required this.id,
+    required this.postId,
+    required this.comment,
+  });
+  factory CommentModel.fromJson(Map<String, dynamic> json) {
+    return CommentModel(
+      id: json['id'],
+      postId: json['post_id'],
+      comment: json['comment'],
+    );
+  }
+
+  static List<CommentModel> fromJsonList(List<dynamic> jsonList) {
+    return jsonList.map((json) => CommentModel.fromJson(json)).toList();
+  }
+}
