@@ -27,8 +27,8 @@ class Post {
   static String getPostByUser = 'api/api/post/current.php';
   static String likePost = 'api/api/post/like.php';
   static String unlikePost = 'api/api/post/delete-like.php';
+  static String commentPost = 'api/api/post/comment.php';
 }
-
 // class ApiEndPoints {
 //   static String baseUrl = 'https://apitubesmppl.000webhostapp.com/';
 //   static _AuthEndPoints authEndPoints = _AuthEndPoints();
