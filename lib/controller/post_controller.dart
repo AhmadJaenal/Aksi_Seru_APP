@@ -81,6 +81,32 @@ class PostController extends GetxController {
       return null;
     }
   }
+  static Future<void> commentPost({int? id, String? comment}) async {
+    String? token = await UserData.getToken();
+
+    var headers = {
+      'X-Authorization': '$token',
+    };
+    final uri = Uri.parse(ApiEndPoints.baseUrl + Post.commentPost);
+
+    var body = jsonEncode({
+      "id": id,
+      "comment": comment,
+    });
+
+    try {
+      final response = await http.post(uri, headers: headers, body: body);
+
+      Map<String, dynamic> jsonResponse = jsonDecode(response.body)['data'];
+      if (response.statusCode == 200) {
+        developer.log(jsonResponse.toString(), name: 'success comment in post');
+      } else {
+        developer.log(jsonResponse.toString(), name: 'failed comment in post');
+      }
+    } catch (e) {
+      developer.log(e.toString(), name: 'catch post test');
+    }
+  }
 
   static Future<void> likePost({int? id}) async {
     String? token = await UserData.getToken();
