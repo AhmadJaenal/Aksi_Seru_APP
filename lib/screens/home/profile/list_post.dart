@@ -85,10 +85,12 @@ class ListPost extends StatelessWidget {
                         itemBuilder: (context, index) {
                           PostModel userPost = snapshot.data![index][0];
                           List<LikeModel> likePost = snapshot.data![index][1];
-
+                          List<CommentModel> commentPost =
+                              snapshot.data![index][2];
                           return CardPost(
                             postModel: userPost,
                             likeModel: likePost,
+                            commentModel: commentPost,
                           );
                         },
                       );
