@@ -18,3 +18,16 @@ class LikeUnlikePost extends GetxController {
     likeState.value = !likeState.value;
   }
 }
+class CommentState extends GetxController {
+  var comment = <CommentModel>[].obs;
+
+  int get length => comment.length;
+
+  void setComment(List<CommentModel> userComment) {
+    comment.assignAll(userComment);
+  }
+
+  void addComment(CommentModel newComment) {
+    comment.add(newComment);
+  }
+}
