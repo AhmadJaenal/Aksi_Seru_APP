@@ -64,10 +64,10 @@ class PostController extends GetxController {
       if (response.statusCode == 200) {
         List listPostAndLike = [];
         jsonResponse.forEach((key, value) {
-          developer.log(value['like'].toString(), name: 'snapshot like');
           listPostAndLike.add([
             PostModel.fromJson(value['post'][0]),
             LikeModel.fromJsonList(value['like']),
+            CommentModel.fromJsonList(value['comment']),
           ]);
         });
 
@@ -81,6 +81,7 @@ class PostController extends GetxController {
       return null;
     }
   }
+
   static Future<void> commentPost({int? id, String? comment}) async {
     String? token = await UserData.getToken();
 
@@ -120,14 +121,15 @@ class PostController extends GetxController {
     try {
       final response = await http.post(uri, headers: headers, body: body);
 
-      Map<String, dynamic> jsonResponse = jsonDecode(response.body)['data'];
+      Map<String, dynamic> jsonResponse = jsonDecode(response.body);
+      developer.log(jsonResponse.toString(), name: 'success like');
       if (response.statusCode == 200) {
-        developer.log(jsonResponse.toString(), name: 'success like');
+        developer.log(jsonResponse['data'].toString(), name: 'success like');
       } else {
-        developer.log(jsonResponse.toString(), name: 'failed like');
+        developer.log(jsonResponse['errors'].toString(), name: 'failed like');
       }
     } catch (e) {
-      developer.log(e.toString(), name: 'catch post');
+      developer.log(e.toString(), name: 'catch like');
     }
   }
 
@@ -138,12 +140,13 @@ class PostController extends GetxController {
       'X-Authorization': '$token',
     };
     var body = jsonEncode({'idlike': id});
+    developer.log(body.toString(), name: 'idlike');
     final uri = Uri.parse(ApiEndPoints.baseUrl + Post.unlikePost);
 
     try {
-      final response = await http.post(uri, headers: headers, body: body);
+      final response = await http.delete(uri, headers: headers, body: body);
 
-      Map<String, dynamic> jsonResponse = jsonDecode(response.body)['data'];
+      Map<String, dynamic> jsonResponse = jsonDecode(response.body);
       if (response.statusCode == 200) {
         developer.log(jsonResponse.toString(), name: 'success unlike');
       } else {
