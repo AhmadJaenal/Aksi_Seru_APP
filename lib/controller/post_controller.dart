@@ -105,11 +105,9 @@ class PostController extends GetxController {
         return CommentModel.fromJson(data);
       } else {
         developer.log(response.body, name: 'Failed to comment on post');
-        return null;
       }
     } catch (e) {
       developer.log(e.toString(), name: 'Catch comment post error');
-      return null;
     }
   }
 

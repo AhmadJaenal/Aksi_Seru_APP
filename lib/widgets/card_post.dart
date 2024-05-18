@@ -46,9 +46,6 @@ class CardPost extends StatelessWidget {
     final double height = MediaQuery.of(context).size.height;
     final double width = MediaQuery.of(context).size.width;
 
-    CommentState commentState = Get.put(CommentState());
-    commentState.setComment(commentModel);
-
     return Container(
       width: double.infinity,
       padding: EdgeInsets.symmetric(
@@ -262,20 +259,24 @@ class CardPost extends StatelessWidget {
                                 // NOTE :: END CODE SECTION CAPTION POST,
 
                                 // NOTE :: STAR CODE SECTION COMMENT POST
-                                Obx(
-                                  () => SliverList(
-                                    delegate: SliverChildBuilderDelegate(
-                                      (context, index) {
-                                        final comment =
-                                            commentState.comment[index];
-                                        return CardComment(
-                                          comment: comment.comment,
-                                        );
-                                      },
-                                      childCount: commentState.length,
-                                    ),
-                                  ),
-                                )
+                                commentModel.isNotEmpty
+                                    ? SliverList(
+                                        delegate: SliverChildBuilderDelegate(
+                                          (context, index) {
+                                            final comment = commentModel[index];
+                                            return CardComment(
+                                              comment: comment.comment,
+                                              createdAt: comment.createdAt,
+                                            );
+                                          },
+                                          childCount: commentModel.length,
+                                        ),
+                                      )
+                                    : const SliverToBoxAdapter(
+                                        child: Center(
+                                          child: Text('Tidak ada komentar'),
+                                        ),
+                                      )
                                 // NOTE :: END CODE SECTION COMMENT POST
                               ],
                             ),
@@ -385,19 +386,24 @@ class CardPost extends StatelessWidget {
                           // NOTE :: END CODE SECTION CAPTION POST,
 
                           // NOTE :: STAR CODE SECTION COMMENT POST
-                          Obx(
-                            () => SliverList(
-                              delegate: SliverChildBuilderDelegate(
-                                (context, index) {
-                                  final comment = commentState.comment[index];
-                                  return CardComment(
-                                    comment: comment.comment,
-                                  );
-                                },
-                                childCount: commentState.length,
-                              ),
-                            ),
-                          )
+                          commentModel.isNotEmpty
+                              ? SliverList(
+                                  delegate: SliverChildBuilderDelegate(
+                                    (context, index) {
+                                      final comment = commentModel[index];
+                                      return CardComment(
+                                        comment: comment.comment,
+                                        createdAt: comment.createdAt,
+                                      );
+                                    },
+                                    childCount: commentModel.length,
+                                  ),
+                                )
+                              : const SliverToBoxAdapter(
+                                  child: Center(
+                                    child: Text('Tidak ada komentar'),
+                                  ),
+                                )
                           // NOTE :: END CODE SECTION COMMENT POST
                         ],
                       ),
@@ -449,14 +455,10 @@ class CardPost extends StatelessWidget {
                   icon: Icon(Icons.send, color: AppColors.whiteColor),
                   onTap: () async {
                     if (formKey.currentState!.validate()) {
-                      final newComment = await PostController.commentPost(
+                      PostController.commentPost(
                         comment: _commentPostC.text,
                         id: postModel.idPost,
                       );
-
-                      if (newComment != null) {
-                        commentState.addComment(newComment);
-                      }
                       _commentPostC.clear();
                     }
                   },
@@ -532,10 +534,9 @@ class CardCaption extends StatelessWidget {
 
 class CardComment extends StatelessWidget {
   final String comment;
-  const CardComment({
-    super.key,
-    required this.comment,
-  });
+  final String createdAt;
+  const CardComment(
+      {super.key, required this.comment, required this.createdAt});
 
   @override
   Widget build(BuildContext context) {
@@ -586,28 +587,28 @@ class CardComment extends StatelessWidget {
                       fontWeight: AppFontWeight.reguler),
                 ),
               ),
-              const Gap(8),
-              Row(
-                children: [
-                  Text(
-                    'Suka',
-                    style: AppTextStyle.paragraphL
-                        .copyWith(color: AppColors.greyColor),
-                  ),
-                  const Gap(16),
-                  Text(
-                    'Balas',
-                    style: AppTextStyle.paragraphL
-                        .copyWith(color: AppColors.greyColor),
-                  )
-                ],
-              ),
-              const Gap(8),
-              Text(
-                'Lihat 1 balasan',
-                style: AppTextStyle.paragraphL
-                    .copyWith(color: AppColors.blackColor),
-              )
+              // const Gap(8),
+              // Row(
+              //   children: [
+              //     Text(
+              //       'Suka',
+              //       style: AppTextStyle.paragraphL
+              //           .copyWith(color: AppColors.greyColor),
+              //     ),
+              //     const Gap(16),
+              //     Text(
+              //       'Balas',
+              //       style: AppTextStyle.paragraphL
+              //           .copyWith(color: AppColors.greyColor),
+              //     )
+              //   ],
+              // ),
+              // const Gap(8),
+              // Text(
+              //   'Lihat 1 balasan',
+              //   style: AppTextStyle.paragraphL
+              //       .copyWith(color: AppColors.blackColor),
+              // )
             ],
           ),
         ],

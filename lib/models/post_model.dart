@@ -57,12 +57,14 @@ class CommentModel {
   final int userId;
   final int postId;
   final String comment;
+  final String createdAt;
 
   CommentModel({
     required this.id,
     required this.userId,
     required this.postId,
     required this.comment,
+    required this.createdAt,
   });
   factory CommentModel.fromJson(Map<String, dynamic> json) {
     return CommentModel(
@@ -70,6 +72,7 @@ class CommentModel {
       userId: json['user_id'] ?? 0,
       postId: json['post_id'] ?? 0,
       comment: json['comment'],
+      createdAt: json['created_at'],
     );
   }
 

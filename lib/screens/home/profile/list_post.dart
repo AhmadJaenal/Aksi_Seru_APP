@@ -1,4 +1,5 @@
 import 'package:aksi_seru_app/controller/post_controller.dart';
+import 'package:aksi_seru_app/getX/post.dart';
 import 'package:aksi_seru_app/models/post_model.dart';
 import 'package:aksi_seru_app/shared/style.dart';
 import 'package:aksi_seru_app/widgets/card_post.dart';
