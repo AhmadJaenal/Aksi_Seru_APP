@@ -110,6 +110,33 @@ class PostController extends GetxController {
       developer.log(e.toString(), name: 'Catch comment post error');
     }
   }
+  static Future<bool> deletePost(
+      {required String comment, required int idPost}) async {
+    String? token = await UserData.getToken();
+    var headers = {
+      'X-Authorization': '$token',
+    };
+    final uri = Uri.parse(ApiEndPoints.baseUrl + Post.deletePost);
+
+    var body = jsonEncode({
+      "id": idPost,
+    });
+
+    try {
+      final response = await http.post(uri, headers: headers, body: body);
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body)['data'];
+        return true;
+      } else {
+        developer.log(response.body, name: 'Failed to comment on post');
+        return false;
+      }
+    } catch (e) {
+      developer.log(e.toString(), name: 'Catch comment post error');
+      return false;
+    }
+  }
 
   static Future<void> likePost({int? id}) async {
     String? token = await UserData.getToken();
