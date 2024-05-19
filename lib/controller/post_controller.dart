@@ -1,7 +1,10 @@
 import 'dart:convert';
 
 import 'package:aksi_seru_app/controller/user.dart';
+import 'package:aksi_seru_app/getX/nav_bottom_state.dart';
 import 'package:aksi_seru_app/models/post_model.dart';
+import 'package:aksi_seru_app/screens/home/errors/check_connection.dart';
+import 'package:aksi_seru_app/screens/home/nav/nav_bottom.dart';
 import 'package:aksi_seru_app/utils/api.dart';
 import 'package:aksi_seru_app/widgets/custom_popup.dart';
 import 'package:flutter/material.dart';
@@ -49,7 +52,7 @@ class PostController extends GetxController {
     }
   }
 
-  static Future<List?> getPostByUser() async {
+  static Stream<List?> getPostByUser() async* {
     String? token = await UserData.getToken();
 
     var headers = {
@@ -71,14 +74,12 @@ class PostController extends GetxController {
           ]);
         });
 
-        return listPostAndLike;
+        yield listPostAndLike;
       } else {
         developer.log(response.body, name: 'failed get post by user');
-        return null;
       }
     } catch (e) {
       developer.log(e.toString(), name: 'catch post test');
-      return null;
     }
   }
 
@@ -102,6 +103,7 @@ class PostController extends GetxController {
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body)['data'];
+        Get.back();
         return CommentModel.fromJson(data);
       } else {
         developer.log(response.body, name: 'Failed to comment on post');
@@ -110,8 +112,9 @@ class PostController extends GetxController {
       developer.log(e.toString(), name: 'Catch comment post error');
     }
   }
-  static Future<bool> deletePost(
-      {required String comment, required int idPost}) async {
+
+  static Future deletePost(
+      {required int idPost, required BuildContext context}) async {
     String? token = await UserData.getToken();
     var headers = {
       'X-Authorization': '$token',
@@ -122,21 +125,40 @@ class PostController extends GetxController {
       "id": idPost,
     });
 
+    final LandingPageController landingPageController =
+        Get.put(LandingPageController(), permanent: false);
+
     try {
       final response = await http.delete(uri, headers: headers, body: body);
+      developer.log(response.body.toString(), name: 'status code delete post');
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body)['data'];
-        return true;
+        CustomPopUp(
+          icon: Icons.check_circle_outline_rounded,
+          message: 'Berhasil hapus postingan',
+          onTap: () {},
+          titleButton: 'Halaman Profile',
+        );
+        Get.offAllNamed('/nav-bar');
+        landingPageController.changeTabIndex(4);
       } else {
-        developer.log(response.body, name: 'Failed to comment on post');
-        return false;
+        CustomPopUp(
+          icon: Icons.cancel_outlined,
+          message: 'Terjadi kesalahan hapus postingan!',
+          isSuccess: false,
+          onTap: () {
+            Get.back();
+          },
+          titleButton: 'Kembali',
+        );
+        // developer.log(response.body, name: 'Failed to comment on post');
       }
     } catch (e) {
       developer.log(e.toString(), name: 'Catch comment post error');
-      return false;
     }
   }
+
   static Future<bool> updatePost(
       {required String base64Image,
       required String caption,
