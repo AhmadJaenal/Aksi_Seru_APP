@@ -1,5 +1,5 @@
 class ApiEndPoints {
-  static String ip = '192.168.102.106';
+  static String ip = '192.168.177.106';
   static String baseUrl = 'http://$ip/';
   static _AuthEndPoints authEndPoints = _AuthEndPoints();
 }
@@ -28,6 +28,8 @@ class Post {
   static String likePost = 'api/api/post/like.php';
   static String unlikePost = 'api/api/post/delete-like.php';
   static String commentPost = 'api/api/post/comment.php';
+  static String deletePost = 'api/api/post/delete.php';
+  static String updatePost = 'api/api/post/update.php';
 }
 // class ApiEndPoints {
 //   static String baseUrl = 'https://apitubesmppl.000webhostapp.com/';
