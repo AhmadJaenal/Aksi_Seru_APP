@@ -67,6 +67,7 @@ class _MyAppState extends State<MyApp> {
   Future<Widget> getToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? token = prefs.getString('token');
+
     if (token!.isEmpty) {
       return const CheckConnection(page: SplashScreen());
     } else {
