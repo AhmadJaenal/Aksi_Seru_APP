@@ -278,7 +278,7 @@
                 }
             }
         },
-        "/api/post/current.php" : {
+        "/api/post/current.php" : { 
             "get" : {
                 "tags": ["Success"],
                 "description": "Get all posts created by a user",

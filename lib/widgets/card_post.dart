@@ -7,6 +7,7 @@ import 'package:aksi_seru_app/widgets/custom_button.dart';
 import 'package:aksi_seru_app/widgets/custom_textfield.dart';
 import 'package:aksi_seru_app/widgets/user_profile.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
@@ -45,6 +46,9 @@ class CardPost extends StatelessWidget {
 
     final double height = MediaQuery.of(context).size.height;
     final double width = MediaQuery.of(context).size.width;
+
+    CommentState commentState = Get.put(CommentState());
+    commentState.setComment(commentModel);
 
     return Container(
       width: double.infinity,
@@ -121,10 +125,52 @@ class CardPost extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                              child: MiniButton(
-                                icon: 'icon_block.png',
-                                title: 'Edit Postingan',
-                                ontap: () {},
+                              child: Column(
+                                children: [
+                                  SizedBox(
+                                    width: width * .7,
+                                    child: MiniButton(
+                                      icon: 'icon_block.png',
+                                      title: 'Edit Postingan',
+                                      ontap: () {},
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: width * .7,
+                                    child: MiniButton(
+                                      icon: 'icon_block.png',
+                                      title: 'Hapus Postingan',
+                                      ontap: () {
+                                        showDialog(
+                                          context: context,
+                                          builder: (context) => AlertDialog(
+                                            title: const Text(
+                                                'Yakin hapus postingan ini?'),
+                                            alignment: Alignment.center,
+                                            actions: [
+                                              MiniButton(
+                                                  icon: 'icon_block.png',
+                                                  title: 'Kembali',
+                                                  ontap: () {
+                                                    Get.back();
+                                                  }),
+                                              DangerMiniButton(
+                                                icon: 'icon_block.png',
+                                                title: 'Hapus',
+                                                ontap: () {
+                                                  PostController.deletePost(
+                                                    idPost: postModel.idPost,
+                                                    context: context,
+                                                  );
+                                                },
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ],
@@ -455,10 +501,11 @@ class CardPost extends StatelessWidget {
                   icon: Icon(Icons.send, color: AppColors.whiteColor),
                   onTap: () async {
                     if (formKey.currentState!.validate()) {
-                      PostController.commentPost(
+                      final newComment = await PostController.commentPost(
                         comment: _commentPostC.text,
                         id: postModel.idPost,
                       );
+
                       _commentPostC.clear();
                     }
                   },

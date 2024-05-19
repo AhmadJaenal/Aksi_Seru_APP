@@ -1,5 +1,4 @@
 import 'package:aksi_seru_app/controller/post_controller.dart';
-import 'package:aksi_seru_app/getX/post.dart';
 import 'package:aksi_seru_app/models/post_model.dart';
 import 'package:aksi_seru_app/shared/style.dart';
 import 'package:aksi_seru_app/widgets/card_post.dart';
@@ -75,38 +74,34 @@ class ListPost extends StatelessWidget {
             child: SizedBox(
               width: double.infinity,
               height: MediaQuery.of(context).size.height * .7,
-              child: FutureBuilder(
-                future: PostController.getPostByUser(),
+              child: StreamBuilder(
+                stream: PostController.getPostByUser(),
                 builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.done) {
-                    if (snapshot.hasData) {
-                      return ListView.builder(
-                        physics: const BouncingScrollPhysics(),
-                        itemCount: snapshot.data!.length,
-                        itemBuilder: (context, index) {
-                          PostModel userPost = snapshot.data![index][0];
-                          List<LikeModel> likePost = snapshot.data![index][1];
-                          List<CommentModel> commentPost =
-                              snapshot.data![index][2];
-                          return CardPost(
-                            postModel: userPost,
-                            likeModel: likePost,
-                            commentModel: commentPost,
-                          );
-                        },
-                      );
-                    } else {
-                      return Center(
-                        child: Text(
-                          'Tidak ada data',
-                          style: AppTextStyle.appbarTitle.copyWith(
-                            color: AppColors.blackColor,
-                          ),
-                        ),
-                      );
-                    }
+                  if (snapshot.hasData && snapshot.data!.length != 0) {
+                    return ListView.builder(
+                      physics: const BouncingScrollPhysics(),
+                      itemCount: snapshot.data!.length,
+                      itemBuilder: (context, index) {
+                        PostModel userPost = snapshot.data![index][0];
+                        List<LikeModel> likePost = snapshot.data![index][1];
+                        List<CommentModel> commentPost =
+                            snapshot.data![index][2];
+                        return CardPost(
+                          postModel: userPost,
+                          likeModel: likePost,
+                          commentModel: commentPost,
+                        );
+                      },
+                    );
                   } else {
-                    return const Center(child: CircularProgressIndicator());
+                    return Center(
+                      child: Text(
+                        'Belum ada postingan',
+                        style: AppTextStyle.h2.copyWith(
+                          color: AppColors.blackColor,
+                        ),
+                      ),
+                    );
                   }
                 },
               ),

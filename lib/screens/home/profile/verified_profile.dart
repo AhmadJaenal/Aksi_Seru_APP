@@ -16,59 +16,82 @@ import 'package:get/get.dart';
 
 import 'dart:developer' as developer;
 
-class VerifiedProfile extends StatelessWidget {
+class VerifiedProfile extends StatefulWidget {
   VerifiedProfile({super.key});
 
-  TabBar tabBar = TabBar(
-    padding: EdgeInsets.symmetric(horizontal: AppMargin.defaultMargin),
-    labelStyle: AppTextStyle.paragraphM.copyWith(color: AppColors.primary1),
-    unselectedLabelColor: AppColors.greyColor,
-    indicatorColor: AppColors.primary1,
-    indicatorWeight: 3,
-    indicatorSize: TabBarIndicatorSize.values[1],
-    splashBorderRadius: const BorderRadius.all(Radius.circular(10)),
-    indicator: UnderlineTabIndicator(
-      borderSide: BorderSide(color: AppColors.primary1, width: 4.0),
-      insets: const EdgeInsets.fromLTRB(40.0, 0.0, 50.0, 50.0),
-      borderRadius: const BorderRadius.vertical(bottom: Radius.circular(10)),
-    ),
-    dividerColor: Colors.transparent,
-    unselectedLabelStyle:
-        AppTextStyle.paragraphM.copyWith(color: AppColors.greyColor),
-    tabs: [
-      Tab(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset('assets/icon_list_post.png', width: 24),
-            const Gap(8),
-            const Text('Postingan'),
-          ],
-        ),
-      ),
-      Tab(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset('assets/icon_article.png', width: 24),
-            const Gap(8),
-            const Text('Saran pengguna'),
-          ],
-        ),
-      ),
-    ],
-  );
+  @override
+  State<VerifiedProfile> createState() => _VerifiedProfileState();
+}
+
+class _VerifiedProfileState extends State<VerifiedProfile>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 2, vsync: this, initialIndex: 0);
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
 
   String avatar = '';
 
   final ShowRecommendUserState showRecommendUser =
       Get.put(ShowRecommendUserState());
+
   final ListFollowersCounter listFollowers = ListFollowersCounter();
 
   final UserData userData = UserData();
+
   LogoutController logoutController = LogoutController();
+
   @override
   Widget build(BuildContext context) {
+    TabBar tabBar = TabBar(
+      controller: _tabController,
+      padding: EdgeInsets.symmetric(horizontal: AppMargin.defaultMargin),
+      labelStyle: AppTextStyle.paragraphM.copyWith(color: AppColors.primary1),
+      unselectedLabelColor: AppColors.greyColor,
+      indicatorColor: AppColors.primary1,
+      indicatorWeight: 3,
+      indicatorSize: TabBarIndicatorSize.values[1],
+      splashBorderRadius: const BorderRadius.all(Radius.circular(10)),
+      indicator: UnderlineTabIndicator(
+        borderSide: BorderSide(color: AppColors.primary1, width: 4.0),
+        insets: const EdgeInsets.fromLTRB(40.0, 0.0, 50.0, 50.0),
+        borderRadius: const BorderRadius.vertical(bottom: Radius.circular(10)),
+      ),
+      dividerColor: Colors.transparent,
+      unselectedLabelStyle:
+          AppTextStyle.paragraphM.copyWith(color: AppColors.greyColor),
+      tabs: [
+        Tab(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset('assets/icon_list_post.png', width: 24),
+              const Gap(8),
+              const Text('Postingan'),
+            ],
+          ),
+        ),
+        Tab(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset('assets/icon_article.png', width: 24),
+              const Gap(8),
+              const Text('Saran pengguna'),
+            ],
+          ),
+        ),
+      ],
+    );
     final double height = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: AppColors.whiteColor,
@@ -469,6 +492,7 @@ class VerifiedProfile extends StatelessWidget {
                   ];
                 },
                 body: TabBarView(
+                  controller: _tabController,
                   children: [
                     ListPost(),
                     const ListArticle(),
