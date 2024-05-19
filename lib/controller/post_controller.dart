@@ -123,7 +123,7 @@ class PostController extends GetxController {
     });
 
     try {
-      final response = await http.post(uri, headers: headers, body: body);
+      final response = await http.delete(uri, headers: headers, body: body);
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body)['data'];
