@@ -292,7 +292,7 @@ class CardPost extends StatelessWidget {
                                         const CardCaption(),
                                         const Gap(12),
                                         Text(
-                                          'Ruangan ini sangat nyaman dan terang. Saya menyukai desainnya yang minimalis dan modern. Pencahayaan alami yang masuk melalui jendela membuat ruangan terasa segar dan terbuka. Furnitur yang dipilih dengan baik memberikan kesan bersih dan rapi. Saya juga menghargai ruang kosong yang menciptakan perasaan lapang dan tenang. Secara keseluruhan, ruangan ini memberikan suasana yang menyenangkan untuk bekerja atau bersantai.🍀🍂🥀🌻🌷',
+                                          postModel.caption.toString(),
                                           style:
                                               AppTextStyle.paragraphL.copyWith(
                                             color: AppColors.blackColor,
@@ -420,7 +420,7 @@ class CardPost extends StatelessWidget {
                                   const CardCaption(),
                                   const Gap(12),
                                   Text(
-                                    'Ruangan ini sangat nyaman dan terang. Saya menyukai desainnya yang minimalis dan modern. Pencahayaan alami yang masuk melalui jendela membuat ruangan terasa segar dan terbuka. Furnitur yang dipilih dengan baik memberikan kesan bersih dan rapi. Saya juga menghargai ruang kosong yang menciptakan perasaan lapang dan tenang. Secara keseluruhan, ruangan ini memberikan suasana yang menyenangkan untuk bekerja atau bersantai.🍀🍂🥀🌻🌷',
+                                    postModel.caption.toString(),
                                     style: AppTextStyle.paragraphL.copyWith(
                                       color: AppColors.blackColor,
                                     ),
