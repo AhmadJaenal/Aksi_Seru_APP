@@ -216,6 +216,10 @@ class _MyAppState extends State<MyApp> {
           name: '/list-followers',
           page: () => const CheckConnection(page: ListFollowers()),
         ),
+        GetPage(
+          name: '/edit-post',
+          page: () => const CheckConnection(page: ListFollowers()),
+        ),
       ],
     );
   }

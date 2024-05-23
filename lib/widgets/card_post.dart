@@ -1,13 +1,13 @@
 import 'package:aksi_seru_app/controller/post_controller.dart';
 import 'package:aksi_seru_app/getX/post.dart';
 import 'package:aksi_seru_app/models/post_model.dart';
+import 'package:aksi_seru_app/screens/home/feed/edit_post.dart';
 import 'package:aksi_seru_app/shared/style.dart';
 import 'package:aksi_seru_app/utils/api.dart';
 import 'package:aksi_seru_app/widgets/custom_button.dart';
 import 'package:aksi_seru_app/widgets/custom_textfield.dart';
 import 'package:aksi_seru_app/widgets/user_profile.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
@@ -132,7 +132,18 @@ class CardPost extends StatelessWidget {
                                     child: MiniButton(
                                       icon: 'icon_block.png',
                                       title: 'Edit Postingan',
-                                      ontap: () {},
+                                      ontap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => EditPost(
+                                              caption: postModel.caption,
+                                              image: imagePost,
+                                              idPost: postModel.idPost,
+                                            ),
+                                          ),
+                                        );
+                                      },
                                     ),
                                   ),
                                   SizedBox(

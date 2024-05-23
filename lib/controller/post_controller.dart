@@ -3,8 +3,6 @@ import 'dart:convert';
 import 'package:aksi_seru_app/controller/user.dart';
 import 'package:aksi_seru_app/getX/nav_bottom_state.dart';
 import 'package:aksi_seru_app/models/post_model.dart';
-import 'package:aksi_seru_app/screens/home/errors/check_connection.dart';
-import 'package:aksi_seru_app/screens/home/nav/nav_bottom.dart';
 import 'package:aksi_seru_app/utils/api.dart';
 import 'package:aksi_seru_app/widgets/custom_popup.dart';
 import 'package:flutter/material.dart';
@@ -159,14 +157,18 @@ class PostController extends GetxController {
     }
   }
 
-  static Future<bool> updatePost(
-      {required String base64Image,
-      required String caption,
-      required int idPost}) async {
+  static Future updatePost({
+    required String base64Image,
+    required String caption,
+    required int idPost,
+  }) async {
     String? token = await UserData.getToken();
     var headers = {
       'X-Authorization': '$token',
     };
+    final LandingPageController landingPageController =
+        Get.put(LandingPageController(), permanent: false);
+
     final uri = Uri.parse(ApiEndPoints.baseUrl + Post.updatePost);
 
     var body =
@@ -176,10 +178,25 @@ class PostController extends GetxController {
       final response = await http.post(uri, headers: headers, body: body);
 
       if (response.statusCode == 200) {
-        return true;
+        CustomPopUp(
+          icon: Icons.check_circle_outline_rounded,
+          message: 'Berhasil edit postingan!',
+          onTap: () {
+            Get.offAllNamed('/nav-bar');
+            landingPageController.changeTabIndex(4);
+          },
+          titleButton: 'Kembali',
+        );
       } else {
-        developer.log(response.body, name: 'Failed to comment on post');
-        return false;
+        CustomPopUp(
+          icon: Icons.cancel_outlined,
+          message: 'Terjadi kesalahan edit postingan!',
+          isSuccess: false,
+          onTap: () {
+            Get.back();
+          },
+          titleButton: 'Kembali',
+        );
       }
     } catch (e) {
       developer.log(e.toString(), name: 'Catch comment post error');
