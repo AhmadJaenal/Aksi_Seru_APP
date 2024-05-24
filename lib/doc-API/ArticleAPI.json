@@ -567,7 +567,6 @@
             }
         },
 
-
         "/api/article/comment.php" : {
             "post" : {
                 "tags": ["Success"],
