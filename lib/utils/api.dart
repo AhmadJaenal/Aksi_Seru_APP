@@ -31,6 +31,17 @@ class Post {
   static String deletePost = 'api/api/post/delete.php';
   static String updatePost = 'api/api/post/update.php';
 }
+
+class Article {
+  static String createArticle = 'api/api/article/create.php';
+  static String updateArticle = 'api/api/article/update.php';
+  static String articleByUser = 'api/api/article/current.php';
+  static String deleteArticle = 'api/api/article/delete.php';
+  static String commentArticle = 'api/api/article/comment.php';
+  static String deleteCommentArticle = 'api/api/article/delete-comment.php';
+  static String likeArticle = 'api/api/article/like.php';
+  static String unLikeArticle = 'api/api/article/delete-like.php';
+}
 // class ApiEndPoints {
 //   static String baseUrl = 'https://apitubesmppl.000webhostapp.com/';
 //   static _AuthEndPoints authEndPoints = _AuthEndPoints();
