@@ -1,8 +1,13 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:aksi_seru_app/shared/style.dart';
 import 'package:aksi_seru_app/widgets/custom_button.dart';
+import 'package:aksi_seru_app/widgets/custom_popup.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 
 class CreateArticle extends StatefulWidget {
   const CreateArticle({super.key});
@@ -12,22 +17,11 @@ class CreateArticle extends StatefulWidget {
 }
 
 class _CreateArticleState extends State<CreateArticle> {
-  List<Widget> articleWidget = [];
-  @override
-  void initState() {
-    super.initState();
-    articleWidget = [
-      const TitleWidget(),
-      const SubTitleWidget(),
-      const ContentWidget(),
-    ];
-  }
-
-  bool isShowButton = false;
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: PreferredSize(
           preferredSize: const Size.fromHeight(96),
           child: Container(
@@ -72,111 +66,89 @@ class _CreateArticleState extends State<CreateArticle> {
         ),
         body: Padding(
           padding: EdgeInsets.symmetric(horizontal: AppMargin.defaultMargin),
-          child: ListView.builder(
-            itemCount: articleWidget.length,
-            itemBuilder: (context, index) {
-              return articleWidget[index];
-            },
+          child: ListView(
+            children: [
+              const TitleWidget(),
+              const SubTitleWidget(),
+              const Gap(10),
+              const ContentWidget(),
+              const AddPhotoWidget(),
+              const Gap(10),
+              PrimaryButton(ontap: () {}, title: 'Publish'),
+            ],
           ),
         ),
-        floatingActionButton: Column(
-          children: [
-            const Spacer(),
-            Visibility(
-              visible: isShowButton,
-              child: Column(
-                children: [
-                  CustomIconButton(
-                    icon: Icon(Icons.title, color: AppColors.primary1),
-                    ontap: () {
-                      setState(() {
-                        articleWidget.add(
-                          const TitleWidget(),
-                        );
-                      });
-                    },
-                  ),
-                  CustomIconButton(
-                    icon: Icon(Icons.image, color: AppColors.primary1),
-                    ontap: () {
-                      setState(() {
-                        articleWidget.add(
-                          const AddPhotoWidget(),
-                        );
-                      });
-                    },
-                  ),
-                  CustomIconButton(
-                    icon: Icon(Icons.keyboard_tab_rounded,
-                        color: AppColors.primary1),
-                    ontap: () {
-                      setState(() {
-                        articleWidget.add(
-                          const SpaceWidget(),
-                        );
-                      });
-                    },
-                  ),
-                ],
-              ),
-            ),
-            IconButton(
-              style: ButtonStyle(
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-                backgroundColor: MaterialStatePropertyAll(AppColors.primary1),
-                padding: const MaterialStatePropertyAll(EdgeInsets.all(12)),
-              ),
-              onPressed: () {
-                setState(() {
-                  isShowButton = !isShowButton;
-                });
-              },
-              icon: Icon(
-                Icons.add,
-                color: AppColors.whiteColor,
-              ),
-            ),
-          ],
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       ),
     );
   }
 }
 
-class AddPhotoWidget extends StatelessWidget {
+class AddPhotoWidget extends StatefulWidget {
   const AddPhotoWidget({
     super.key,
   });
 
   @override
-  Widget build(BuildContext context) {
-    return MiniButton(
-      icon: 'icon_image.png',
-      title: 'Tambahkan poto',
-      ontap: () {},
-    );
-  }
+  State<AddPhotoWidget> createState() => _AddPhotoWidgetState();
 }
 
-class SpaceWidget extends StatelessWidget {
-  const SpaceWidget({
-    super.key,
-  });
+class _AddPhotoWidgetState extends State<AddPhotoWidget> {
+  File? image;
+
+  String? imagebase64;
+
+  Future<void> _getImageFromGallery() async {
+    final picker = ImagePicker();
+    final pickedImage = await picker.pickImage(source: ImageSource.gallery);
+    int fileSizeInBytes = await pickedImage!.length();
+    double fileSizeInKB = fileSizeInBytes / 1024;
+
+    if (pickedImage != null && fileSizeInKB < 2000) {
+      setState(() {
+        image = File(pickedImage.path);
+      });
+    } else {
+      CustomPopUp(
+        icon: Icons.photo_size_select_actual_outlined,
+        message: 'Ukuran foto harus kurang dari 2000kb',
+        isSuccess: false,
+        onTap: () {
+          Get.back();
+        },
+        titleButton: 'Kembali',
+      );
+    }
+    List<int> imageBytes = File(image!.path).readAsBytesSync();
+    var base64StringImage = base64Encode(imageBytes);
+
+    imagebase64 = base64StringImage;
+  }
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      style: AppTextStyle.paragraphL.copyWith(color: AppColors.redColor),
-      readOnly: true,
-      cursorColor: AppColors.greyColor,
-      decoration: const InputDecoration(
-        enabledBorder: InputBorder.none,
-      ),
+    return Column(
+      children: [
+        image != null
+            ? ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Image.file(
+                  image!,
+                  height: 400,
+                  fit: BoxFit.cover,
+                ),
+              )
+            : const SizedBox(),
+        SizedBox(
+          width: double.infinity,
+          child: MiniButton(
+            icon: 'icon_image.png',
+            title: 'Tambahkan poto',
+            ontap: () {
+              _getImageFromGallery();
+            },
+          ),
+        ),
+      ],
     );
   }
 }
@@ -190,7 +162,7 @@ class SubTitleWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       style: AppTextStyle.h3.copyWith(color: AppColors.greyColor),
-      maxLines: 2,
+      maxLines: 3,
       cursorColor: AppColors.greyColor,
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.all(0),
@@ -215,7 +187,7 @@ class ContentWidget extends StatelessWidget {
     return TextFormField(
       style: AppTextStyle.paragraphL.copyWith(color: AppColors.greyColor),
       cursorColor: AppColors.greyColor,
-      maxLines: 3,
+      maxLines: 10,
       decoration: InputDecoration.collapsed(
         hintText: 'Ekspresikan ide dan informasi mu di sini...',
         hintStyle: AppTextStyle.paragraphL.copyWith(color: AppColors.greyColor),
