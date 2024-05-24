@@ -13,7 +13,7 @@
     "paths": {
         "/api/article/create.php" : {
             "post" : {
-                "tags": ["Target"],
+                "tags": ["Success"],
                 "description": "Create new article",
                 "requestBody" : {
                     "content": {
@@ -166,7 +166,7 @@
         },
         "/api/article/update.php" : {
             "post" : {
-                "tags": ["Target"],
+                "tags": ["Success"],
                 "description": "Update article",
                 "requestBody" : {
                     "content": {
@@ -201,7 +201,7 @@
                 },
                 "responses": {
                     "200" : {
-                        "description": "Succes update post",
+                        "description": "Succes update article",
                         "content": {
                             "application/json" : {
                                 "schema" : {
@@ -255,7 +255,7 @@
                                                     "The id field is required"
                                                 ],
                                                 "message" : [
-                                                    "Use caption and image photo fields to create your post"
+                                                    "Use title, subtitle, content, category or image photo fields to update your article"
                                                 ]
                                             }
                                         }
@@ -307,7 +307,7 @@
         },
         "/api/article/current.php" : {
             "get" : {
-                "tags": ["Target"],
+                "tags": ["Success"],
                 "description": "Get all posts created by a user",
                 "parameters": [
                     {
@@ -460,7 +460,7 @@
         },
         "/api/article/delete.php" : {
             "delete" : {
-                "tags": ["Target"],
+                "tags": ["Success"],
                 "description": "Delete post",
                 "parameters": [
                     {
@@ -570,7 +570,7 @@
 
         "/api/article/comment.php" : {
             "post" : {
-                "tags": ["Target"],
+                "tags": ["Success"],
                 "description": "Comment for a single post",
                 "parameters": [
                     {
@@ -684,7 +684,7 @@
         },
         "/api/article/delete-comment.php" : {
             "delete" : {
-                "tags": ["Target"],
+                "tags": ["Success"],
                 "description": "Delete Comment",
                 "parameters": [
                     {
@@ -796,8 +796,8 @@
         },
         "/api/article/like.php" : {
             "post" : {
-                "tags": ["Target"],
-                "description": "Like post",
+                "tags": ["Success"],
+                "description": "Like article",
                 "parameters": [
                     {
                         "name": "Authorization",
@@ -823,7 +823,7 @@
                 },
                 "responses": {
                     "200" : {
-                        "description": "Like post",
+                        "description": "Like article",
                         "content": {
                             "application/json" : {
                                 "schema" : {
@@ -907,8 +907,8 @@
         },
         "/api/article/delete-like.php" : {
             "delete" : {
-                "tags": ["Target"],
-                "description": "Delete like post",
+                "tags": ["Success"],
+                "description": "Delete like article",
                 "parameters": [
                     {
                         "name": "Authorization",
@@ -934,7 +934,7 @@
                 },
                 "responses": {
                     "200" : {
-                        "description": "Delete Like post",
+                        "description": "Delete Like article",
                         "content": {
                             "application/json" : {
                                 "schema" : {
