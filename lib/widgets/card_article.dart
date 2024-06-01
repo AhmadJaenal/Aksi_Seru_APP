@@ -1,14 +1,24 @@
+import 'package:aksi_seru_app/controller/article_controller.dart';
+import 'package:aksi_seru_app/models/article_model.dart';
 import 'package:aksi_seru_app/shared/style.dart';
+import 'package:aksi_seru_app/utils/api.dart';
 import 'package:aksi_seru_app/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
 class CardArticle extends StatelessWidget {
-  const CardArticle({super.key});
+  final ArticleModel article;
+  CardArticle({super.key, required this.article});
 
+  late String image;
   @override
   Widget build(BuildContext context) {
+    if (article.urlImage != '') {
+      List<String> articleImage = article.urlImage.split('localhost');
+      image = "${articleImage[0]}${ApiEndPoints.ip}${articleImage[1]}";
+    }
+
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return GestureDetector(
@@ -19,7 +29,15 @@ class CardArticle extends StatelessWidget {
         width: double.infinity,
         child: Row(
           children: [
-            Image.asset('assets/article.png', height: width * .4),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(6),
+              child: Image.network(
+                image,
+                width: width * .4,
+                height: 150,
+                fit: BoxFit.cover,
+              ),
+            ),
             const Gap(12),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -61,7 +79,7 @@ class CardArticle extends StatelessWidget {
                   width: 160,
                   height: 62,
                   child: Text(
-                    'Edukasi Konservasi Alam dan Lingkungan Hidup',
+                    article.title,
                     maxLines: 4,
                     overflow: TextOverflow.ellipsis,
                     style: AppTextStyle.paragraphL.copyWith(
@@ -70,7 +88,7 @@ class CardArticle extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  '6 mnt baca Okt 23, 2023',
+                  article.updatedAt,
                   style: AppTextStyle.paragraphM.copyWith(
                     color: AppColors.greyColor,
                   ),
@@ -173,8 +191,34 @@ class CardArticle extends StatelessWidget {
                                         alignment: Alignment.bottomLeft,
                                         child: DangerMiniButton(
                                           icon: 'icon_dislike.png',
-                                          title: 'Laporkan artikel',
-                                          ontap: () {},
+                                          title: 'Hapus Artikel',
+                                          ontap: () {
+                                            showDialog(
+                                              context: context,
+                                              builder: (context) => AlertDialog(
+                                                title: const Text(
+                                                    'Yakin hapus artikel ini?'),
+                                                alignment: Alignment.center,
+                                                actions: [
+                                                  MiniButton(
+                                                      icon: 'icon_block.png',
+                                                      title: 'Kembali',
+                                                      ontap: () {
+                                                        Get.back();
+                                                      }),
+                                                  DangerMiniButton(
+                                                    icon: 'icon_block.png',
+                                                    title: 'Hapus',
+                                                    ontap: () {
+                                                      ArticleController
+                                                          .deleteArticle(
+                                                              id: article.id);
+                                                    },
+                                                  ),
+                                                ],
+                                              ),
+                                            );
+                                          },
                                         ),
                                       ),
                                     ),
