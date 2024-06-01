@@ -19,12 +19,12 @@ class CreateArticle extends StatefulWidget {
 
 final formKey = GlobalKey<FormState>();
 
-final TextEditingController titleController = TextEditingController();
-final TextEditingController subtitleController = TextEditingController();
-final TextEditingController contentController = TextEditingController();
-final TextEditingController categoryController = TextEditingController();
-
 class _CreateArticleState extends State<CreateArticle> {
+  final TextEditingController titleController = TextEditingController();
+  final TextEditingController subtitleController = TextEditingController();
+  final TextEditingController contentController = TextEditingController();
+  final TextEditingController categoryController = TextEditingController();
+
   File? _image;
 
   String? imagebase64;
@@ -53,6 +53,15 @@ class _CreateArticleState extends State<CreateArticle> {
     List<int> imageBytes = File(_image!.path).readAsBytesSync();
     var base64StringImage = base64Encode(imageBytes);
     imagebase64 = base64StringImage;
+  }
+
+  @override
+  void dispose() {
+    titleController.dispose();
+    subtitleController.dispose();
+    contentController.dispose();
+    categoryController.dispose();
+    super.dispose();
   }
 
   @override
@@ -108,10 +117,70 @@ class _CreateArticleState extends State<CreateArticle> {
             key: formKey,
             child: ListView(
               children: [
-                const TitleWidget(),
-                const SubTitleWidget(),
+                TextFormField(
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'JUDUL TIDAK BOLEH KOSONG';
+                    }
+                    return null;
+                  },
+                  controller: titleController,
+                  style: AppTextStyle.titlePrimary
+                      .copyWith(color: AppColors.primary1),
+                  cursorColor: AppColors.primary1,
+                  maxLines: 3,
+                  decoration: InputDecoration(
+                    contentPadding: const EdgeInsets.all(0),
+                    hintText: 'Judul',
+                    hintStyle: AppTextStyle.titlePrimary
+                        .copyWith(color: AppColors.primary1),
+                    enabledBorder: InputBorder.none,
+                    focusedBorder: const OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                    ),
+                  ),
+                ),
+                TextFormField(
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'SUBJUDUL TIDAK BOLEH KOSONG';
+                    }
+                    return null;
+                  },
+                  controller: subtitleController,
+                  style: AppTextStyle.h3.copyWith(color: AppColors.greyColor),
+                  maxLines: 3,
+                  cursorColor: AppColors.greyColor,
+                  decoration: InputDecoration(
+                    contentPadding: const EdgeInsets.all(0),
+                    hintText: 'Tambahkan sub judul',
+                    hintStyle:
+                        AppTextStyle.h3.copyWith(color: AppColors.greyColor),
+                    enabledBorder: InputBorder.none,
+                    focusedBorder: const OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                    ),
+                  ),
+                ),
                 const Gap(10),
-                const ContentWidget(),
+                TextFormField(
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'CONTENT TIDAK BOLEH KOSONG';
+                    }
+                    return null;
+                  },
+                  controller: contentController,
+                  style: AppTextStyle.paragraphL
+                      .copyWith(color: AppColors.greyColor),
+                  cursorColor: AppColors.greyColor,
+                  maxLines: 10,
+                  decoration: InputDecoration.collapsed(
+                    hintText: 'Ekspresikan ide dan informasi mu di sini...',
+                    hintStyle: AppTextStyle.paragraphL
+                        .copyWith(color: AppColors.greyColor),
+                  ),
+                ),
                 _image != null
                     ? ClipRRect(
                         borderRadius: BorderRadius.circular(10),
@@ -143,15 +212,6 @@ class _CreateArticleState extends State<CreateArticle> {
                         content: contentController.text,
                         base64Image: imagebase64,
                       );
-                    } else {
-                      CustomPopUp(
-                        icon: Icons.cancel_outlined,
-                        isSuccess: false,
-                        onTap: () => Get.back(),
-                        message:
-                            'Terdapat kesalahan!\nPastikan semua telah diisi dengan benar!',
-                        titleButton: 'Kembali',
-                      );
                     }
                   },
                   title: 'Publish',
@@ -159,95 +219,6 @@ class _CreateArticleState extends State<CreateArticle> {
               ],
             ),
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class SubTitleWidget extends StatelessWidget {
-  const SubTitleWidget({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return TextFormField(
-      validator: (value) {
-        if (value!.isEmpty) {
-          return 'SUBJUDUL TIDAK BOLEH KOSONG';
-        }
-        return null;
-      },
-      controller: subtitleController,
-      style: AppTextStyle.h3.copyWith(color: AppColors.greyColor),
-      maxLines: 3,
-      cursorColor: AppColors.greyColor,
-      decoration: InputDecoration(
-        contentPadding: const EdgeInsets.all(0),
-        hintText: 'Tambahkan sub judul',
-        hintStyle: AppTextStyle.h3.copyWith(color: AppColors.greyColor),
-        enabledBorder: InputBorder.none,
-        focusedBorder: const OutlineInputBorder(
-          borderSide: BorderSide.none,
-        ),
-      ),
-    );
-  }
-}
-
-class ContentWidget extends StatelessWidget {
-  const ContentWidget({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return TextFormField(
-      validator: (value) {
-        if (value!.isEmpty) {
-          return 'CONTENT TIDAK BOLEH KOSONG';
-        }
-        return null;
-      },
-      controller: contentController,
-      style: AppTextStyle.paragraphL.copyWith(color: AppColors.greyColor),
-      cursorColor: AppColors.greyColor,
-      maxLines: 10,
-      decoration: InputDecoration.collapsed(
-        hintText: 'Ekspresikan ide dan informasi mu di sini...',
-        hintStyle: AppTextStyle.paragraphL.copyWith(color: AppColors.greyColor),
-      ),
-    );
-  }
-}
-
-class TitleWidget extends StatelessWidget {
-  const TitleWidget({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return TextFormField(
-      validator: (value) {
-        if (value!.isEmpty) {
-          return 'JUDUL TIDAK BOLEH KOSONG';
-        }
-        return null;
-      },
-      controller: titleController,
-      style: AppTextStyle.titlePrimary.copyWith(color: AppColors.primary1),
-      cursorColor: AppColors.primary1,
-      maxLines: 3,
-      decoration: InputDecoration(
-        contentPadding: const EdgeInsets.all(0),
-        hintText: 'Judul',
-        hintStyle:
-            AppTextStyle.titlePrimary.copyWith(color: AppColors.primary1),
-        enabledBorder: InputBorder.none,
-        focusedBorder: const OutlineInputBorder(
-          borderSide: BorderSide.none,
         ),
       ),
     );
