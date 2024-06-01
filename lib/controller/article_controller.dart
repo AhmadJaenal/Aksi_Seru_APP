@@ -85,4 +85,41 @@ class ArticleController extends GetxController {
       developer.log(e.toString(), name: 'catch post article');
     }
   }
+
+  static void deleteArticle({int? id}) async {
+    String? token = await UserData.getToken();
+
+    final uri = Uri.parse(ApiEndPoints.baseUrl + Article.deleteArticle);
+
+    var headers = {'X-Authorization': '$token'};
+    var body = jsonEncode({'id': id});
+
+    final LandingPageController landingPageController =
+        Get.put(LandingPageController(), permanent: false);
+
+    try {
+      final response = await http.delete(uri, headers: headers, body: body);
+      if (response.statusCode == 200) {
+        CustomPopUp(
+          icon: Icons.check_circle_outline_rounded,
+          message: 'Berhasil menghapus artikel',
+          onTap: () {
+            Get.offAllNamed('/nav-bar');
+            landingPageController.changeTabIndex(4);
+          },
+          titleButton: 'Kembali',
+        );
+      } else {
+        CustomPopUp(
+          icon: Icons.cancel_outlined,
+          message: 'Gagal menghapus artikel',
+          isSuccess: false,
+          onTap: () => Get.back(),
+          titleButton: 'Kembali',
+        );
+      }
+    } catch (e) {
+      developer.log(e.toString(), name: 'catch get article');
+    }
+  }
 }
