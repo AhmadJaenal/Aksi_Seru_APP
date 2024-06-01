@@ -8,24 +8,27 @@ class FollowingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // return Scaffold(
+    //   backgroundColor: AppColors.whiteColor,
+    //   body: CustomScrollView(
+    //     slivers: [
+    //       SliverToBoxAdapter(
+    //         child: Gap(AppMargin.defaultMargin),
+    //       ),
+    //       SliverList(
+    //         delegate: SliverChildBuilderDelegate(
+    //           (context, index) => const CardArticle(),
+    //           childCount: 5,
+    //         ),
+    //       ),
+    //       SliverToBoxAdapter(
+    //         child: Gap(AppMargin.defaultMargin),
+    //       ),
+    //     ],
+    //   ),
+    // );
     return Scaffold(
-      backgroundColor: AppColors.whiteColor,
-      body: CustomScrollView(
-        slivers: [
-          SliverToBoxAdapter(
-            child: Gap(AppMargin.defaultMargin),
-          ),
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (context, index) => const CardArticle(),
-              childCount: 5,
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: Gap(AppMargin.defaultMargin),
-          ),
-        ],
-      ),
+      body: Text('Ongoing'),
     );
   }
 }

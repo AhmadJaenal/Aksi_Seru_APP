@@ -128,7 +128,8 @@ class RecommendationPage extends StatelessWidget {
           physics: const BouncingScrollPhysics(),
           itemCount: 10,
           itemBuilder: (context, index) {
-            return const CardArticle();
+            // return CardArticle();
+            return Text('');
           },
         ),
       ),
