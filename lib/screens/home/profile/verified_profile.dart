@@ -14,10 +14,8 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
-import 'dart:developer' as developer;
-
 class VerifiedProfile extends StatefulWidget {
-  VerifiedProfile({super.key});
+  const VerifiedProfile({super.key});
 
   @override
   State<VerifiedProfile> createState() => _VerifiedProfileState();
@@ -374,26 +372,30 @@ class _VerifiedProfileState extends State<VerifiedProfile>
                                   Gap(AppMargin.defaultMargin),
                                   Row(
                                     children: [
-                                      MiniButton(
-                                        icon: 'icon_update_profile.png',
-                                        title: 'Atur profil',
-                                        ontap: () => Get.toNamed(
-                                            '/edit-profile',
-                                            arguments: {'user': user}),
-                                        color: AppColors.primary1,
-                                        iconColor: AppColors.primary1,
-                                        titleColor: AppColors.primary1,
+                                      Expanded(
+                                        child: MiniButton(
+                                          icon: 'icon_update_profile.png',
+                                          title: 'Atur profil',
+                                          ontap: () => Get.toNamed(
+                                              '/edit-profile',
+                                              arguments: {'user': user}),
+                                          color: AppColors.primary1,
+                                          iconColor: AppColors.primary1,
+                                          titleColor: AppColors.primary1,
+                                        ),
                                       ),
-                                      const Spacer(),
-                                      MiniButton(
-                                        icon: 'icon_arrow_up.png',
-                                        title: 'Saran pengguna',
-                                        ontap: () {
-                                          showRecommendUser.show();
-                                        },
-                                        color: AppColors.primary1,
-                                        iconColor: AppColors.primary1,
-                                        titleColor: AppColors.primary1,
+                                      const Gap(8),
+                                      Expanded(
+                                        child: MiniButton(
+                                          icon: 'icon_arrow_up.png',
+                                          title: 'Saran user',
+                                          ontap: () {
+                                            showRecommendUser.show();
+                                          },
+                                          color: AppColors.primary1,
+                                          iconColor: AppColors.primary1,
+                                          titleColor: AppColors.primary1,
+                                        ),
                                       ),
                                     ],
                                   ),
