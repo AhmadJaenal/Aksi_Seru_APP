@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:aksi_seru_app/controller/user.dart';
+import 'package:aksi_seru_app/controller/user_controller.dart';
 import 'package:aksi_seru_app/getX/nav_bottom_state.dart';
 import 'package:aksi_seru_app/models/post_model.dart';
 import 'package:aksi_seru_app/utils/api.dart';

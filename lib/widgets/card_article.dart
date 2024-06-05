@@ -22,7 +22,7 @@ class CardArticle extends StatelessWidget {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return GestureDetector(
-      onTap: () => Get.toNamed('/detail-article'),
+      onTap: () => Get.toNamed('/detail-article', arguments: article),
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 5),
         padding: EdgeInsets.symmetric(horizontal: AppMargin.defaultMargin),
@@ -160,7 +160,10 @@ class CardArticle extends StatelessWidget {
                                           MiniButton(
                                             icon: 'icon_bookmark.png',
                                             title: 'Edit Article',
-                                            ontap: () {},
+                                            ontap: () {
+                                              Get.toNamed('/edit-article',
+                                                  arguments: article);
+                                            },
                                           ),
                                         ],
                                       ),
@@ -174,7 +177,7 @@ class CardArticle extends StatelessWidget {
                                           icon: 'icon_dislike.png',
                                           title: 'Hapus Artikel',
                                           ontap: () {
-                                            ConfirmDeletePost(context);
+                                            confirmDeletePost(context);
                                           },
                                         ),
                                       ),
@@ -197,7 +200,7 @@ class CardArticle extends StatelessWidget {
     );
   }
 
-  Future<dynamic> ConfirmDeletePost(BuildContext context) {
+  Future<dynamic> confirmDeletePost(BuildContext context) {
     return showModalBottomSheet(
       backgroundColor: Colors.transparent,
       elevation: 0,

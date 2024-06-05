@@ -8,6 +8,7 @@ import 'package:aksi_seru_app/screens/auth/success_register.dart';
 import 'package:aksi_seru_app/screens/home/article/article_page.dart';
 import 'package:aksi_seru_app/screens/home/article/create_article.dart';
 import 'package:aksi_seru_app/screens/home/article/detail_article.dart';
+import 'package:aksi_seru_app/screens/home/article/edit_article.dart';
 import 'package:aksi_seru_app/screens/home/article/following_page.dart';
 import 'package:aksi_seru_app/screens/home/article/for_you_page.dart';
 import 'package:aksi_seru_app/screens/home/article/trending_page.dart';
@@ -186,7 +187,7 @@ class _MyAppState extends State<MyApp> {
         ),
         GetPage(
           name: '/verified-profile',
-          page: () => CheckConnection(page: VerifiedProfile()),
+          page: () => const CheckConnection(page: VerifiedProfile()),
         ),
         GetPage(
           name: '/public-profile',
@@ -219,6 +220,10 @@ class _MyAppState extends State<MyApp> {
         GetPage(
           name: '/edit-post',
           page: () => const CheckConnection(page: ListFollowers()),
+        ),
+        GetPage(
+          name: '/edit-article',
+          page: () => const CheckConnection(page: EditArticle()),
         ),
       ],
     );

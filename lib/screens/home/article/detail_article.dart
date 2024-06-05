@@ -1,6 +1,7 @@
+import 'package:aksi_seru_app/models/article_model.dart';
 import 'package:aksi_seru_app/shared/style.dart';
+import 'package:aksi_seru_app/utils/api.dart';
 import 'package:aksi_seru_app/widgets/custom_button.dart';
-import 'package:aksi_seru_app/widgets/user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
@@ -10,6 +11,13 @@ class DetailArticle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String imageArticle = '';
+    ArticleModel articleModel = Get.arguments;
+
+    if (articleModel.urlImage != '') {
+      List<String> articleImage = articleModel.urlImage.split('localhost');
+      imageArticle = "${articleImage[0]}${ApiEndPoints.ip}${articleImage[1]}";
+    }
     return SafeArea(
       child: Scaffold(
         appBar: PreferredSize(
@@ -133,14 +141,16 @@ class DetailArticle extends StatelessWidget {
               Container(
                 margin: const EdgeInsets.only(bottom: 16),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      '“Bertindak Lokal, Berdampak Global : Peran Individu',
+                      '“${articleModel.title}',
                       style: AppTextStyle.titlePrimary.copyWith(
                         color: AppColors.primary1,
                         letterSpacing: -2,
                         height: 1,
                       ),
+                      textAlign: TextAlign.start,
                     ),
                     const Gap(12),
                     Row(
@@ -166,7 +176,7 @@ class DetailArticle extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          'Feb 23, 2023',
+                          articleModel.updatedAt,
                           style: AppTextStyle.paragraphM
                               .copyWith(color: AppColors.greyColor),
                         ),
@@ -203,16 +213,16 @@ class DetailArticle extends StatelessWidget {
                 height: 250,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
-                  image: const DecorationImage(
+                  image: DecorationImage(
                     fit: BoxFit.cover,
-                    image: AssetImage('assets/article.png'),
+                    image: NetworkImage(imageArticle),
                   ),
                 ),
               ),
               const Gap(16),
               // NOTE :: START CODE SUB HEADER
               Text(
-                'Bertindak Lokal, Berdampak Global: Peran Individu dalam Menciptakan Perubahan Positif',
+                articleModel.subtitle,
                 style: AppTextStyle.h3.copyWith(
                   color: AppColors.blackColor,
                   fontWeight: AppFontWeight.semiBold,
@@ -222,7 +232,7 @@ class DetailArticle extends StatelessWidget {
               const Gap(16),
               // NOTE :: START CODE SUB CONTENT
               Text(
-                'Dalam era globalisasi ini, peran individu tidak hanya terbatas pada lingkup lokal, tetapi juga memiliki dampak yang signifikan pada skala global. Tindakan-tindakan yang dilakukan secara lokal oleh individu dapat menjadi kekuatan yang mendorong perubahan positif yang lebih besar di dunia. Artikel ini akan menjelajahi bagaimana bertindak lokal dapat berdampak global, serta peran penting individu dalam menciptakan perubahan yang berkelanjutan.',
+                articleModel.title,
                 style: AppTextStyle.paragraphL.copyWith(
                   color: AppColors.blackColor,
                   fontWeight: AppFontWeight.reguler,
