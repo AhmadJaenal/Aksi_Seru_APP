@@ -1,7 +1,7 @@
-import 'package:aksi_seru_app/models/article_model.dart';
-import 'package:aksi_seru_app/shared/style.dart';
-import 'package:aksi_seru_app/utils/api.dart';
-import 'package:aksi_seru_app/widgets/custom_button.dart';
+import '../../../models/article_model.dart';
+import '../../../shared/style.dart';
+import '../../../utils/api.dart';
+import '../../../widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';

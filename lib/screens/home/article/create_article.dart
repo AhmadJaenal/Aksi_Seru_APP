@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:aksi_seru_app/controller/article_controller.dart';
-import 'package:aksi_seru_app/shared/style.dart';
-import 'package:aksi_seru_app/widgets/custom_button.dart';
-import 'package:aksi_seru_app/widgets/custom_popup.dart';
+import '../../../controller/article_controller.dart';
+import '../../../shared/style.dart';
+import '../../../widgets/custom_button.dart';
+import '../../../widgets/custom_popup.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
