@@ -278,7 +278,7 @@
                 }
             }
         },
-        "/api/post/current.php" : { 
+        "/api/post/current.php" : {
             "get" : {
                 "tags": ["Success"],
                 "description": "Get all posts created by a user",
@@ -897,10 +897,10 @@
                             "schema" : {
                                 "type": "object",
                                 "required": [
-                                    "idlike"
+                                    "id"
                                 ],
                                 "properties": {
-                                    "idlike" : {
+                                    "id" : {
                                         "type": "number"
                                     }     
                                 }
@@ -942,10 +942,184 @@
                                         "value" : {
                                             "erros" : {
                                                 "message" : [
-                                                    "The idlike field is required"
+                                                    "The id field is required"
                                                 ]
                                             }
                                         }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401" : {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json" : {
+                                "examples": {
+                                    "validationerror" : {
+                                        "description": "Unauthorized",
+                                        "value" : {
+                                            "erros" : {
+                                                "message" : [
+                                                    "unauthorized"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "405" : {
+                        "description": "Method Not Allowed",
+                        "content": {
+                            "application/json" : {
+                                "examples": {
+                                    "validationerror" : {
+                                        "description": "Method Not Allowed",
+                                        "value" : {
+                                            "erros" : {
+                                                "message" : [
+                                                    "Method Not Allowed"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/post/recommendations.php?page=1" : {
+            "get" : {
+                "tags": ["Success"],
+                "description": "Get recommendations post",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header"
+                    }
+                ],
+                "responses": {
+                    "200" : {
+                        "description": "List Post",
+                        "content": {
+                            "application/json" : {
+                                "schema" : {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "post": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "number"
+                                                        },
+                                                        "user_id": {
+                                                            "type": "number"
+                                                        },
+                                                        "caption": {
+                                                            "type": "string"
+                                                        },
+                                                        "countlike": {
+                                                            "type": "number"
+                                                        },
+                                                        "countcomment": {
+                                                            "type": "number"
+                                                        },
+                                                        "urlimage": {
+                                                            "type": "string"
+                                                        },
+                                                        "created_at": {
+                                                            "type": "string"
+                                                        },
+                                                        "updated_at": {
+                                                            "type": "string"
+                                                        }
+                                                    }
+                                                },
+                                                "like": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "number"
+                                                        },
+                                                        "user_id": {
+                                                            "type": "number"
+                                                        },
+                                                        "caption": {
+                                                            "type": "string"
+                                                        },
+                                                        "countlike": {
+                                                            "type": "number"
+                                                        },
+                                                        "countcomment": {
+                                                            "type": "number"
+                                                        },
+                                                        "urlimage": {
+                                                            "type": "string"
+                                                        },
+                                                        "created_at": {
+                                                            "type": "string"
+                                                        },
+                                                        "updated_at": {
+                                                            "type": "string"
+                                                        }
+                                                    }
+                                                },
+                                                "comment": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "number"
+                                                        },
+                                                        "user_id": {
+                                                            "type": "number"
+                                                        },
+                                                        "caption": {
+                                                            "type": "string"
+                                                        },
+                                                        "countlike": {
+                                                            "type": "number"
+                                                        },
+                                                        "countcomment": {
+                                                            "type": "number"
+                                                        },
+                                                        "urlimage": {
+                                                            "type": "string"
+                                                        },
+                                                        "created_at": {
+                                                            "type": "string"
+                                                        },
+                                                        "updated_at": {
+                                                            "type": "string"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "pagination" : {
+                                            "type": "object",
+                                            "properties": {
+                                                "total" : {
+                                                    "type": "integer"
+                                                },
+                                                "pages" : {
+                                                    "type": "integer"
+                                                },
+                                                "current_page" : {
+                                                    "type": "integer"
+                                                },
+                                                "limit" : {
+                                                    "type": "integer"
+                                                }
+                                            }
+                                        }
+
                                     }
                                 }
                             }

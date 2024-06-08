@@ -567,6 +567,7 @@
             }
         },
 
+
         "/api/article/comment.php" : {
             "post" : {
                 "tags": ["Success"],
@@ -920,10 +921,10 @@
                             "schema" : {
                                 "type": "object",
                                 "required": [
-                                    "idlike"
+                                    "id"
                                 ],
                                 "properties": {
-                                    "idlike" : {
+                                    "id" : {
                                         "type": "number"
                                     }     
                                 }
@@ -965,8 +966,161 @@
                                         "value" : {
                                             "erros" : {
                                                 "message" : [
-                                                    "The idlike field is required"
+                                                    "The id field is required"
                                                 ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401" : {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json" : {
+                                "examples": {
+                                    "validationerror" : {
+                                        "description": "Unauthorized",
+                                        "value" : {
+                                            "erros" : {
+                                                "message" : [
+                                                    "unauthorized"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "405" : {
+                        "description": "Method Not Allowed",
+                        "content": {
+                            "application/json" : {
+                                "examples": {
+                                    "validationerror" : {
+                                        "description": "Method Not Allowed",
+                                        "value" : {
+                                            "erros" : {
+                                                "message" : [
+                                                    "Method Not Allowed"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/article/recommendations.php" : {
+            "get" : {
+                "tags": ["Success"],
+                "description": "Get recommendations article",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header"
+                    }
+                ],
+                "responses": {
+                    "200" : {
+                        "description": "List Article",
+                        "content": {
+                            "application/json" : {
+                                "schema" : {
+                                    "type": "object",
+                                    "properties": {
+                                        "post" : {
+                                            "type": "object",
+                                            "properties": {
+                                                "id" : {
+                                                    "type": "number"
+                                                },
+                                                "user_id" : {
+                                                    "type": "number"
+                                                },
+                                                "caption" : {
+                                                    "type": "string"
+                                                },
+                                                "countlike" : {
+                                                    "type": "number"
+                                                },
+                                                "countcomment" : {
+                                                    "type": "number"
+                                                },
+                                                "urlimage" : {
+                                                    "type": "string"
+                                                },
+                                                "created_at" : {
+                                                    "type": "string"
+                                                }
+                                                ,
+                                                "updated_at" : {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        },
+                                        "like" : {
+                                            "type": "object",
+                                            "properties": {
+                                                "id" : {
+                                                    "type": "number"
+                                                },
+                                                "user_id" : {
+                                                    "type": "number"
+                                                },
+                                                "caption" : {
+                                                    "type": "string"
+                                                },
+                                                "countlike" : {
+                                                    "type": "number"
+                                                },
+                                                "countcomment" : {
+                                                    "type": "number"
+                                                },
+                                                "urlimage" : {
+                                                    "type": "string"
+                                                },
+                                                "created_at" : {
+                                                    "type": "string"
+                                                }
+                                                ,
+                                                "updated_at" : {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        },"comment" : {
+                                            "type": "object",
+                                            "properties": {
+                                                "id" : {
+                                                    "type": "number"
+                                                },
+                                                "user_id" : {
+                                                    "type": "number"
+                                                },
+                                                "caption" : {
+                                                    "type": "string"
+                                                },
+                                                "countlike" : {
+                                                    "type": "number"
+                                                },
+                                                "countcomment" : {
+                                                    "type": "number"
+                                                },
+                                                "urlimage" : {
+                                                    "type": "string"
+                                                },
+                                                "created_at" : {
+                                                    "type": "string"
+                                                }
+                                                ,
+                                                "updated_at" : {
+                                                    "type": "string"
+                                                }
                                             }
                                         }
                                     }
