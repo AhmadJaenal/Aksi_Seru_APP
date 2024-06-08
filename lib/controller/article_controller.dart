@@ -1,10 +1,14 @@
 import 'dart:convert';
+import 'dart:ffi';
+import 'dart:io';
 
 import 'package:aksi_seru_app/controller/user_controller.dart';
 import 'package:aksi_seru_app/getX/nav_bottom_state.dart';
 import 'package:aksi_seru_app/models/article_model.dart';
 import 'package:aksi_seru_app/utils/api.dart';
 import 'package:aksi_seru_app/widgets/custom_popup.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -37,6 +41,73 @@ class ArticleController extends GetxController {
     } catch (e) {
       developer.log(e.toString(), name: 'catch get article');
     }
+  }
+
+  static Future<List<ArticleModel>> getArticleByUser(
+      {required int idUser}) async {
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection("post")
+        .where("idUser", isEqualTo: idUser)
+        .get();
+
+    List<ArticleModel> articles = ArticleModel.fromJsonList(querySnapshot);
+
+    return articles;
+  }
+
+  static void createArticleFirebase({
+    required int id,
+    required String title,
+    subtitle,
+    content,
+    required File image,
+  }) async {
+    final LandingPageController landingPageController =
+        Get.put(LandingPageController(), permanent: false);
+
+    final storageRef = FirebaseStorage.instance.ref();
+    final imageRef = storageRef
+        .child('articlImage/${DateTime.now().millisecondsSinceEpoch}.jpg');
+
+    await imageRef.putFile(image);
+
+    final imageUrl = await imageRef.getDownloadURL();
+
+    final FirebaseFirestore db = FirebaseFirestore.instance;
+    final CollectionReference ref = db.collection("post");
+    final Map<String, dynamic> postField = {
+      "idUser": id,
+      "title": title,
+      "subtitle": subtitle,
+      "content": content,
+      "urlimage": imageUrl,
+      "comment": [],
+      "countcomment": 0,
+      "idlike": [],
+      "countlike": 0,
+      "updated_at": ""
+    };
+    await ref.add(postField).then((docRef) {
+      CustomPopUp(
+        icon: Icons.check_circle_outline_rounded,
+        message: 'Berhasil mengunggah artikel',
+        onTap: () {
+          Get.offAllNamed('/nav-bar');
+          landingPageController.changeTabIndex(4);
+        },
+        titleButton: 'Kembali',
+      );
+    }).catchError((error) {
+      CustomPopUp(
+        icon: Icons.cancel_outlined,
+        message: 'Terjadi saat mengunggah',
+        isSuccess: false,
+        onTap: () {
+          Get.back();
+        },
+        titleButton: 'Kembali',
+      );
+    });
   }
 
   static Future createArticle(

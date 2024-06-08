@@ -41,6 +41,7 @@ class Article {
   static String deleteCommentArticle = 'api/api/article/delete-comment.php';
   static String likeArticle = 'api/api/article/like.php';
   static String unLikeArticle = 'api/api/article/delete-like.php';
+  static String recommendArticle = 'api/api/article/recommendation.php';
 }
 // class ApiEndPoints {
 //   static String baseUrl = 'https://apitubesmppl.000webhostapp.com/';
