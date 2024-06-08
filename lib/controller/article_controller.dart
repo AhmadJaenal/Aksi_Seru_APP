@@ -169,4 +169,39 @@ class ArticleController extends GetxController {
       developer.log(e.toString(), name: 'catch get article');
     }
   }
+
+  static Future<List<dynamic>?> getRecommendArticle(
+      {int? id, String? title, subtitle, content, category, image64}) async {
+    String? token = await UserData.getToken();
+
+    final uri =
+        Uri.parse("http://192.168.177.106/api/api/article/recommendation.php");
+
+    var headers = {'X-Authorization': '$token'};
+
+    final LandingPageController landingPageController =
+        Get.put(LandingPageController(), permanent: false);
+
+    try {
+      final response = await http.get(uri, headers: headers);
+      if (response.statusCode == 200) {
+        developer.log(response.statusCode.toString(),
+            name: 'test response get random article');
+        Map<String, dynamic> jsonResponse = jsonDecode(response.body)['data'];
+        List listArticleAndLike = [];
+
+        jsonResponse.forEach((key, value) {
+          listArticleAndLike.add([
+            ArticleModel.fromJson(value['article'][0]),
+          ]);
+        });
+
+        return listArticleAndLike;
+      } else {
+        developer.log(response.body.toString(), name: 'response get article');
+      }
+    } catch (e) {
+      developer.log(e.toString(), name: 'catch get article');
+    }
+  }
 }
