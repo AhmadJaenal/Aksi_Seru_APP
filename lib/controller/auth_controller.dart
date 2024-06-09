@@ -76,59 +76,28 @@ class LoginController extends GetxController {
   }
 
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-
   Future<void> loginWithEmail() async {
-    var header = {'Content-Type': 'application/json'};
-
-    var url = Uri.parse(
-        ApiEndPoints.baseUrl + ApiEndPoints.authEndPoints.loginWithEmail);
-    Map<String, String> body = {
-      'email': emailController.text.trim(),
-      'password': passwordController.text,
-    };
-    http.Response response =
-        await http.post(url, body: jsonEncode(body), headers: header);
-
     try {
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        Map<String, dynamic> jsonResponse = jsonDecode(response.body)['data'];
-        String token = jsonResponse['token'];
-        String email = jsonResponse['email'];
-        developer.log(token, name: 'user token login email');
-        if (token.isNotEmpty) {
-          final SharedPreferences prefs = await _prefs;
-          await prefs.setString('token', token);
-          await prefs.setString('email', email);
-          emailController.clear();
-          passwordController.clear();
-          Get.toNamed('/recommendation-page');
-        }
-      } else {
-        Map<String, dynamic> jsonResponse = jsonDecode(response.body)['errors'];
-        String messageError = jsonResponse['message'][0];
-
-        developer.log(messageError, name: 'response failed login');
-        CustomPopUp(
-          icon: Icons.cancel_outlined,
-          message: messageError,
-          isSuccess: false,
-          onTap: () {
-            Get.back();
-          },
-          titleButton: 'Login kembali',
-        );
-      }
-    } catch (e) {
-      CustomPopUp(
-        icon: Icons.cancel_outlined,
-        message: 'Terjadi kesalahan',
-        isSuccess: false,
-        onTap: () {
-          Get.back();
-        },
-        titleButton: 'Login kembali',
+      final result = await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: emailController.text.trim(),
+        password: passwordController.text,
       );
-      developer.log('Error: $e', name: 'error catch');
+
+      Get.offAllNamed("/recommendation-page");
+    } on FirebaseAuthException catch (e) {
+      String message = 'Login failed';
+      if (e.code == 'user-not-found') {
+        message = 'No user found for that email.';
+      } else if (e.code == 'wrong-password') {
+        message = 'Wrong password provided.';
+      } else if (e.code == 'invalid-email') {
+        message = 'Please enter a valid email address.';
+      } else if (e.code == 'network-request-failed') {
+        message = 'There was a network error. Please try again.';
+      } else {
+        // Handle other potential errors
+        print('Login error: ${e.code}');
+      }
     }
   }
 }
