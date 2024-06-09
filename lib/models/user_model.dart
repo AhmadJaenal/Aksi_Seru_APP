@@ -1,9 +1,9 @@
+import "dart:developer" as developer;
+
 class UserModel {
-  final int id;
   final String username;
   final String name;
   final String email;
-  final String token;
   final String avatar;
   final int countPost;
   final int countArticle;
@@ -14,11 +14,9 @@ class UserModel {
   // final int idArticle;
 
   const UserModel({
-    required this.id,
     required this.username,
     required this.name,
     required this.email,
-    required this.token,
     required this.avatar,
     required this.countPost,
     required this.countArticle,
@@ -30,15 +28,14 @@ class UserModel {
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
+    developer.log(json['full_name'], name: 'full_name');
     return UserModel(
-      id: json['id'],
       username: json['username'].toString(),
-      name: json['name'].toString(),
+      name: json['full_name'].toString(),
       email: json['email'].toString(),
-      token: json['token'].toString(),
       avatar: json['avatar'] != null ? json['avatar'].toString() : '',
-      countPost: json['countpost'],
-      countArticle: json['countarticle'],
+      countPost: json['count_post'],
+      countArticle: json['count_article'],
       followers: json['followers'],
       following: json['following'],
       bio: json['bio'] != null ? json['bio'].toString() : '',

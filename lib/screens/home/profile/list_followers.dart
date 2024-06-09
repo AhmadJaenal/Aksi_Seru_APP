@@ -92,13 +92,13 @@ class ListFollowers extends StatelessWidget {
                                   ],
                                 ),
                                 const Spacer(),
-                                UnFollowButton(
-                                  onTap: () {
-                                    UserData.deleteFollowers(
-                                      idUser: userData.id.toString(),
-                                    );
-                                  },
-                                ),
+                                // UnFollowButton(
+                                //   onTap: () {
+                                //     UserData.deleteFollowers(
+                                //       idUser: userData.id.toString(),
+                                //     );
+                                //   },
+                                // ),
                               ],
                             ),
                           ),

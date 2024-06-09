@@ -111,13 +111,13 @@ class ListFollowing extends StatelessWidget {
                                   ],
                                 ),
                                 const Spacer(),
-                                UnFollowButton(
-                                  onTap: () {
-                                    UserData.unFollowUser(
-                                      idUser: userData.id.toString(),
-                                    );
-                                  },
-                                ),
+                                // UnFollowButton(
+                                //   onTap: () {
+                                //     UserData.unFollowUser(
+                                //       idUser: userData.id.toString(),
+                                //     );
+                                //   },
+                                // ),
                               ],
                             ),
                           ),

@@ -42,11 +42,11 @@ class _UserProfileState extends State<UserProfile> {
             ],
           ),
           const Gap(8),
-          FollowButton(
-            onTap: () {
-              UserData.followUser(userData: widget.userData);
-            },
-          ),
+          // FollowButton(
+          //   onTap: () {
+          //     UserData.followUser(userData: widget.userData);
+          //   },
+          // ),
         ],
       ),
     );
@@ -250,13 +250,13 @@ class _OtherUserProfileWidgetState extends State<OtherUserProfileWidget> {
             ],
           ),
           const Spacer(),
-          FollowButton(
-            onTap: () {
-              setState(() {
-                UserData.followUser(userData: widget.userData);
-              });
-            },
-          ),
+          // FollowButton(
+          //   onTap: () {
+          //     setState(() {
+          //       UserData.followUser(userData: widget.userData);
+          //     });
+          //   },
+          // ),
         ],
       ),
     );

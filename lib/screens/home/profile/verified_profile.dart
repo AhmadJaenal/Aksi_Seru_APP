@@ -14,6 +14,8 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
+import "dart:developer" as developer;
+
 class VerifiedProfile extends StatefulWidget {
   const VerifiedProfile({super.key});
 
@@ -91,23 +93,18 @@ class _VerifiedProfileState extends State<VerifiedProfile>
       ],
     );
     final double height = MediaQuery.of(context).size.height;
+
     return Scaffold(
       backgroundColor: AppColors.whiteColor,
-      body: FutureBuilder(
-        future: userData.getCurrentUser(),
+      body: StreamBuilder(
+        stream: userData.getCurrentUser(),
         builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else {
-            UserModel user = snapshot.data!;
-            if (user.avatar != '') {
-              List<String> userAvatar = user.avatar.split('localhost');
-              avatar = "${userAvatar[0]}${ApiEndPoints.ip}${userAvatar[1]}";
-            }
+          UserModel user = snapshot.data!;
 
-            counterFollowUser.setCountUserFollow(user.following);
-            counterFollowUser.setCountUserFollowers(user.followers);
+          counterFollowUser.setCountUserFollow(user.following);
+          counterFollowUser.setCountUserFollowers(user.followers);
 
+          if (snapshot.hasData) {
             return DefaultTabController(
               length: 2,
               initialIndex: 1,
@@ -502,6 +499,8 @@ class _VerifiedProfileState extends State<VerifiedProfile>
                 ),
               ),
             );
+          } else {
+            return const Center(child: CircularProgressIndicator());
           }
         },
       ),
