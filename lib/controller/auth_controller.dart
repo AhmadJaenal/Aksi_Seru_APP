@@ -77,13 +77,21 @@ class LoginController extends GetxController {
     super.disposeId(id);
   }
 
-  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   Future<void> loginWithEmail() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
     try {
-      final result = await FirebaseAuth.instance.signInWithEmailAndPassword(
+      await FirebaseAuth.instance
+          .signInWithEmailAndPassword(
         email: emailController.text.trim(),
         password: passwordController.text,
-      );
+      )
+          .then((userCredential) {
+        final user = userCredential.user;
+        user!.getIdToken().then((idToken) {
+          prefs.setString('token', idToken!);
+          prefs.setString('email', emailController.text);
+        });
+      });
 
       Get.offAllNamed("/recommendation-page");
     } on FirebaseAuthException catch (e) {
