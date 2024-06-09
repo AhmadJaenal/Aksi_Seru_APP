@@ -25,26 +25,24 @@ class RegisterationController extends GetxController {
   }
 
   Future<void> registerWithEmail() async {
-    var header = {'Content-type': 'application/json'};
     try {
-      var url = Uri.parse(
-          ApiEndPoints.baseUrl + ApiEndPoints.authEndPoints.registerWithEmail);
-      Map body = {
-        'username': usernameController.text,
-        'email': emailController.text.trim(),
-        'password': passwordController.text,
-        'name': nameController.text
+      UserCredential userCredential =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: emailController.text,
+        password: passwordController.text,
+      );
+
+      final FirebaseFirestore db = FirebaseFirestore.instance;
+      final CollectionReference ref = db.collection("users");
+      final Map<String, dynamic> userData = {
+        "full_name": nameController.text,
+        "email": emailController.text,
+        "username": usernameController.text,
+        "count_post": 0,
+        "count_article": 0,
       };
-      http.Response response =
-          await http.post(url, body: jsonEncode(body), headers: header);
 
-      developer.log('status code ${response.statusCode}');
-
-      if (response.statusCode == 201) {
-        usernameController.clear();
-        nameController.clear();
-        passwordController.clear();
-        emailController.clear();
+      await ref.add(userData).then((docRef) {
         CustomPopUp(
           icon: Icons.check_circle_outline_rounded,
           message: 'Berhasil membuat akun',
@@ -53,34 +51,15 @@ class RegisterationController extends GetxController {
           },
           titleButton: 'Lanjut Login',
         );
-        developer.log('berhasil login');
-      } else if (response.statusCode == 400) {
-        Map<String, dynamic> errors = jsonDecode(response.body);
-        CustomPopUp(
-          icon: Icons.cancel_outlined,
-          message: 'Gagal membuat akun\n $errors',
-          isSuccess: false,
-          onTap: () {
-            Get.offAllNamed('/register');
-          },
-          titleButton: 'Daftar ulang',
-        );
-      } else {
-        developer.log(response.statusCode.toString(), name: 'test');
+      });
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        print('The password provided is too weak.');
+      } else if (e.code == 'email-already-in-use') {
+        print('The account already exists for that email.');
       }
     } catch (e) {
-      developer.log(e.toString(), name: 'Failed register');
-      CustomPopUp(
-        icon: Icons.cancel_outlined,
-        message: 'Terjadi kesalahan diserver',
-        isSuccess: false,
-        onTap: () {
-          Get.back();
-
-          Get.offAllNamed('/register');
-        },
-        titleButton: 'Daftar ulang',
-      );
+      print(e);
     }
   }
 }
