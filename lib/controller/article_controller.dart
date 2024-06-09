@@ -16,16 +16,30 @@ import 'package:http/http.dart' as http;
 import 'dart:developer' as developer;
 
 class ArticleController extends GetxController {
-  static Future<List<ArticleModel>> getArticleByUser(
-      {required int idUser}) async {
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-        .collection("post")
+  static Stream<List<ArticleModel>?> getArticleByUser(
+      {required int idUser}) async* {
+    try {
+      yield* FirebaseFirestore.instance
+          .collection("articles")
         .where("idUser", isEqualTo: idUser)
-        .get();
+          .snapshots()
+          .map((snapshot) => ArticleModel.fromJsonList(snapshot));
+    } catch (e) {
+      developer.log(e.toString(), name: 'error get article by user');
+    }
+  }
 
-    List<ArticleModel> articles = ArticleModel.fromJsonList(querySnapshot);
-
-    return articles;
+  static Stream<ArticleModel?> getDetailArticle(
+      {required String docId}) async* {
+    try {
+      yield* FirebaseFirestore.instance
+          .collection("articles")
+          .doc(docId)
+          .snapshots()
+          .map((snapshot) => ArticleModel.fromJson(snapshot.data()!, docId));
+    } catch (e) {
+      developer.log(e.toString(), name: 'error get article by user');
+    }
   }
 
   static Future<List<ArticleModel>> getRecommendArticle() async {
