@@ -132,6 +132,17 @@ class ArticleController extends GetxController {
       );
     }
   }
+  static Future<void> commentArticle(
+      {required String docId, required CommentModel comment}) async {
+    final FirebaseFirestore db = FirebaseFirestore.instance;
+
+    developer.log(comment.toJson().toString());
+
+    DocumentReference postRef = db.collection('articles').doc(docId);
+    postRef.update({
+      'comment': FieldValue.arrayUnion([comment.toJson()])
+    });
+  }
 
   static void editArticle(
       {int? id, String? title, subtitle, content, category, image64}) async {
