@@ -205,12 +205,19 @@ class _CreateArticleState extends State<CreateArticle> {
                 PrimaryButton(
                   ontap: () {
                     if (formKey.currentState!.validate() && _image != null) {
-                      ArticleController.createArticle(
+                      // ArticleController.createArticle(
+                      //   title: titleController.text,
+                      //   subtitle: subtitleController.text,
+                      //   category: categoryController.text,
+                      //   content: contentController.text,
+                      //   base64Image: imagebase64,
+                      // );
+                      ArticleController.createArticleFirebase(
+                        id: 1,
                         title: titleController.text,
                         subtitle: subtitleController.text,
-                        category: categoryController.text,
                         content: contentController.text,
-                        base64Image: imagebase64,
+                        image: _image!,
                       );
                     }
                   },

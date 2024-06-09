@@ -50,7 +50,7 @@ class PostController extends GetxController {
     }
   }
 
-  static Stream<List?> getPostByUser() async* {
+  static Future<List?> getPostByUser() async {
     String? token = await UserData.getToken();
 
     var headers = {
@@ -72,7 +72,7 @@ class PostController extends GetxController {
           ]);
         });
 
-        yield listPostAndLike;
+        return listPostAndLike;
       } else {
         developer.log(response.body, name: 'failed get post by user');
       }

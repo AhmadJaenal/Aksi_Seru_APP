@@ -32,7 +32,7 @@ class FollowingPage extends StatelessWidget {
                         physics: const BouncingScrollPhysics(),
                         itemCount: snapshot.data!.length,
                         itemBuilder: (context, index) {
-                          ArticleModel dataArticle = snapshot.data![index][0];
+                          ArticleModel dataArticle = snapshot.data![index];
 
                           return CardArticle(article: dataArticle);
                         },

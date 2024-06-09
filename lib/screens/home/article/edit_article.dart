@@ -216,14 +216,14 @@ class _CreateArticleState extends State<EditArticle> {
                 PrimaryButton(
                   ontap: () {
                     if (formKey.currentState!.validate() && _image != null) {
-                      ArticleController.editArticle(
-                        id: articleModel.id,
-                        title: titleController.text,
-                        subtitle: subtitleController.text,
-                        content: contentController.text,
-                        image64: imagebase64,
-                        category: '',
-                      );
+                      // ArticleController.editArticle(
+                      //   id: articleModel.id,
+                      //   title: titleController.text,
+                      //   subtitle: subtitleController.text,
+                      //   content: contentController.text,
+                      //   image64: imagebase64,
+                      //   category: '',
+                      // );
                     }
                   },
                   title: 'Simpan Perubahan',

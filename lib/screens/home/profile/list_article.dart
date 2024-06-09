@@ -35,7 +35,7 @@ class ListArticle extends StatelessWidget {
               width: double.infinity,
               height: MediaQuery.of(context).size.height * .7,
               child: FutureBuilder<List<dynamic>?>(
-                future: ArticleController.getArticle(),
+                future: ArticleController.getArticleByUser(idUser: 1),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());
@@ -45,7 +45,7 @@ class ListArticle extends StatelessWidget {
                         physics: const BouncingScrollPhysics(),
                         itemCount: snapshot.data!.length,
                         itemBuilder: (context, index) {
-                          ArticleModel dataArticle = snapshot.data![index][0];
+                          ArticleModel dataArticle = snapshot.data![index];
 
                           return CardArticle(article: dataArticle);
                         },

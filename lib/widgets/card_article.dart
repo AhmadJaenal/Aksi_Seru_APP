@@ -1,7 +1,6 @@
 import 'package:aksi_seru_app/controller/article_controller.dart';
 import 'package:aksi_seru_app/models/article_model.dart';
 import 'package:aksi_seru_app/shared/style.dart';
-import 'package:aksi_seru_app/utils/api.dart';
 import 'package:aksi_seru_app/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -9,16 +8,10 @@ import 'package:get/get.dart';
 
 class CardArticle extends StatelessWidget {
   final ArticleModel article;
-  CardArticle({super.key, required this.article});
+  const CardArticle({super.key, required this.article});
 
-  late String image;
   @override
   Widget build(BuildContext context) {
-    if (article.urlImage != '') {
-      List<String> articleImage = article.urlImage.split('localhost');
-      image = "${articleImage[0]}${ApiEndPoints.ip}${articleImage[1]}";
-    }
-
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return GestureDetector(
@@ -32,7 +25,7 @@ class CardArticle extends StatelessWidget {
             ClipRRect(
               borderRadius: BorderRadius.circular(6),
               child: Image.network(
-                image,
+                article.urlImage,
                 width: width * .4,
                 height: 150,
                 fit: BoxFit.cover,
@@ -50,7 +43,7 @@ class CardArticle extends StatelessWidget {
                     SizedBox(
                       width: width * .3,
                       child: Text(
-                        'Alexander Keantoa',
+                        article.docId,
                         style: AppTextStyle.paragraphL.copyWith(
                           color: AppColors.blackColor,
                         ),
@@ -249,7 +242,8 @@ class CardArticle extends StatelessWidget {
                       icon: 'icon_block.png',
                       title: 'Hapus',
                       ontap: () {
-                        ArticleController.deleteArticle(id: article.id);
+                        // ArticleController.deleteArticle(id: article.id);
+                        ArticleController.deleteArticle(docId: article.docId);
                       },
                     ),
                   ),

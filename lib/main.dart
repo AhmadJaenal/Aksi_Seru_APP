@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:aksi_seru_app/firebase_options.dart';
 import 'package:aksi_seru_app/screens/auth/create_password.dart';
 import 'package:aksi_seru_app/screens/auth/create_username.dart';
 import 'package:aksi_seru_app/screens/auth/login.dart';
@@ -37,6 +38,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'screens/home/feed/create_story.dart';
 import 'screens/home/nav/nav_bottom.dart';
 
+import 'package:firebase_core/firebase_core.dart';
+
 class PostHttpOverrides extends HttpOverrides {
   @override
   HttpClient createHttpClient(context) {
@@ -46,8 +49,12 @@ class PostHttpOverrides extends HttpOverrides {
   }
 }
 
-void main() {
+void main() async {
   HttpOverrides.global = PostHttpOverrides();
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
@@ -81,6 +88,7 @@ class _MyAppState extends State<MyApp> {
     final SharedPreferences sharedPreferences =
         await SharedPreferences.getInstance();
     var obtainEmail = sharedPreferences.getString('email');
+
     setState(() {
       email = obtainEmail!;
     });

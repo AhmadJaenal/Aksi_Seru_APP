@@ -3,6 +3,7 @@ import 'package:aksi_seru_app/models/post_model.dart';
 import 'package:aksi_seru_app/shared/style.dart';
 import 'package:aksi_seru_app/widgets/card_post.dart';
 import 'package:aksi_seru_app/widgets/custom_textfield.dart';
+import 'package:aksi_seru_app/widgets/section_comment_post.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -74,8 +75,8 @@ class ListPost extends StatelessWidget {
             child: SizedBox(
               width: double.infinity,
               height: MediaQuery.of(context).size.height * .7,
-              child: StreamBuilder(
-                stream: PostController.getPostByUser(),
+              child: FutureBuilder(
+                future: PostController.getPostByUser(),
                 builder: (context, snapshot) {
                   if (snapshot.hasData && snapshot.data!.length != 0) {
                     return ListView.builder(
@@ -86,6 +87,7 @@ class ListPost extends StatelessWidget {
                         List<LikeModel> likePost = snapshot.data![index][1];
                         List<CommentModel> commentPost =
                             snapshot.data![index][2];
+
                         return CardPost(
                           postModel: userPost,
                           likeModel: likePost,

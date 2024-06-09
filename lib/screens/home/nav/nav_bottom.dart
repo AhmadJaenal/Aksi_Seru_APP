@@ -121,7 +121,7 @@ class CustomNavBottom extends StatelessWidget {
               const SearchPage(),
               ArticlePage(),
               FeedPage(),
-              VerifiedProfile(),
+              const VerifiedProfile(),
             ],
           ),
         ),

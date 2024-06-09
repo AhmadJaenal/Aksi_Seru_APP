@@ -1,6 +1,5 @@
 import '../../../models/article_model.dart';
 import '../../../shared/style.dart';
-import '../../../utils/api.dart';
 import '../../../widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -11,13 +10,7 @@ class DetailArticle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String imageArticle = '';
     ArticleModel articleModel = Get.arguments;
-
-    if (articleModel.urlImage != '') {
-      List<String> articleImage = articleModel.urlImage.split('localhost');
-      imageArticle = "${articleImage[0]}${ApiEndPoints.ip}${articleImage[1]}";
-    }
     return SafeArea(
       child: Scaffold(
         appBar: PreferredSize(
@@ -215,7 +208,7 @@ class DetailArticle extends StatelessWidget {
                   borderRadius: BorderRadius.circular(12),
                   image: DecorationImage(
                     fit: BoxFit.cover,
-                    image: NetworkImage(imageArticle),
+                    image: NetworkImage(articleModel.urlImage),
                   ),
                 ),
               ),

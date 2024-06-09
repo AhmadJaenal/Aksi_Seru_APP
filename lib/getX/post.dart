@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:aksi_seru_app/controller/post_controller.dart';
 import 'package:aksi_seru_app/models/post_model.dart';
 import 'package:get/get.dart';
@@ -31,5 +33,13 @@ class CommentState extends GetxController {
 
   void addComment(CommentModel newComment) {
     comment.add(newComment);
+  }
+
+  void startAutoDeleteTimer() {
+    Timer.periodic(const Duration(seconds: 10), (timer) {
+      if (comment.isNotEmpty) {
+        comment.removeAt(0);
+      }
+    });
   }
 }
