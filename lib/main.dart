@@ -67,10 +67,6 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-  Future<void> setToken() async {
-    final SharedPreferences prefs = await _prefs;
-    await prefs.setString('token', '');
-  }
 
   Future<Widget> getToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -83,16 +79,16 @@ class _MyAppState extends State<MyApp> {
     }
   }
 
-  static String email = '';
+  static String token = '';
   Future<String> getValidationData() async {
     final SharedPreferences sharedPreferences =
         await SharedPreferences.getInstance();
-    var obtainEmail = sharedPreferences.getString('email');
+    var tokenResult = sharedPreferences.getString('token');
 
     setState(() {
-      email = obtainEmail!;
+      token = tokenResult!;
     });
-    return email;
+    return token;
   }
 
   @override
@@ -105,7 +101,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      home: email != ''
+      home: token != ''
           ? const CheckConnection(page: CustomNavBottom())
           : const CheckConnection(page: SplashScreen()),
       getPages: [
