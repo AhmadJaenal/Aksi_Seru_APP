@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:ffi';
 import 'dart:io';
 
 import 'package:aksi_seru_app/controller/user_controller.dart';
@@ -21,7 +20,7 @@ class ArticleController extends GetxController {
     try {
       yield* FirebaseFirestore.instance
           .collection("articles")
-        .where("idUser", isEqualTo: idUser)
+          .where("idUser", isEqualTo: idUser)
           .snapshots()
           .map((snapshot) => ArticleModel.fromJsonList(snapshot));
     } catch (e) {
@@ -44,7 +43,7 @@ class ArticleController extends GetxController {
 
   static Future<List<ArticleModel>> getRecommendArticle() async {
     QuerySnapshot querySnapshot =
-        await FirebaseFirestore.instance.collection("post").get();
+        await FirebaseFirestore.instance.collection("articles").get();
 
     List<ArticleModel> articles = ArticleModel.fromJsonList(querySnapshot);
 
@@ -70,7 +69,7 @@ class ArticleController extends GetxController {
     final imageUrl = await imageRef.getDownloadURL();
 
     final FirebaseFirestore db = FirebaseFirestore.instance;
-    final CollectionReference ref = db.collection("post");
+    final CollectionReference ref = db.collection("articles");
     final Map<String, dynamic> postField = {
       "idUser": id,
       "title": title,
@@ -111,7 +110,10 @@ class ArticleController extends GetxController {
         Get.put(LandingPageController(), permanent: false);
 
     try {
-      await FirebaseFirestore.instance.collection("post").doc(docId).delete();
+      await FirebaseFirestore.instance
+          .collection("articles")
+          .doc(docId)
+          .delete();
 
       CustomPopUp(
         icon: Icons.check_circle_outline_rounded,
@@ -132,6 +134,7 @@ class ArticleController extends GetxController {
       );
     }
   }
+
   static Future<void> commentArticle(
       {required String docId, required CommentModel comment}) async {
     final FirebaseFirestore db = FirebaseFirestore.instance;

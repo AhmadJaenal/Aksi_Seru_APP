@@ -601,8 +601,7 @@ class CardComment extends StatelessWidget {
     double width = MediaQuery.of(context).size.width;
     return Container(
       color: AppColors.whiteColor,
-      padding: EdgeInsets.symmetric(
-        horizontal: AppMargin.defaultMargin,
+      padding: const EdgeInsets.symmetric(
         vertical: 12,
       ),
       child: Row(

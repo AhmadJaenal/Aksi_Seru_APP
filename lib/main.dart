@@ -175,7 +175,7 @@ class _MyAppState extends State<MyApp> {
         ),
         GetPage(
           name: '/detail-article',
-          page: () => const CheckConnection(page: DetailArticle()),
+          page: () => CheckConnection(page: DetailArticle()),
         ),
         GetPage(
           name: '/trending-article',

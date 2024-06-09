@@ -34,32 +34,28 @@ class ListArticle extends StatelessWidget {
             child: SizedBox(
               width: double.infinity,
               height: MediaQuery.of(context).size.height * .7,
-              child: FutureBuilder<List<dynamic>?>(
-                future: ArticleController.getArticleByUser(idUser: 1),
+              child: StreamBuilder<List<dynamic>?>(
+                stream: ArticleController.getArticleByUser(idUser: 1),
                 builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else {
-                    if (snapshot.hasData) {
-                      return ListView.builder(
-                        physics: const BouncingScrollPhysics(),
-                        itemCount: snapshot.data!.length,
-                        itemBuilder: (context, index) {
-                          ArticleModel dataArticle = snapshot.data![index];
+                  if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                    return ListView.builder(
+                      physics: const BouncingScrollPhysics(),
+                      itemCount: snapshot.data!.length,
+                      itemBuilder: (context, index) {
+                        ArticleModel dataArticle = snapshot.data![index];
 
-                          return CardArticle(article: dataArticle);
-                        },
-                      );
-                    } else {
-                      return Center(
-                        child: Text(
-                          'Belum ada article yang anda buat',
-                          style: AppTextStyle.h2.copyWith(
-                            color: AppColors.blackColor,
-                          ),
+                        return CardArticle(article: dataArticle);
+                      },
+                    );
+                  } else {
+                    return Center(
+                      child: Text(
+                        'Belum ada article yang anda buat',
+                        style: AppTextStyle.h2.copyWith(
+                          color: AppColors.blackColor,
                         ),
-                      );
-                    }
+                      ),
+                    );
                   }
                 },
               ),
