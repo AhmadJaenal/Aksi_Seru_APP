@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:developer' as developer;
 
 class ArticleModel {
   final String docId;
@@ -6,8 +7,8 @@ class ArticleModel {
   final String title;
   final String subtitle;
   final String content;
-  final List comment;
-  final List like;
+  final List<CommentModel> comments;
+  // final Map<String, dynamic> like;
   final int countlike;
   final int countComment;
   final String urlImage;
@@ -19,8 +20,8 @@ class ArticleModel {
     required this.title,
     required this.subtitle,
     required this.content,
-    required this.comment,
-    required this.like,
+    required this.comments,
+    // required this.like,
     required this.countlike,
     required this.countComment,
     required this.urlImage,
@@ -28,14 +29,17 @@ class ArticleModel {
   });
 
   factory ArticleModel.fromJson(Map<String, dynamic> json, String docId) {
+    List<dynamic> commentsJson = json['comment'];
+    List<CommentModel> commentsList = CommentModel.fromJsonList(commentsJson);
+
     return ArticleModel(
       docId: docId,
       userId: json['idUser'],
-      title: json['subtitle'],
-      subtitle: json['title'],
+      title: json['title'],
+      subtitle: json['subtitle'],
       content: json['content'],
-      comment: json['comment'],
-      like: json['idlike'],
+      comments: commentsList,
+      // like: json['idlike'],
       countlike: json['countlike'],
       countComment: json['countcomment'],
       urlImage: json['urlimage'],
@@ -48,6 +52,38 @@ class ArticleModel {
       Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
       String docId = doc.id;
       return ArticleModel.fromJson(data, docId);
+    }).toList();
+  }
+}
+
+class CommentModel {
+  final int idUser;
+  final String comment;
+  final String createdAt;
+
+  CommentModel(
+      {required this.idUser, required this.comment, required this.createdAt});
+
+  factory CommentModel.fromJson(Map<String, dynamic> json) {
+    return CommentModel(
+      idUser: json['id_user'],
+      comment: json['comment'],
+      createdAt: json['created_at'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'comment': comment,
+      'created_at': createdAt,
+      'id_user': idUser,
+    };
+  }
+
+  static List<CommentModel> fromJsonList(List<dynamic> jsonMap) {
+    return jsonMap.map((entry) {
+      Map<String, dynamic> commentData = entry as Map<String, dynamic>;
+      return CommentModel.fromJson(commentData);
     }).toList();
   }
 }
