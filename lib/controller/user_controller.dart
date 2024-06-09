@@ -4,6 +4,8 @@ import 'package:aksi_seru_app/getX/counter_follow_user.dart';
 import 'package:aksi_seru_app/models/user_model.dart';
 import 'package:aksi_seru_app/utils/api.dart';
 import 'package:aksi_seru_app/widgets/custom_popup.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -17,26 +19,31 @@ class UserData extends GetxController {
     return token;
   }
 
-  Future<UserModel?> getCurrentUser() async {
-    String? token = await getToken();
-    final uri = Uri.parse(ApiEndPoints.baseUrl + UserEndPoints.currentUser);
-    var headers = {
-      'X-Authorization': '$token',
-    };
+  Stream<UserModel?> getCurrentUser() async* {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? email = prefs.getString("email");
 
-    try {
-      final response = await http.get(uri, headers: headers);
-      if (response.statusCode == 200) {
-        Map<String, dynamic> jsonResponse = jsonDecode(response.body)['data'];
-
-        UserModel user = UserModel.fromJson(jsonResponse);
-        return user;
-      } else if (response.statusCode == 401) {
-        developer.log('Unauthorized');
-      }
-    } catch (e) {
-      developer.log('Error: $e', name: 'error get user');
+    if (email == null) {
+      yield null;
+      return;
     }
+
+    yield* FirebaseFirestore.instance
+        .collection("users")
+        .where("email", isEqualTo: email)
+        .snapshots()
+        .map((snapshot) {
+      if (snapshot.docs.isEmpty) {
+        return null;
+      }
+
+      var userData = snapshot.docs.first.data();
+      developer.log(userData.toString(), name: "user data");
+      return UserModel.fromJson(userData);
+    }).handleError((e) {
+      developer.log(e.toString(), name: 'catch error');
+      return null;
+    });
   }
 
   static updateUserProfile({required String name, bio, image}) async {
@@ -113,40 +120,40 @@ class UserData extends GetxController {
     }
   }
 
-  static Future<void> followUser({UserModel? userData}) async {
-    final CounterFollowUser counterFollowUser = Get.put(CounterFollowUser());
-    final ListFollowingCounter listFollowingCounter =
-        Get.put(ListFollowingCounter());
+  // static Future<void> followUser({UserModel? userData}) async {
+  //   final CounterFollowUser counterFollowUser = Get.put(CounterFollowUser());
+  //   final ListFollowingCounter listFollowingCounter =
+  //       Get.put(ListFollowingCounter());
 
-    String? token = await getToken();
-    final uri = Uri.parse(ApiEndPoints.baseUrl + UserEndPoints.followUser);
-    var headers = {
-      'X-Authorization': '$token',
-      'Content-Type': 'application/json'
-    };
-    var body = jsonEncode({
-      'iduser': userData!.id,
-    });
-    try {
-      final response = await http.post(uri, headers: headers, body: body);
-      if (response.statusCode == 200) {
-        counterFollowUser.follow();
-        listFollowingCounter.follow(userData);
-      } else {
-        CustomPopUp(
-          icon: Icons.cancel_outlined,
-          message: 'Terjadi kesalahan diserver',
-          isSuccess: false,
-          onTap: () {
-            Get.back();
-          },
-          titleButton: 'Kembali',
-        );
-      }
-    } catch (e) {
-      developer.log('Error: $e', name: 'error follow user');
-    }
-  }
+  //   String? token = await getToken();
+  //   final uri = Uri.parse(ApiEndPoints.baseUrl + UserEndPoints.followUser);
+  //   var headers = {
+  //     'X-Authorization': '$token',
+  //     'Content-Type': 'application/json'
+  //   };
+  //   var body = jsonEncode({
+  //     'iduser': userData!.id,
+  //   });
+  //   try {
+  //     final response = await http.post(uri, headers: headers, body: body);
+  //     if (response.statusCode == 200) {
+  //       counterFollowUser.follow();
+  //       listFollowingCounter.follow(userData);
+  //     } else {
+  //       CustomPopUp(
+  //         icon: Icons.cancel_outlined,
+  //         message: 'Terjadi kesalahan diserver',
+  //         isSuccess: false,
+  //         onTap: () {
+  //           Get.back();
+  //         },
+  //         titleButton: 'Kembali',
+  //       );
+  //     }
+  //   } catch (e) {
+  //     developer.log('Error: $e', name: 'error follow user');
+  //   }
+  // }
 
   static Future<void> unFollowUser({String? idUser}) async {
     final ListFollowingCounter listFollowingCounter =
