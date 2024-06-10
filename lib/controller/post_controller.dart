@@ -95,8 +95,17 @@ class PostController extends GetxController {
       );
     }
   }
+  static Stream getPostByUser() async* {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? email = prefs.getString("email");
+    try {
+      yield* FirebaseFirestore.instance
+          .collection("postUsers")
+          .where("email", isEqualTo: email)
+          .snapshots();
+      ;
     } catch (e) {
-      developer.log(e.toString(), name: 'catch post test');
+      developer.log(e.toString(), name: 'error get post by user');
     }
   }
 
