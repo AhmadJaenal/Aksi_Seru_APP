@@ -45,6 +45,15 @@ class UserData extends GetxController {
       return null;
     });
   }
+  static Future<QuerySnapshot<Map<String, dynamic>>> getUserByEmail(
+      {String? email}) async {
+    QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore
+        .instance
+        .collection("users")
+        .where("email", isEqualTo: email)
+        .get();
+    return querySnapshot;
+  }
 
   static updateUserProfile({required String name, bio, image}) async {
     String? token = await getToken();
