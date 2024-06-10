@@ -11,30 +11,67 @@ import 'package:http/http.dart' as http;
 import 'dart:developer' as developer;
 
 class PostController extends GetxController {
-  Future<void> createPost({String? caption, base64Image}) async {
-    String? token = await UserData.getToken();
+  static Future<void> createpostFirebase(
+      {required caption, required File image}) async {
+    final LandingPageController landingPageController =
+        Get.put(LandingPageController(), permanent: false);
 
-    var headers = {
-      'X-Authorization': '$token',
-    };
-    final uri = Uri.parse(ApiEndPoints.baseUrl + Post.createPost);
+    final storageRef = FirebaseStorage.instance.ref();
 
-    var body = jsonEncode({'image': base64Image, 'caption': caption});
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? email = prefs.getString("email");
 
     try {
-      final response = await http.post(uri, headers: headers, body: body);
+      final imageRef = storageRef
+          .child('postImage/${DateTime.now().millisecondsSinceEpoch}.jpg');
+      await imageRef.putFile(image);
 
-      if (response.statusCode == 200) {
-        Get.offAllNamed('/nav-bar');
+      final imageUrl = await imageRef.getDownloadURL();
+
+      final FirebaseFirestore db = FirebaseFirestore.instance;
+      final CollectionReference ref = db.collection("postUsers");
+      final Map<String, dynamic> articleField = {
+        "email": email,
+        "caption": caption,
+        "comment": [],
+        "idlike": [],
+        "updated_at": "",
+        "urlimage": imageUrl,
+      };
+      await ref.add(articleField).then((docRef) async {
+        try {
+          QuerySnapshot<Map<String, dynamic>> querySnapshot =
+              await UserData.getUserByEmail(email: email);
+
+          if (querySnapshot.docs.isNotEmpty) {
+            QueryDocumentSnapshot<Map<String, dynamic>> userDoc =
+                querySnapshot.docs.first;
+            Map<String, dynamic> userData = userDoc.data();
+
+            UserModel userModel = UserModel.fromJson(userData);
+
+            Map<String, dynamic> updatedData = {
+              "count_post": userModel.countPost + 1,
+            };
+
+            await FirebaseFirestore.instance
+                .collection('users')
+                .doc(userDoc.id)
+                .update(updatedData);
+
         CustomPopUp(
           icon: Icons.check_circle_outline_rounded,
-          message: 'Berhasil mengunggah postingan',
+              message: 'Berhasil mengunggah artikel',
           onTap: () {
-            Get.back();
+                Get.offAllNamed('/nav-bar');
+                landingPageController.changeTabIndex(4);
           },
           titleButton: 'Kembali',
         );
       } else {
+            print('No user found with the given email');
+          }
+        } catch (e) {
         CustomPopUp(
           icon: Icons.cancel_outlined,
           message: 'Terjadi saat mengunggah',
@@ -45,37 +82,19 @@ class PostController extends GetxController {
           titleButton: 'Kembali',
         );
       }
+      });
     } catch (e) {
-      developer.log(e.toString(), name: 'catch post');
+      CustomPopUp(
+        icon: Icons.cancel_outlined,
+        message: 'Terjadi saat mengunggah',
+        isSuccess: false,
+        onTap: () {
+          Get.back();
+        },
+        titleButton: 'Kembali',
+      );
     }
   }
-
-  static Future<List?> getPostByUser() async {
-    String? token = await UserData.getToken();
-
-    var headers = {
-      'X-Authorization': '$token',
-    };
-    final uri = Uri.parse(ApiEndPoints.baseUrl + Post.getPostByUser);
-
-    try {
-      final response = await http.get(uri, headers: headers);
-
-      Map<String, dynamic> jsonResponse = jsonDecode(response.body)['data'];
-      if (response.statusCode == 200) {
-        List listPostAndLike = [];
-        jsonResponse.forEach((key, value) {
-          listPostAndLike.add([
-            PostModel.fromJson(value['post'][0]),
-            LikeModel.fromJsonList(value['like']),
-            CommentModel.fromJsonList(value['comment']),
-          ]);
-        });
-
-        return listPostAndLike;
-      } else {
-        developer.log(response.body, name: 'failed get post by user');
-      }
     } catch (e) {
       developer.log(e.toString(), name: 'catch post test');
     }
