@@ -1,28 +1,23 @@
-import 'package:aksi_seru_app/controller/post_controller.dart';
-import 'package:aksi_seru_app/getX/post.dart';
-import 'package:aksi_seru_app/models/post_model.dart';
-import 'package:aksi_seru_app/screens/home/feed/edit_post.dart';
-import 'package:aksi_seru_app/shared/style.dart';
-import 'package:aksi_seru_app/utils/api.dart';
-import 'package:aksi_seru_app/widgets/custom_button.dart';
-import 'package:aksi_seru_app/widgets/custom_textfield.dart';
-import 'package:aksi_seru_app/widgets/user_profile.dart';
+import '../getX/post.dart';
+import '../shared/style.dart';
+import 'custom_button.dart';
+import 'custom_textfield.dart';
+import 'user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
-import 'dart:developer' as developer;
-
 class CardPost extends StatelessWidget {
-  final PostModel postModel;
-  final List<LikeModel> likeModel;
-  final List<CommentModel> commentModel;
+  final String caption, urlImage, updatedAt;
+  final List<dynamic> comment, like;
 
   CardPost({
     super.key,
-    required this.postModel,
-    required this.likeModel,
-    required this.commentModel,
+    required this.caption,
+    required this.urlImage,
+    required this.updatedAt,
+    required this.comment,
+    required this.like,
   });
 
   final TextEditingController _commentPostC = TextEditingController();
@@ -33,22 +28,14 @@ class CardPost extends StatelessWidget {
     _commentPostC.dispose();
   }
 
-  String imagePost = '';
-
   LikeUnlikePost likeUnlikePost = LikeUnlikePost();
 
   @override
   Widget build(BuildContext context) {
-    if (postModel.url != '') {
-      List<String> userAvatar = postModel.url.split('localhost');
-      imagePost = "${userAvatar[0]}${ApiEndPoints.ip}${userAvatar[1]}";
-    }
-
     final double height = MediaQuery.of(context).size.height;
     final double width = MediaQuery.of(context).size.width;
 
     CommentState commentState = Get.put(CommentState());
-    commentState.setComment(commentModel);
 
     return Container(
       width: double.infinity,
@@ -133,16 +120,16 @@ class CardPost extends StatelessWidget {
                                       icon: 'icon_block.png',
                                       title: 'Edit Postingan',
                                       ontap: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => EditPost(
-                                              caption: postModel.caption,
-                                              image: imagePost,
-                                              idPost: postModel.idPost,
-                                            ),
-                                          ),
-                                        );
+                                        // Navigator.push(
+                                        //   context,
+                                        //   MaterialPageRoute(
+                                        //     builder: (context) => EditPost(
+                                        //       caption: postModel.caption,
+                                        //       image: imagePost,
+                                        //       idPost: postModel.idPost,
+                                        //     ),
+                                        //   ),
+                                        // );
                                       },
                                     ),
                                   ),
@@ -169,10 +156,10 @@ class CardPost extends StatelessWidget {
                                                 icon: 'icon_block.png',
                                                 title: 'Hapus',
                                                 ontap: () {
-                                                  PostController.deletePost(
-                                                    idPost: postModel.idPost,
-                                                    context: context,
-                                                  );
+                                                  // PostController.deletePost(
+                                                  //   idPost: postModel.idPost,
+                                                  //   context: context,
+                                                  // );
                                                 },
                                               ),
                                             ],
@@ -198,7 +185,7 @@ class CardPost extends StatelessWidget {
           SizedBox(
             width: double.infinity,
             child: Text(
-              postModel.caption,
+              caption,
               style: AppTextStyle.paragraphL.copyWith(
                 color: AppColors.blackColor,
               ),
@@ -210,10 +197,8 @@ class CardPost extends StatelessWidget {
           ClipRRect(
             borderRadius: BorderRadius.circular(12),
             child: GestureDetector(
-              onDoubleTap: () {
-                PostController.likePost(id: postModel.idPost);
-              },
-              child: Image.network(imagePost),
+              onDoubleTap: () {},
+              child: Image.network(urlImage),
             ),
           ),
           const Gap(16),
@@ -303,7 +288,7 @@ class CardPost extends StatelessWidget {
                                         const CardCaption(),
                                         const Gap(12),
                                         Text(
-                                          postModel.caption.toString(),
+                                          caption,
                                           style:
                                               AppTextStyle.paragraphL.copyWith(
                                             color: AppColors.blackColor,
@@ -316,24 +301,24 @@ class CardPost extends StatelessWidget {
                                 // NOTE :: END CODE SECTION CAPTION POST,
 
                                 // NOTE :: STAR CODE SECTION COMMENT POST
-                                commentModel.isNotEmpty
-                                    ? SliverList(
-                                        delegate: SliverChildBuilderDelegate(
-                                          (context, index) {
-                                            final comment = commentModel[index];
-                                            return CardComment(
-                                              comment: comment.comment,
-                                              createdAt: comment.createdAt,
-                                            );
-                                          },
-                                          childCount: commentModel.length,
-                                        ),
-                                      )
-                                    : const SliverToBoxAdapter(
-                                        child: Center(
-                                          child: Text('Tidak ada komentar'),
-                                        ),
-                                      )
+                                // comment.isNotEmpty
+                                //     ? SliverList(
+                                //         delegate: SliverChildBuilderDelegate(
+                                //           (context, index) {
+                                //             final dataComment = comment[index];
+                                //             return CardComment(
+                                //               comment: dataComment[]
+                                //               createdAt: comment
+                                //             );
+                                //           },
+                                //           childCount: commentModel.length,
+                                //         ),
+                                //       )
+                                //     : const SliverToBoxAdapter(
+                                //         child: Center(
+                                //           child: Text('Tidak ada komentar'),
+                                //         ),
+                                //       )
                                 // NOTE :: END CODE SECTION COMMENT POST
                               ],
                             ),
@@ -351,7 +336,7 @@ class CardPost extends StatelessWidget {
           GestureDetector(
             onTap: () {},
             child: Text(
-              'Disukai ${postModel.countLike} orang',
+              'Disukai ${like.length} orang',
               style: AppTextStyle.paragraphL.copyWith(
                 color: AppColors.blackColor,
               ),
@@ -431,7 +416,7 @@ class CardPost extends StatelessWidget {
                                   const CardCaption(),
                                   const Gap(12),
                                   Text(
-                                    postModel.caption.toString(),
+                                    caption,
                                     style: AppTextStyle.paragraphL.copyWith(
                                       color: AppColors.blackColor,
                                     ),
@@ -443,24 +428,24 @@ class CardPost extends StatelessWidget {
                           // NOTE :: END CODE SECTION CAPTION POST,
 
                           // NOTE :: STAR CODE SECTION COMMENT POST
-                          commentModel.isNotEmpty
-                              ? SliverList(
-                                  delegate: SliverChildBuilderDelegate(
-                                    (context, index) {
-                                      final comment = commentModel[index];
-                                      return CardComment(
-                                        comment: comment.comment,
-                                        createdAt: comment.createdAt,
-                                      );
-                                    },
-                                    childCount: commentModel.length,
-                                  ),
-                                )
-                              : const SliverToBoxAdapter(
-                                  child: Center(
-                                    child: Text('Tidak ada komentar'),
-                                  ),
-                                )
+                          // commentModel.isNotEmpty
+                          //     ? SliverList(
+                          //         delegate: SliverChildBuilderDelegate(
+                          //           (context, index) {
+                          //             final comment = commentModel[index];
+                          //             return CardComment(
+                          //               comment: comment.comment,
+                          //               createdAt: comment.createdAt,
+                          //             );
+                          //           },
+                          //           childCount: commentModel.length,
+                          //         ),
+                          //       )
+                          //     : const SliverToBoxAdapter(
+                          //         child: Center(
+                          //           child: Text('Tidak ada komentar'),
+                          //         ),
+                          //       )
                           // NOTE :: END CODE SECTION COMMENT POST
                         ],
                       ),
@@ -512,11 +497,6 @@ class CardPost extends StatelessWidget {
                   icon: Icon(Icons.send, color: AppColors.whiteColor),
                   onTap: () async {
                     if (formKey.currentState!.validate()) {
-                      final newComment = await PostController.commentPost(
-                        comment: _commentPostC.text,
-                        id: postModel.idPost,
-                      );
-
                       _commentPostC.clear();
                     }
                   },
