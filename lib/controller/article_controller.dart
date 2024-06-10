@@ -142,11 +142,39 @@ class ArticleController extends GetxController {
     final LandingPageController landingPageController =
         Get.put(LandingPageController(), permanent: false);
 
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? email = prefs.getString("email");
+
     try {
       await FirebaseFirestore.instance
           .collection("articles")
           .doc(docId)
           .delete();
+
+      QuerySnapshot<Map<String, dynamic>> querySnapshot =
+          await FirebaseFirestore.instance
+              .collection("users")
+              .where("email", isEqualTo: email)
+              .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        QueryDocumentSnapshot<Map<String, dynamic>> userDoc =
+            querySnapshot.docs.first;
+        Map<String, dynamic> userData = userDoc.data();
+
+        UserModel userModel = UserModel.fromJson(userData);
+
+        Map<String, dynamic> updatedData = {
+          "count_article": userModel.countArticle - 1,
+        };
+
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(userDoc.id)
+            .update(updatedData);
+      } else {
+        print('No user found with the given email');
+      }
 
       CustomPopUp(
         icon: Icons.check_circle_outline_rounded,
