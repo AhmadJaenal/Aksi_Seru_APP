@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:aksi_seru_app/controller/user_controller.dart';
 import 'package:aksi_seru_app/getX/nav_bottom_state.dart';
 import 'package:aksi_seru_app/models/article_model.dart';
+import 'package:aksi_seru_app/models/user_model.dart';
 import 'package:aksi_seru_app/utils/api.dart';
 import 'package:aksi_seru_app/widgets/custom_popup.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -13,6 +14,8 @@ import 'package:get/get.dart';
 
 import 'package:http/http.dart' as http;
 import 'dart:developer' as developer;
+
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ArticleController extends GetxController {
   static Stream<List<ArticleModel>?> getArticleByUser(
@@ -50,13 +53,12 @@ class ArticleController extends GetxController {
     return articles;
   }
 
-  static void createArticleFirebase({
-    required int id,
-    required String title,
-    subtitle,
-    content,
-    required File image,
-  }) async {
+  static void createArticleFirebase(
+      {required int id,
+      required String title,
+      subtitle,
+      content,
+      required File image}) async {
     final LandingPageController landingPageController =
         Get.put(LandingPageController(), permanent: false);
 
@@ -70,7 +72,7 @@ class ArticleController extends GetxController {
 
     final FirebaseFirestore db = FirebaseFirestore.instance;
     final CollectionReference ref = db.collection("articles");
-    final Map<String, dynamic> postField = {
+    final Map<String, dynamic> articleField = {
       "idUser": id,
       "title": title,
       "subtitle": subtitle,
@@ -82,26 +84,57 @@ class ArticleController extends GetxController {
       "countlike": 0,
       "updated_at": ""
     };
-    await ref.add(postField).then((docRef) {
-      CustomPopUp(
-        icon: Icons.check_circle_outline_rounded,
-        message: 'Berhasil mengunggah artikel',
-        onTap: () {
-          Get.offAllNamed('/nav-bar');
-          landingPageController.changeTabIndex(4);
-        },
-        titleButton: 'Kembali',
-      );
-    }).catchError((error) {
-      CustomPopUp(
-        icon: Icons.cancel_outlined,
-        message: 'Terjadi saat mengunggah',
-        isSuccess: false,
-        onTap: () {
-          Get.back();
-        },
-        titleButton: 'Kembali',
-      );
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? email = prefs.getString("email");
+
+    await ref.add(articleField).then((docRef) async {
+      try {
+        QuerySnapshot<Map<String, dynamic>> querySnapshot =
+            await FirebaseFirestore.instance
+                .collection("users")
+                .where("email", isEqualTo: email)
+                .get();
+
+        if (querySnapshot.docs.isNotEmpty) {
+          QueryDocumentSnapshot<Map<String, dynamic>> userDoc =
+              querySnapshot.docs.first;
+          Map<String, dynamic> userData = userDoc.data();
+
+          UserModel userModel = UserModel.fromJson(userData);
+
+          Map<String, dynamic> updatedData = {
+            "count_article": userModel.countArticle + 1,
+          };
+
+          await FirebaseFirestore.instance
+              .collection('users')
+              .doc(userDoc.id)
+              .update(updatedData);
+
+          CustomPopUp(
+            icon: Icons.check_circle_outline_rounded,
+            message: 'Berhasil mengunggah artikel',
+            onTap: () {
+              Get.offAllNamed('/nav-bar');
+              landingPageController.changeTabIndex(4);
+            },
+            titleButton: 'Kembali',
+          );
+        } else {
+          print('No user found with the given email');
+        }
+      } catch (e) {
+        CustomPopUp(
+          icon: Icons.cancel_outlined,
+          message: 'Terjadi saat mengunggah',
+          isSuccess: false,
+          onTap: () {
+            Get.back();
+          },
+          titleButton: 'Kembali',
+        );
+      }
     });
   }
 

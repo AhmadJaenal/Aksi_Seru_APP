@@ -99,12 +99,10 @@ class _VerifiedProfileState extends State<VerifiedProfile>
       body: StreamBuilder(
         stream: userData.getCurrentUser(),
         builder: (context, snapshot) {
-          UserModel user = snapshot.data!;
-
-          counterFollowUser.setCountUserFollow(user.following);
-          counterFollowUser.setCountUserFollowers(user.followers);
-
           if (snapshot.hasData) {
+            UserModel user = snapshot.data!;
+            counterFollowUser.setCountUserFollowers(user.followers);
+            counterFollowUser.setCountUserFollow(user.following);
             return DefaultTabController(
               length: 2,
               initialIndex: 1,
