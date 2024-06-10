@@ -75,23 +75,26 @@ class ListPost extends StatelessWidget {
             child: SizedBox(
               width: double.infinity,
               height: MediaQuery.of(context).size.height * .7,
-              child: FutureBuilder(
-                future: PostController.getPostByUser(),
+              child: StreamBuilder(
+                stream: PostController.getPostByUser(),
                 builder: (context, snapshot) {
-                  if (snapshot.hasData && snapshot.data!.length != 0) {
+                  if (snapshot.hasData) {
+                    final data = snapshot.requireData;
+                    String caption = data.docs[0]['caption'];
+                    String urlImage = data.docs[0]['urlimage'];
+                    List<dynamic> comments = data.docs[0]['comment'];
+                    List<dynamic> likes = data.docs[0]['comment'];
+                    String updatedAt = data.docs[0]['updated_at'];
                     return ListView.builder(
                       physics: const BouncingScrollPhysics(),
-                      itemCount: snapshot.data!.length,
+                      itemCount: 1,
                       itemBuilder: (context, index) {
-                        PostModel userPost = snapshot.data![index][0];
-                        List<LikeModel> likePost = snapshot.data![index][1];
-                        List<CommentModel> commentPost =
-                            snapshot.data![index][2];
-
                         return CardPost(
-                          postModel: userPost,
-                          likeModel: likePost,
-                          commentModel: commentPost,
+                          caption: caption,
+                          comment: comments,
+                          like: likes,
+                          updatedAt: updatedAt,
+                          urlImage: urlImage,
                         );
                       },
                     );

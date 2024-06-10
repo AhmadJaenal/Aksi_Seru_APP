@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:aksi_seru_app/controller/post_controller.dart';
-import 'package:aksi_seru_app/models/post_model.dart';
+import 'package:aksi_seru_app/models/article_model.dart';
 import 'package:get/get.dart';
 import 'dart:developer' as developer;
 

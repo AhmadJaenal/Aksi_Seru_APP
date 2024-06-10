@@ -1,14 +1,21 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:aksi_seru_app/controller/user_controller.dart';
 import 'package:aksi_seru_app/getX/nav_bottom_state.dart';
+import 'package:aksi_seru_app/models/article_model.dart';
 import 'package:aksi_seru_app/models/post_model.dart';
+import 'package:aksi_seru_app/models/user_model.dart';
 import 'package:aksi_seru_app/utils/api.dart';
 import 'package:aksi_seru_app/widgets/custom_popup.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'dart:developer' as developer;
+
+import 'package:shared_preferences/shared_preferences.dart';
 
 class PostController extends GetxController {
   static Future<void> createpostFirebase(
@@ -59,29 +66,29 @@ class PostController extends GetxController {
                 .doc(userDoc.id)
                 .update(updatedData);
 
-        CustomPopUp(
-          icon: Icons.check_circle_outline_rounded,
+            CustomPopUp(
+              icon: Icons.check_circle_outline_rounded,
               message: 'Berhasil mengunggah artikel',
-          onTap: () {
+              onTap: () {
                 Get.offAllNamed('/nav-bar');
                 landingPageController.changeTabIndex(4);
-          },
-          titleButton: 'Kembali',
-        );
-      } else {
+              },
+              titleButton: 'Kembali',
+            );
+          } else {
             print('No user found with the given email');
           }
         } catch (e) {
-        CustomPopUp(
-          icon: Icons.cancel_outlined,
-          message: 'Terjadi saat mengunggah',
-          isSuccess: false,
-          onTap: () {
-            Get.back();
-          },
-          titleButton: 'Kembali',
-        );
-      }
+          CustomPopUp(
+            icon: Icons.cancel_outlined,
+            message: 'Terjadi saat mengunggah',
+            isSuccess: false,
+            onTap: () {
+              Get.back();
+            },
+            titleButton: 'Kembali',
+          );
+        }
       });
     } catch (e) {
       CustomPopUp(
@@ -95,6 +102,7 @@ class PostController extends GetxController {
       );
     }
   }
+
   static Stream getPostByUser() async* {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? email = prefs.getString("email");

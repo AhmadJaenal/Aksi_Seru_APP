@@ -28,7 +28,6 @@ class UserModel {
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
-    developer.log(json['full_name'], name: 'full_name');
     return UserModel(
       username: json['username'].toString(),
       name: json['full_name'].toString(),

@@ -38,13 +38,13 @@ class UserData extends GetxController {
       }
 
       var userData = snapshot.docs.first.data();
-      developer.log(userData.toString(), name: "user data");
       return UserModel.fromJson(userData);
     }).handleError((e) {
       developer.log(e.toString(), name: 'catch error');
       return null;
     });
   }
+
   static Future<QuerySnapshot<Map<String, dynamic>>> getUserByEmail(
       {String? email}) async {
     QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore

@@ -7,7 +7,6 @@ import 'package:aksi_seru_app/widgets/user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'dart:developer' as developer;
 
 class ReviewPost extends StatelessWidget {
   ReviewPost({super.key});
@@ -20,7 +19,6 @@ class ReviewPost extends StatelessWidget {
   Widget build(BuildContext context) {
     String caption = dataPost[0];
     File image = dataPost[1];
-    String base64Image = dataPost[2];
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: false,
@@ -121,11 +119,10 @@ class ReviewPost extends StatelessWidget {
               PrimaryButton(
                 title: 'Bagikan',
                 ontap: () {
-                  postController.createPost(
-                    base64Image: base64Image,
+                  PostController.createpostFirebase(
                     caption: caption,
+                    image: image,
                   );
-                  // Get.offAllNamed('/nav-bar'), title: 'Bagikan')
                 },
               ),
             ],
