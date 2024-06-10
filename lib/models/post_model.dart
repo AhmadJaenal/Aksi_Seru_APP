@@ -1,31 +1,40 @@
 import 'dart:developer' as developer;
 
+import 'package:aksi_seru_app/models/article_model.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class PostModel {
-  final int idPost;
-  final int userId;
+  final int email;
   final String caption;
   final String url;
-  final int countLike;
-  final int countComment;
+  final List<CommentModel> comments;
 
   PostModel({
-    required this.idPost,
-    required this.userId,
+    required this.email,
     required this.caption,
     required this.url,
-    required this.countLike,
-    required this.countComment,
+    required this.comments,
   });
 
-  factory PostModel.fromJson(Map<String, dynamic> json) {
+  factory PostModel.fromJson(Map<String, dynamic> json, String docId) {
+    List<dynamic> commentsJson = json['comment'];
+    List<CommentModel> commentsList = CommentModel.fromJsonList(commentsJson);
+
     return PostModel(
-      idPost: json['id'],
-      userId: json['user_id'],
+      email: json['email'],
       caption: json['caption'],
       url: json['urlimage'],
-      countLike: json['countlike'],
-      countComment: json['countcomment'],
+      comments: commentsList,
     );
+  }
+
+  static List<PostModel> fromJsonList(QuerySnapshot querySnapshot) {
+    return querySnapshot.docs.map((doc) {
+      Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+      String docId = doc.id;
+
+      return PostModel.fromJson(data, docId);
+    }).toList();
   }
 }
 
@@ -49,34 +58,5 @@ class LikeModel {
 
   static List<LikeModel> fromJsonList(List<dynamic> jsonList) {
     return jsonList.map((json) => LikeModel.fromJson(json)).toList();
-  }
-}
-
-class CommentModel {
-  final int id;
-  final int userId;
-  final int postId;
-  final String comment;
-  final String createdAt;
-
-  CommentModel({
-    required this.id,
-    required this.userId,
-    required this.postId,
-    required this.comment,
-    required this.createdAt,
-  });
-  factory CommentModel.fromJson(Map<String, dynamic> json) {
-    return CommentModel(
-      id: json['id'],
-      userId: json['user_id'] ?? 0,
-      postId: json['post_id'] ?? 0,
-      comment: json['comment'],
-      createdAt: json['created_at'],
-    );
-  }
-
-  static List<CommentModel> fromJsonList(List<dynamic> jsonList) {
-    return jsonList.map((json) => CommentModel.fromJson(json)).toList();
   }
 }
