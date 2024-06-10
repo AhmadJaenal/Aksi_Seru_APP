@@ -1,9 +1,7 @@
 import 'package:aksi_seru_app/controller/post_controller.dart';
-import 'package:aksi_seru_app/models/post_model.dart';
 import 'package:aksi_seru_app/shared/style.dart';
 import 'package:aksi_seru_app/widgets/card_post.dart';
 import 'package:aksi_seru_app/widgets/custom_textfield.dart';
-import 'package:aksi_seru_app/widgets/section_comment_post.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -79,16 +77,16 @@ class ListPost extends StatelessWidget {
                 stream: PostController.getPostByUser(),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
-                    final data = snapshot.requireData;
-                    String caption = data.docs[0]['caption'];
-                    String urlImage = data.docs[0]['urlimage'];
-                    List<dynamic> comments = data.docs[0]['comment'];
-                    List<dynamic> likes = data.docs[0]['comment'];
-                    String updatedAt = data.docs[0]['updated_at'];
+                    final data = snapshot.data;
                     return ListView.builder(
                       physics: const BouncingScrollPhysics(),
-                      itemCount: 1,
+                      itemCount: data.docs.length,
                       itemBuilder: (context, index) {
+                        String caption = data.docs[index]['caption'];
+                        String urlImage = data.docs[index]['urlimage'];
+                        List<dynamic> comments = data.docs[index]['comment'];
+                        List<dynamic> likes = data.docs[index]['comment'];
+                        String updatedAt = data.docs[index]['updated_at'];
                         return CardPost(
                           caption: caption,
                           comment: comments,
