@@ -91,10 +91,7 @@ class ArticleController extends GetxController {
     await ref.add(articleField).then((docRef) async {
       try {
         QuerySnapshot<Map<String, dynamic>> querySnapshot =
-            await FirebaseFirestore.instance
-                .collection("users")
-                .where("email", isEqualTo: email)
-                .get();
+            await UserData.getUserByEmail(email: email);
 
         if (querySnapshot.docs.isNotEmpty) {
           QueryDocumentSnapshot<Map<String, dynamic>> userDoc =
