@@ -64,6 +64,11 @@ class CreateUsername extends StatelessWidget {
                 ontap: () {
                   if (formKey.currentState!.validate()) {
                     registerationController.registerWithEmail();
+
+                    registerationController.emailController.clear();
+                    registerationController.usernameController.clear();
+                    registerationController.nameController.clear();
+                    registerationController.passwordController.clear();
                   } else {
                     developer.log('validasi gagal');
                   }
