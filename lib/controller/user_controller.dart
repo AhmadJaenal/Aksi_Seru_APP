@@ -5,7 +5,6 @@ import 'package:aksi_seru_app/models/user_model.dart';
 import 'package:aksi_seru_app/utils/api.dart';
 import 'package:aksi_seru_app/widgets/custom_popup.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -55,6 +54,11 @@ class UserData extends GetxController {
     return querySnapshot;
   }
 
+  static Future getRandomUser() async {
+    QuerySnapshot<Map<String, dynamic>> querySnapshot =
+        await FirebaseFirestore.instance.collection("users").limit(10).get();
+  }
+
   static updateUserProfile({required String name, bio, image}) async {
     String? token = await getToken();
     var headers = {
@@ -100,69 +104,6 @@ class UserData extends GetxController {
       developer.log(e.toString(), name: 'error copy image');
     }
   }
-
-  static Future<List<UserModel>?> getRandomUser() async {
-    String? token = await getToken();
-    final uri = Uri.parse(ApiEndPoints.baseUrl + UserEndPoints.randomUser);
-    var headers = {
-      'X-Authorization': '$token',
-    };
-
-    try {
-      final response = await http.get(uri, headers: headers);
-      if (response.statusCode == 200) {
-        var jsonResponse = jsonDecode(response.body)['data'];
-
-        List<UserModel> userData = [];
-        jsonResponse.forEach((data) {
-          UserModel user = UserModel.fromJson(data);
-          userData.add(user);
-        });
-
-        return userData;
-      } else if (response.statusCode == 401) {
-        developer.log('Unauthorized');
-        return null;
-      }
-    } catch (e) {
-      developer.log('Error: $e', name: 'error get user');
-    }
-  }
-
-  // static Future<void> followUser({UserModel? userData}) async {
-  //   final CounterFollowUser counterFollowUser = Get.put(CounterFollowUser());
-  //   final ListFollowingCounter listFollowingCounter =
-  //       Get.put(ListFollowingCounter());
-
-  //   String? token = await getToken();
-  //   final uri = Uri.parse(ApiEndPoints.baseUrl + UserEndPoints.followUser);
-  //   var headers = {
-  //     'X-Authorization': '$token',
-  //     'Content-Type': 'application/json'
-  //   };
-  //   var body = jsonEncode({
-  //     'iduser': userData!.id,
-  //   });
-  //   try {
-  //     final response = await http.post(uri, headers: headers, body: body);
-  //     if (response.statusCode == 200) {
-  //       counterFollowUser.follow();
-  //       listFollowingCounter.follow(userData);
-  //     } else {
-  //       CustomPopUp(
-  //         icon: Icons.cancel_outlined,
-  //         message: 'Terjadi kesalahan diserver',
-  //         isSuccess: false,
-  //         onTap: () {
-  //           Get.back();
-  //         },
-  //         titleButton: 'Kembali',
-  //       );
-  //     }
-  //   } catch (e) {
-  //     developer.log('Error: $e', name: 'error follow user');
-  //   }
-  // }
 
   static Future<void> unFollowUser({String? idUser}) async {
     final ListFollowingCounter listFollowingCounter =
