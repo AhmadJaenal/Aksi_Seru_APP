@@ -7,7 +7,6 @@ import 'package:aksi_seru_app/screens/home/profile/list_article.dart';
 import 'package:aksi_seru_app/screens/home/profile/list_following.dart';
 import 'package:aksi_seru_app/screens/home/profile/list_post.dart';
 import 'package:aksi_seru_app/shared/style.dart';
-import 'package:aksi_seru_app/utils/api.dart';
 import 'package:aksi_seru_app/widgets/custom_button.dart';
 import 'package:aksi_seru_app/widgets/user_profile.dart';
 import 'package:flutter/material.dart';
