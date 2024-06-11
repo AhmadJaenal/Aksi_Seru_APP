@@ -114,25 +114,11 @@ class LoginController extends GetxController {
 
 class LogoutController extends GetxController {
   Future<void> deleteDataUserLogin() async {
-    String? token = await UserData.getToken();
-    final uri = Uri.parse(
-      ApiEndPoints.baseUrl + ApiEndPoints.authEndPoints.logout,
-    );
-
-    var headers = {
-      'X-Authorization': '$token',
-    };
-
     final SharedPreferences sharedPreferences =
         await SharedPreferences.getInstance();
     try {
-      http.Response response = await http.delete(uri, headers: headers);
-      if (response.statusCode == 200) {
-        sharedPreferences.setString('email', '');
-        sharedPreferences.setString('token', '');
-        Get.offAndToNamed('/login');
-      }
-      developer.log(response.statusCode.toString(), name: 'response logout');
+      Get.offAllNamed('/login');
+      sharedPreferences.setString('token', '');
     } catch (e) {
       developer.log(e.toString(), name: 'error logout');
     }
