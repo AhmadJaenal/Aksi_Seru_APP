@@ -177,40 +177,46 @@ class PostController extends GetxController {
     }
   }
 
-  static Future updatePost({
-    required String base64Image,
-    required String caption,
-    required int idPost,
+  static Future<void> updatePost({
+    File? image,
+    String? caption,
+    required String docId,
   }) async {
-    String? token = await UserData.getToken();
-    var headers = {
-      'X-Authorization': '$token',
+    DateTime now = DateTime.now();
+    String date = DateFormat('dd-MM-yyyy').format(now);
+
+    Map<String, dynamic> updatedData = {
+      "caption": caption,
+      "updated_at": date,
     };
-    final LandingPageController landingPageController =
-        Get.put(LandingPageController(), permanent: false);
-
-    final uri = Uri.parse(ApiEndPoints.baseUrl + Post.updatePost);
-
-    var body =
-        jsonEncode({'id': idPost, 'image': base64Image, 'caption': caption});
 
     try {
-      final response = await http.post(uri, headers: headers, body: body);
+      if (image != null) {
+        String imageUrl = await _uploadImage(image);
+        updatedData["urlimage"] = imageUrl;
+      }
 
-      if (response.statusCode == 200) {
+      developer.log(updatedData.toString(), name: 'test updated data');
+
+      await FirebaseFirestore.instance
+          .collection("postUsers")
+          .doc(docId)
+          .update(updatedData);
+
         CustomPopUp(
           icon: Icons.check_circle_outline_rounded,
-          message: 'Berhasil edit postingan!',
+        message: 'Berhasil update postingan',
           onTap: () {
-            Get.offAllNamed('/nav-bar');
-            landingPageController.changeTabIndex(4);
+          Get.back();
+          Get.back();
+          Get.back();
           },
           titleButton: 'Kembali',
         );
-      } else {
+    } catch (e) {
         CustomPopUp(
           icon: Icons.cancel_outlined,
-          message: 'Terjadi kesalahan edit postingan!',
+        message: 'Terjadi saat mengunggah',
           isSuccess: false,
           onTap: () {
             Get.back();
@@ -218,10 +224,16 @@ class PostController extends GetxController {
           titleButton: 'Kembali',
         );
       }
-    } catch (e) {
-      developer.log(e.toString(), name: 'Catch comment post error');
-      return false;
-    }
+  }
+
+  static Future<String> _uploadImage(File image) async {
+    final storageRef = FirebaseStorage.instance.ref();
+    final imageRef = storageRef
+        .child('postImage/${DateTime.now().millisecondsSinceEpoch}.jpg');
+
+    await imageRef.putFile(image);
+    String urlImage = await imageRef.getDownloadURL();
+    return urlImage;
   }
 
   static Future<void> likePost({int? id}) async {
