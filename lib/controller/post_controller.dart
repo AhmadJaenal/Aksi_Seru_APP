@@ -117,57 +117,41 @@ class PostController extends GetxController {
     }
   }
 
-  static Future<CommentModel?> commentPost(
-      {required String comment, required int id}) async {
-    String? token = await UserData.getToken();
-    var headers = {
-      'X-Authorization': '$token',
-    };
-    final uri = Uri.parse(ApiEndPoints.baseUrl + Post.commentPost);
+  static Future<void> commentPost(
+      {required String postId, required String comment, File? image}) async {}
 
-    var body = jsonEncode({
-      "id": id,
-      "comment": comment,
-    });
-
-    developer.log(body.toString(), name: 'body');
-
+  static Future<void> deletePost({String? docId}) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? email = prefs.getString("email");
     try {
-      final response = await http.post(uri, headers: headers, body: body);
+      await FirebaseFirestore.instance
+          .collection("postUsers")
+          .doc(docId)
+          .delete();
+      QuerySnapshot<Map<String, dynamic>> querySnapshot =
+          await FirebaseFirestore.instance
+              .collection("users")
+              .where("email", isEqualTo: email)
+              .get();
 
-      if (response.statusCode == 200) {
-        final data = jsonDecode(response.body)['data'];
-        Get.back();
-        return CommentModel.fromJson(data);
+      if (querySnapshot.docs.isNotEmpty) {
+        QueryDocumentSnapshot<Map<String, dynamic>> userDoc =
+            querySnapshot.docs.first;
+        Map<String, dynamic> userData = userDoc.data();
+
+        UserModel userModel = UserModel.fromJson(userData);
+
+        Map<String, dynamic> updatedData = {
+          "count_post": userModel.countArticle - 1,
+        };
+
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(userDoc.id)
+            .update(updatedData);
       } else {
-        developer.log(response.body, name: 'Failed to comment on post');
+        print('No user found with the given email');
       }
-    } catch (e) {
-      developer.log(e.toString(), name: 'Catch comment post error');
-    }
-  }
-
-  static Future deletePost(
-      {required int idPost, required BuildContext context}) async {
-    String? token = await UserData.getToken();
-    var headers = {
-      'X-Authorization': '$token',
-    };
-    final uri = Uri.parse(ApiEndPoints.baseUrl + Post.deletePost);
-
-    var body = jsonEncode({
-      "id": idPost,
-    });
-
-    final LandingPageController landingPageController =
-        Get.put(LandingPageController(), permanent: false);
-
-    try {
-      final response = await http.delete(uri, headers: headers, body: body);
-      developer.log(response.body.toString(), name: 'status code delete post');
-
-      if (response.statusCode == 200) {
-        final data = jsonDecode(response.body)['data'];
         CustomPopUp(
           icon: Icons.check_circle_outline_rounded,
           message: 'Berhasil hapus postingan',
