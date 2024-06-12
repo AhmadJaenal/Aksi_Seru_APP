@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:aksi_seru_app/controller/user_controller.dart';
 import 'package:aksi_seru_app/getX/nav_bottom_state.dart';
-import 'package:aksi_seru_app/models/article_model.dart';
 import 'package:aksi_seru_app/models/post_model.dart';
 import 'package:aksi_seru_app/models/user_model.dart';
 import 'package:aksi_seru_app/utils/api.dart';
@@ -13,6 +12,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'dart:developer' as developer;
 
 import 'package:shared_preferences/shared_preferences.dart';
@@ -103,15 +103,15 @@ class PostController extends GetxController {
     }
   }
 
-  static Stream getPostByUser() async* {
+  static Stream<List<PostModel>> getPostByUser() async* {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? email = prefs.getString("email");
+    prefs.getString("email");
     try {
       yield* FirebaseFirestore.instance
           .collection("postUsers")
-          .where("email", isEqualTo: email)
-          .snapshots();
-      ;
+          .where("email", isEqualTo: "jenal@gmail.com")
+          .snapshots()
+          .map((snapshot) => PostModel.fromJsonList(snapshot));
     } catch (e) {
       developer.log(e.toString(), name: 'error get post by user');
     }
@@ -152,28 +152,23 @@ class PostController extends GetxController {
       } else {
         print('No user found with the given email');
       }
-        CustomPopUp(
-          icon: Icons.check_circle_outline_rounded,
-          message: 'Berhasil hapus postingan',
-          onTap: () {},
-          titleButton: 'Halaman Profile',
-        );
-        Get.offAllNamed('/nav-bar');
-        landingPageController.changeTabIndex(4);
-      } else {
-        CustomPopUp(
-          icon: Icons.cancel_outlined,
-          message: 'Terjadi kesalahan hapus postingan!',
-          isSuccess: false,
-          onTap: () {
-            Get.back();
-          },
-          titleButton: 'Kembali',
-        );
-        // developer.log(response.body, name: 'Failed to comment on post');
-      }
+
+      CustomPopUp(
+        icon: Icons.check_circle_outline_rounded,
+        message: 'Berhasil menghapus artikel',
+        onTap: () {
+          Get.back();
+        },
+        titleButton: 'Kembali',
+      );
     } catch (e) {
-      developer.log(e.toString(), name: 'Catch comment post error');
+      CustomPopUp(
+        icon: Icons.cancel_outlined,
+        message: 'Gagal menghapus artikel',
+        isSuccess: false,
+        onTap: () => Get.back(),
+        titleButton: 'Kembali',
+      );
     }
   }
 
@@ -203,27 +198,27 @@ class PostController extends GetxController {
           .doc(docId)
           .update(updatedData);
 
-        CustomPopUp(
-          icon: Icons.check_circle_outline_rounded,
+      CustomPopUp(
+        icon: Icons.check_circle_outline_rounded,
         message: 'Berhasil update postingan',
-          onTap: () {
+        onTap: () {
           Get.back();
           Get.back();
           Get.back();
-          },
-          titleButton: 'Kembali',
-        );
+        },
+        titleButton: 'Kembali',
+      );
     } catch (e) {
-        CustomPopUp(
-          icon: Icons.cancel_outlined,
+      CustomPopUp(
+        icon: Icons.cancel_outlined,
         message: 'Terjadi saat mengunggah',
-          isSuccess: false,
-          onTap: () {
-            Get.back();
-          },
-          titleButton: 'Kembali',
-        );
-      }
+        isSuccess: false,
+        onTap: () {
+          Get.back();
+        },
+        titleButton: 'Kembali',
+      );
+    }
   }
 
   static Future<String> _uploadImage(File image) async {
