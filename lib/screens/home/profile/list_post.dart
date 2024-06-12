@@ -1,4 +1,5 @@
 import 'package:aksi_seru_app/controller/post_controller.dart';
+import 'package:aksi_seru_app/models/post_model.dart';
 import 'package:aksi_seru_app/shared/style.dart';
 import 'package:aksi_seru_app/widgets/card_post.dart';
 import 'package:aksi_seru_app/widgets/custom_textfield.dart';
@@ -73,27 +74,16 @@ class ListPost extends StatelessWidget {
             child: SizedBox(
               width: double.infinity,
               height: MediaQuery.of(context).size.height * .7,
-              child: StreamBuilder(
+              child: StreamBuilder<List<PostModel>>(
                 stream: PostController.getPostByUser(),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
-                    final data = snapshot.data;
                     return ListView.builder(
                       physics: const BouncingScrollPhysics(),
-                      itemCount: data.docs.length,
+                      itemCount: snapshot.data!.length,
                       itemBuilder: (context, index) {
-                        String caption = data.docs[index]['caption'];
-                        String urlImage = data.docs[index]['urlimage'];
-                        List<dynamic> comments = data.docs[index]['comment'];
-                        List<dynamic> likes = data.docs[index]['comment'];
-                        String updatedAt = data.docs[index]['updated_at'];
-                        return CardPost(
-                          caption: caption,
-                          comment: comments,
-                          like: likes,
-                          updatedAt: updatedAt,
-                          urlImage: urlImage,
-                        );
+                        PostModel postData = snapshot.data![index];
+                        return CardPost(postData: postData);
                       },
                     );
                   } else {
