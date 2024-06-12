@@ -9,8 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
-import 'dart:developer' as developer;
-
 class DetailArticle extends StatelessWidget {
   DetailArticle({super.key});
 

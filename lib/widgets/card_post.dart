@@ -30,8 +30,6 @@ class CardPost extends StatelessWidget {
     final double height = MediaQuery.of(context).size.height;
     final double width = MediaQuery.of(context).size.width;
 
-    CommentState commentState = Get.put(CommentState());
-
     return Container(
       width: double.infinity,
       padding: EdgeInsets.symmetric(

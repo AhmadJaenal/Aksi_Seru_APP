@@ -6,8 +6,6 @@ import 'package:aksi_seru_app/widgets/custom_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'dart:developer' as developer;
-
 class ListPost extends StatelessWidget {
   ListPost({super.key});
 

@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:aksi_seru_app/controller/post_controller.dart';
@@ -11,8 +10,6 @@ import 'package:aksi_seru_app/widgets/user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-
-import 'dart:developer' as developer;
 
 import 'package:image_picker/image_picker.dart';
 
