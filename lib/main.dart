@@ -18,6 +18,7 @@ import 'package:aksi_seru_app/screens/home/chat/message_page.dart';
 import 'package:aksi_seru_app/screens/home/chat/room_message.dart';
 import 'package:aksi_seru_app/screens/home/errors/check_connection.dart';
 import 'package:aksi_seru_app/screens/home/feed/create_post.dart';
+import 'package:aksi_seru_app/screens/home/feed/edit_post.dart';
 import 'package:aksi_seru_app/screens/home/feed/feed_page.dart';
 import 'package:aksi_seru_app/screens/home/feed/review_post.dart';
 import 'package:aksi_seru_app/screens/home/feed/story_view.dart';
@@ -223,7 +224,7 @@ class _MyAppState extends State<MyApp> {
         ),
         GetPage(
           name: '/edit-post',
-          page: () => const CheckConnection(page: ListFollowers()),
+          page: () => const CheckConnection(page: EditPost()),
         ),
         GetPage(
           name: '/edit-article',
