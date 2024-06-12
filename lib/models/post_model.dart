@@ -4,15 +4,19 @@ import 'package:aksi_seru_app/models/article_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class PostModel {
-  final int email;
+  final String docId;
+  final String email;
   final String caption;
-  final String url;
+  final String urlImage;
+  final String updatedAt;
   final List<CommentModel> comments;
 
   PostModel({
+    required this.docId,
     required this.email,
     required this.caption,
-    required this.url,
+    required this.urlImage,
+    required this.updatedAt,
     required this.comments,
   });
 
@@ -21,9 +25,11 @@ class PostModel {
     List<CommentModel> commentsList = CommentModel.fromJsonList(commentsJson);
 
     return PostModel(
+      docId: docId,
       email: json['email'],
       caption: json['caption'],
-      url: json['urlimage'],
+      urlImage: json['urlimage'],
+      updatedAt: json['updated_at'],
       comments: commentsList,
     );
   }
