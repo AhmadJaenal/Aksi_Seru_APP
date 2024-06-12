@@ -1,3 +1,6 @@
+import 'package:aksi_seru_app/controller/post_controller.dart';
+import 'package:aksi_seru_app/models/post_model.dart';
+
 import '../getX/post.dart';
 import '../shared/style.dart';
 import 'custom_button.dart';
@@ -8,17 +11,9 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
 class CardPost extends StatelessWidget {
-  final String caption, urlImage, updatedAt;
-  final List<dynamic> comment, like;
+  final PostModel postData;
 
-  CardPost({
-    super.key,
-    required this.caption,
-    required this.urlImage,
-    required this.updatedAt,
-    required this.comment,
-    required this.like,
-  });
+  CardPost({super.key, required this.postData});
 
   final TextEditingController _commentPostC = TextEditingController();
 
@@ -120,16 +115,8 @@ class CardPost extends StatelessWidget {
                                       icon: 'icon_block.png',
                                       title: 'Edit Postingan',
                                       ontap: () {
-                                        // Navigator.push(
-                                        //   context,
-                                        //   MaterialPageRoute(
-                                        //     builder: (context) => EditPost(
-                                        //       caption: postModel.caption,
-                                        //       image: imagePost,
-                                        //       idPost: postModel.idPost,
-                                        //     ),
-                                        //   ),
-                                        // );
+                                        Get.toNamed('/edit-post',
+                                            arguments: postData);
                                       },
                                     ),
                                   ),
@@ -156,10 +143,10 @@ class CardPost extends StatelessWidget {
                                                 icon: 'icon_block.png',
                                                 title: 'Hapus',
                                                 ontap: () {
-                                                  // PostController.deletePost(
-                                                  //   idPost: postModel.idPost,
-                                                  //   context: context,
-                                                  // );
+                                                  Get.back();
+                                                  Get.back();
+                                                  PostController.deletePost(
+                                                      docId: postData.docId);
                                                 },
                                               ),
                                             ],
@@ -185,7 +172,7 @@ class CardPost extends StatelessWidget {
           SizedBox(
             width: double.infinity,
             child: Text(
-              caption,
+              postData.caption,
               style: AppTextStyle.paragraphL.copyWith(
                 color: AppColors.blackColor,
               ),
@@ -198,7 +185,7 @@ class CardPost extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
             child: GestureDetector(
               onDoubleTap: () {},
-              child: Image.network(urlImage),
+              child: Image.network(postData.urlImage),
             ),
           ),
           const Gap(16),
@@ -288,7 +275,7 @@ class CardPost extends StatelessWidget {
                                         const CardCaption(),
                                         const Gap(12),
                                         Text(
-                                          caption,
+                                          postData.caption,
                                           style:
                                               AppTextStyle.paragraphL.copyWith(
                                             color: AppColors.blackColor,
@@ -336,7 +323,7 @@ class CardPost extends StatelessWidget {
           GestureDetector(
             onTap: () {},
             child: Text(
-              'Disukai ${like.length} orang',
+              'Disukai like orang',
               style: AppTextStyle.paragraphL.copyWith(
                 color: AppColors.blackColor,
               ),
@@ -416,7 +403,7 @@ class CardPost extends StatelessWidget {
                                   const CardCaption(),
                                   const Gap(12),
                                   Text(
-                                    caption,
+                                    postData.caption,
                                     style: AppTextStyle.paragraphL.copyWith(
                                       color: AppColors.blackColor,
                                     ),
