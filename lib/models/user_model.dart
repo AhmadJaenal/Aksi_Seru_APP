@@ -1,5 +1,3 @@
-import "dart:developer" as developer;
-
 class UserModel {
   final String username;
   final String name;
