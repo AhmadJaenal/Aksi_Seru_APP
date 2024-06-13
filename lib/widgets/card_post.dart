@@ -286,24 +286,33 @@ class CardPost extends StatelessWidget {
                                 // NOTE :: END CODE SECTION CAPTION POST,
 
                                 // NOTE :: STAR CODE SECTION COMMENT POST
-                                // comment.isNotEmpty
-                                //     ? SliverList(
-                                //         delegate: SliverChildBuilderDelegate(
-                                //           (context, index) {
-                                //             final dataComment = comment[index];
-                                //             return CardComment(
-                                //               comment: dataComment[]
-                                //               createdAt: comment
-                                //             );
-                                //           },
-                                //           childCount: commentModel.length,
-                                //         ),
-                                //       )
-                                //     : const SliverToBoxAdapter(
-                                //         child: Center(
-                                //           child: Text('Tidak ada komentar'),
-                                //         ),
-                                //       )
+                                SliverList(
+                                  delegate: SliverChildBuilderDelegate(
+                                    (context, index) {
+                                      CommentPostModel idComment =
+                                          postData.comments[index];
+
+                                      return StreamBuilder(
+                                        stream: PostController.getCommentPost(
+                                            idComment.idComment),
+                                        builder: (context, snapshot) {
+                                          if (snapshot.hasData) {
+                                            DetailCommentPost detailComment =
+                                                snapshot.data;
+                                            return CardComment(
+                                              comment: detailComment.comment,
+                                              createdAt: detailComment.createAt,
+                                            );
+                                          } else {
+                                            return const Text(
+                                                "Belum ada komentar");
+                                          }
+                                        },
+                                      );
+                                    },
+                                    childCount: postData.comments.length,
+                                  ),
+                                )
                                 // NOTE :: END CODE SECTION COMMENT POST
                               ],
                             ),
