@@ -1,13 +1,8 @@
-import 'dart:convert';
-
-import 'package:aksi_seru_app/controller/user_controller.dart';
-import 'package:aksi_seru_app/utils/api.dart';
 import 'package:aksi_seru_app/widgets/custom_popup.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:developer' as developer;
 
@@ -105,7 +100,6 @@ class LoginController extends GetxController {
       } else if (e.code == 'network-request-failed') {
         message = 'There was a network error. Please try again.';
       } else {
-        // Handle other potential errors
         print('Login error: ${e.code}');
       }
     }
