@@ -310,7 +310,6 @@ class DetailArticle extends StatelessWidget {
                       CommentModel comment = CommentModel(
                         comment: _commentArticle.text,
                         createdAt: 'createdAt',
-                        idUser: 2,
                       );
 
                       ArticleController.commentArticle(
