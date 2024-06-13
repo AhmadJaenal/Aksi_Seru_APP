@@ -1,5 +1,6 @@
 import 'package:aksi_seru_app/controller/post_controller.dart';
 import 'package:aksi_seru_app/models/post_model.dart';
+import 'package:intl/intl.dart';
 
 import '../getX/post.dart';
 import '../shared/style.dart';
@@ -9,6 +10,8 @@ import 'user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+
+import 'dart:developer' as developer;
 
 class CardPost extends StatelessWidget {
   final PostModel postData;
@@ -491,6 +494,10 @@ class CardPost extends StatelessWidget {
                   icon: Icon(Icons.send, color: AppColors.whiteColor),
                   onTap: () async {
                     if (formKey.currentState!.validate()) {
+                      PostController.commentPost(
+                        comment: _commentPostC.text,
+                        postId: postData.docId,
+                      );
                       _commentPostC.clear();
                     }
                   },
@@ -572,11 +579,36 @@ class CardComment extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String checkDifferenceTime({String? createdAt}) {
+      DateFormat dateFormat = DateFormat("dd-MM-yyyy");
+      DateTime parsedDate = dateFormat.parse(createdAt!);
+
+      DateTime now = DateTime.now();
+      Duration difference = parsedDate.difference(now);
+
+      int differenceInDays = difference.inDays;
+      int differenceInWeak = (difference.inDays / 7).floor();
+
+      int differenceInHours = difference.inHours;
+      int differenceInMinute = difference.inMinutes;
+
+      if (differenceInMinute <= 60) {
+        return "$differenceInMinute menit yang lalu";
+      } else if (differenceInHours <= 24) {
+        return "$differenceInHours jam yang lalu";
+      } else if (differenceInDays <= 7) {
+        return "$differenceInDays hari yang lalu";
+      } else {
+        return "$differenceInWeak minggu yang lalu";
+      }
+    }
+
     double width = MediaQuery.of(context).size.width;
     return Container(
       color: AppColors.whiteColor,
-      padding: const EdgeInsets.symmetric(
+      padding: EdgeInsets.symmetric(
         vertical: 12,
+        horizontal: AppMargin.defaultMargin,
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -599,7 +631,7 @@ class CardComment extends StatelessWidget {
                   const Verified(width: 12),
                   const Gap(10),
                   Text(
-                    '3 jam',
+                    checkDifferenceTime(createdAt: createdAt),
                     style: AppTextStyle.paragraphL.copyWith(
                       color: AppColors.greyColor,
                     ),
