@@ -1,21 +1,18 @@
-import 'dart:convert';
+import 'dart:developer' as developer;
 import 'dart:io';
 
-import 'package:aksi_seru_app/controller/user_controller.dart';
-import 'package:aksi_seru_app/getX/nav_bottom_state.dart';
-import 'package:aksi_seru_app/models/post_model.dart';
-import 'package:aksi_seru_app/models/user_model.dart';
-import 'package:aksi_seru_app/utils/api.dart';
-import 'package:aksi_seru_app/widgets/custom_popup.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
-import 'dart:developer' as developer;
-
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../getX/nav_bottom_state.dart';
+import '../models/post_model.dart';
+import '../models/user_model.dart';
+import '../widgets/custom_popup.dart';
+import 'user_controller.dart';
 
 class PostController extends GetxController {
   static Future<void> createpostFirebase(
@@ -66,7 +63,7 @@ class PostController extends GetxController {
                 .doc(userDoc.id)
                 .update(updatedData);
 
-            CustomPopUp(
+            customPopUp(
               icon: Icons.check_circle_outline_rounded,
               message: 'Berhasil mengunggah artikel',
               onTap: () {
@@ -76,10 +73,10 @@ class PostController extends GetxController {
               titleButton: 'Kembali',
             );
           } else {
-            print('No user found with the given email');
+            developer.log('No user found with the given email');
           }
         } catch (e) {
-          CustomPopUp(
+          customPopUp(
             icon: Icons.cancel_outlined,
             message: 'Terjadi saat mengunggah',
             isSuccess: false,
@@ -91,7 +88,7 @@ class PostController extends GetxController {
         }
       });
     } catch (e) {
-      CustomPopUp(
+      customPopUp(
         icon: Icons.cancel_outlined,
         message: 'Terjadi saat mengunggah',
         isSuccess: false,
@@ -152,7 +149,7 @@ class PostController extends GetxController {
       }
       developer.log(response.id);
     } catch (e) {
-      print('Failed to comment');
+      developer.log('Failed to comment');
     }
   }
 
@@ -169,7 +166,7 @@ class PostController extends GetxController {
         },
       );
     } catch (e) {
-      print('Failed to comment');
+      developer.log('Failed to comment');
     }
   }
 
@@ -203,10 +200,10 @@ class PostController extends GetxController {
             .doc(userDoc.id)
             .update(updatedData);
       } else {
-        print('No user found with the given email');
+        developer.log('No user found with the given email');
       }
 
-      CustomPopUp(
+      customPopUp(
         icon: Icons.check_circle_outline_rounded,
         message: 'Berhasil menghapus artikel',
         onTap: () {
@@ -215,7 +212,7 @@ class PostController extends GetxController {
         titleButton: 'Kembali',
       );
     } catch (e) {
-      CustomPopUp(
+      customPopUp(
         icon: Icons.cancel_outlined,
         message: 'Gagal menghapus artikel',
         isSuccess: false,
@@ -251,7 +248,7 @@ class PostController extends GetxController {
           .doc(docId)
           .update(updatedData);
 
-      CustomPopUp(
+      customPopUp(
         icon: Icons.check_circle_outline_rounded,
         message: 'Berhasil update postingan',
         onTap: () {
@@ -262,7 +259,7 @@ class PostController extends GetxController {
         titleButton: 'Kembali',
       );
     } catch (e) {
-      CustomPopUp(
+      customPopUp(
         icon: Icons.cancel_outlined,
         message: 'Terjadi saat mengunggah',
         isSuccess: false,
@@ -284,51 +281,51 @@ class PostController extends GetxController {
     return urlImage;
   }
 
-  static Future<void> likePost({int? id}) async {
-    String? token = await UserData.getToken();
+  // static Future<void> likePost({int? id}) async {
+  //   String? token = await UserData.getToken();
 
-    var headers = {
-      'X-Authorization': '$token',
-    };
-    var body = jsonEncode({'id': id});
-    final uri = Uri.parse(ApiEndPoints.baseUrl + Post.likePost);
+  //   var headers = {
+  //     'X-Authorization': '$token',
+  //   };
+  //   var body = jsonEncode({'id': id});
+  //   final uri = Uri.parse(ApiEndPoints.baseUrl + Post.likePost);
 
-    try {
-      final response = await http.post(uri, headers: headers, body: body);
+  //   try {
+  //     final response = await http.post(uri, headers: headers, body: body);
 
-      Map<String, dynamic> jsonResponse = jsonDecode(response.body);
-      developer.log(jsonResponse.toString(), name: 'success like');
-      if (response.statusCode == 200) {
-        developer.log(jsonResponse['data'].toString(), name: 'success like');
-      } else {
-        developer.log(jsonResponse['errors'].toString(), name: 'failed like');
-      }
-    } catch (e) {
-      developer.log(e.toString(), name: 'catch like');
-    }
-  }
+  //     Map<String, dynamic> jsonResponse = jsonDecode(response.body);
+  //     developer.log(jsonResponse.toString(), name: 'success like');
+  //     if (response.statusCode == 200) {
+  //       developer.log(jsonResponse['data'].toString(), name: 'success like');
+  //     } else {
+  //       developer.log(jsonResponse['errors'].toString(), name: 'failed like');
+  //     }
+  //   } catch (e) {
+  //     developer.log(e.toString(), name: 'catch like');
+  //   }
+  // }
 
-  static Future<void> unLikePost({int? id}) async {
-    String? token = await UserData.getToken();
+  // static Future<void> unLikePost({int? id}) async {
+  //   String? token = await UserData.getToken();
 
-    var headers = {
-      'X-Authorization': '$token',
-    };
-    var body = jsonEncode({'idlike': id});
-    developer.log(body.toString(), name: 'idlike');
-    final uri = Uri.parse(ApiEndPoints.baseUrl + Post.unlikePost);
+  //   var headers = {
+  //     'X-Authorization': '$token',
+  //   };
+  //   var body = jsonEncode({'idlike': id});
+  //   developer.log(body.toString(), name: 'idlike');
+  //   final uri = Uri.parse(ApiEndPoints.baseUrl + Post.unlikePost);
 
-    try {
-      final response = await http.delete(uri, headers: headers, body: body);
+  //   try {
+  //     final response = await http.delete(uri, headers: headers, body: body);
 
-      Map<String, dynamic> jsonResponse = jsonDecode(response.body);
-      if (response.statusCode == 200) {
-        developer.log(jsonResponse.toString(), name: 'success unlike');
-      } else {
-        developer.log(jsonResponse.toString(), name: 'failed unlike');
-      }
-    } catch (e) {
-      developer.log(e.toString(), name: 'catch post');
-    }
-  }
+  //     Map<String, dynamic> jsonResponse = jsonDecode(response.body);
+  //     if (response.statusCode == 200) {
+  //       developer.log(jsonResponse.toString(), name: 'success unlike');
+  //     } else {
+  //       developer.log(jsonResponse.toString(), name: 'failed unlike');
+  //     }
+  //   } catch (e) {
+  //     developer.log(e.toString(), name: 'catch post');
+  //   }
+  // }
 }

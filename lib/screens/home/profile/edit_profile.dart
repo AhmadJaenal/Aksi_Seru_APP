@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:aksi_seru_app/controller/user_controller.dart';
 import 'package:aksi_seru_app/models/user_model.dart';
 import 'package:aksi_seru_app/shared/style.dart';
 import 'package:aksi_seru_app/widgets/custom_button.dart';
@@ -159,13 +158,7 @@ class _EditProfileState extends State<EditProfile> {
                 const Gap(16),
                 PrimaryButton(
                   ontap: () {
-                    if (formKey.currentState!.validate()) {
-                      UserData.updateUserProfile(
-                        bio: bioController.text,
-                        name: nameController.text,
-                        image: imagebase64 ?? user.avatar,
-                      );
-                    }
+                    if (formKey.currentState!.validate()) {}
                   },
                   title: 'Simpan Perubahan',
                 )

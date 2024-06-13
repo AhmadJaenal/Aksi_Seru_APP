@@ -1,18 +1,15 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:aksi_seru_app/controller/user_controller.dart';
 import 'package:aksi_seru_app/getX/nav_bottom_state.dart';
 import 'package:aksi_seru_app/models/article_model.dart';
 import 'package:aksi_seru_app/models/user_model.dart';
-import 'package:aksi_seru_app/utils/api.dart';
 import 'package:aksi_seru_app/widgets/custom_popup.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'package:http/http.dart' as http;
 import 'dart:developer' as developer;
 
 import 'package:shared_preferences/shared_preferences.dart';
@@ -109,7 +106,7 @@ class ArticleController extends GetxController {
               .doc(userDoc.id)
               .update(updatedData);
 
-          CustomPopUp(
+          customPopUp(
             icon: Icons.check_circle_outline_rounded,
             message: 'Berhasil mengunggah artikel',
             onTap: () {
@@ -119,10 +116,10 @@ class ArticleController extends GetxController {
             titleButton: 'Kembali',
           );
         } else {
-          print('No user found with the given email');
+          developer.log('No user found with the given email');
         }
       } catch (e) {
-        CustomPopUp(
+        customPopUp(
           icon: Icons.cancel_outlined,
           message: 'Terjadi saat mengunggah',
           isSuccess: false,
@@ -170,10 +167,10 @@ class ArticleController extends GetxController {
             .doc(userDoc.id)
             .update(updatedData);
       } else {
-        print('No user found with the given email');
+        developer.log('No user found with the given email');
       }
 
-      CustomPopUp(
+      customPopUp(
         icon: Icons.check_circle_outline_rounded,
         message: 'Berhasil menghapus artikel',
         onTap: () {
@@ -183,7 +180,7 @@ class ArticleController extends GetxController {
         titleButton: 'Kembali',
       );
     } catch (error) {
-      CustomPopUp(
+      customPopUp(
         icon: Icons.cancel_outlined,
         message: 'Gagal menghapus artikel',
         isSuccess: false,
@@ -205,52 +202,52 @@ class ArticleController extends GetxController {
     });
   }
 
-  static void editArticle(
-      {int? id, String? title, subtitle, content, category, image64}) async {
-    String? token = await UserData.getToken();
+  // static void editArticle(
+  //     {int? id, String? title, subtitle, content, category, image64}) async {
+  //   String? token = await UserData.getToken();
 
-    final uri = Uri.parse(ApiEndPoints.baseUrl + Article.updateArticle);
+  //   final uri = Uri.parse(ApiEndPoints.baseUrl + Article.updateArticle);
 
-    var headers = {'X-Authorization': '$token'};
-    var body = jsonEncode({
-      'id': id,
-      'title': title,
-      'subtitle': subtitle,
-      'content': content,
-      'category': category,
-      'image': image64,
-    });
+  //   var headers = {'X-Authorization': '$token'};
+  //   var body = jsonEncode({
+  //     'id': id,
+  //     'title': title,
+  //     'subtitle': subtitle,
+  //     'content': content,
+  //     'category': category,
+  //     'image': image64,
+  //   });
 
-    final LandingPageController landingPageController =
-        Get.put(LandingPageController(), permanent: false);
+  //   final LandingPageController landingPageController =
+  //       Get.put(LandingPageController(), permanent: false);
 
-    try {
-      final response = await http.post(uri, headers: headers, body: body);
-      if (response.statusCode == 200) {
-        CustomPopUp(
-          icon: Icons.check_circle_outline_rounded,
-          message: 'Berhasil edit artikel',
-          onTap: () {
-            Get.offAllNamed('/nav-bar');
-            landingPageController.changeTabIndex(4);
-          },
-          titleButton: 'Kembali',
-        );
-      } else {
-        developer.log(response.statusCode.toString(),
-            name: 'update edit article');
-        CustomPopUp(
-          icon: Icons.cancel_outlined,
-          message: 'Gagal menghapus artikel',
-          isSuccess: false,
-          onTap: () => Get.back(),
-          titleButton: 'Kembali',
-        );
-      }
-    } catch (e) {
-      developer.log(e.toString(), name: 'catch get article');
-    }
-  }
+  //   try {
+  //     final response = await http.post(uri, headers: headers, body: body);
+  //     if (response.statusCode == 200) {
+  //       customPopUp(
+  //         icon: Icons.check_circle_outline_rounded,
+  //         message: 'Berhasil edit artikel',
+  //         onTap: () {
+  //           Get.offAllNamed('/nav-bar');
+  //           landingPageController.changeTabIndex(4);
+  //         },
+  //         titleButton: 'Kembali',
+  //       );
+  //     } else {
+  //       developer.log(response.statusCode.toString(),
+  //           name: 'update edit article');
+  //       customPopUp(
+  //         icon: Icons.cancel_outlined,
+  //         message: 'Gagal menghapus artikel',
+  //         isSuccess: false,
+  //         onTap: () => Get.back(),
+  //         titleButton: 'Kembali',
+  //       );
+  //     }
+  //   } catch (e) {
+  //     developer.log(e.toString(), name: 'catch get article');
+  //   }
+  // }
 
   // static Future<List<dynamic>?> getRecommendArticle(
   //     {int? id, String? title, subtitle, content, category, image64}) async {

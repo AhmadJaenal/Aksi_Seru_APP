@@ -52,7 +52,7 @@ class _EditPostState extends State<EditPost> {
         image = File(pickedImage.path);
       });
     } else {
-      CustomPopUp(
+      customPopUp(
         icon: Icons.photo_size_select_actual_outlined,
         message: 'Ukuran foto harus kurang dari 2000kb',
         isSuccess: false,

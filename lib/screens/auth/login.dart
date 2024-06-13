@@ -65,7 +65,7 @@ class Login extends StatelessWidget {
                   if (formKey.currentState!.validate() && isValidEmail) {
                     loginController.loginWithEmail();
                   } else {
-                    CustomPopUp(
+                    customPopUp(
                       icon: Icons.alternate_email_rounded,
                       isSuccess: false,
                       onTap: () => Get.back(),

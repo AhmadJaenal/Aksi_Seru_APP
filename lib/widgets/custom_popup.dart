@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
-Future<dynamic> CustomPopUp({
+Future<dynamic> customPopUp({
   String? message,
   String? titleButton,
   Function()? onTap,

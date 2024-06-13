@@ -23,8 +23,7 @@ class RegisterationController extends GetxController {
 
   Future<void> registerWithEmail() async {
     try {
-      UserCredential userCredential =
-          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: emailController.text,
         password: passwordController.text,
       );
@@ -40,7 +39,7 @@ class RegisterationController extends GetxController {
       };
 
       await ref.add(userData).then((docRef) {
-        CustomPopUp(
+        customPopUp(
           icon: Icons.check_circle_outline_rounded,
           message: 'Berhasil membuat akun',
           onTap: () {
@@ -100,7 +99,7 @@ class LoginController extends GetxController {
       } else if (e.code == 'network-request-failed') {
         message = 'There was a network error. Please try again.';
       } else {
-        print('Login error: ${e.code}');
+        developer.log('Login error: ${e.code} $message');
       }
     }
   }

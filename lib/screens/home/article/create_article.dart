@@ -40,7 +40,7 @@ class _CreateArticleState extends State<CreateArticle> {
         _image = File(pickedImage.path);
       });
     } else {
-      CustomPopUp(
+      customPopUp(
         icon: Icons.photo_size_select_actual_outlined,
         message: 'Ukuran foto harus kurang dari 2000kb',
         isSuccess: false,
