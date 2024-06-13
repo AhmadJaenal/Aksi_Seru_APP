@@ -100,6 +100,7 @@ class _VerifiedProfileState extends State<VerifiedProfile>
             UserModel user = snapshot.data!;
             counterFollowUser.setCountUserFollowers(user.followers);
             counterFollowUser.setCountUserFollow(user.following);
+
             return DefaultTabController(
               length: 2,
               initialIndex: 1,
