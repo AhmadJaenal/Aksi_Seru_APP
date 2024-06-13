@@ -117,8 +117,61 @@ class PostController extends GetxController {
     }
   }
 
-  static Future<void> commentPost(
-      {required String postId, required String comment, File? image}) async {}
+  static Future<void> commentPost({
+    required String postId,
+    required String comment,
+  }) async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? email = prefs.getString("email");
+
+      DateTime now = DateTime.now();
+      String date = DateFormat('dd-MM-yyyy').format(now);
+
+      Map<String, dynamic> dataComment = {
+        "email": email,
+        "postId": postId,
+        "comment": comment,
+        "created_at": date,
+      };
+
+      DocumentReference<Map<String, dynamic>> response = await FirebaseFirestore
+          .instance
+          .collection("commentPost")
+          .add(dataComment);
+
+      if (response.id != "") {
+        Map<String, dynamic> idComment = {
+          "id_comment": response.id,
+        };
+        final FirebaseFirestore db = FirebaseFirestore.instance;
+        DocumentReference postRef = db.collection("postUsers").doc(postId);
+        postRef.update({
+          'comment': FieldValue.arrayUnion([idComment])
+        });
+      }
+      developer.log(response.id);
+    } catch (e) {
+      print('Failed to comment');
+    }
+  }
+
+  static Stream getCommentPost(String docId) async* {
+    developer.log(docId, name: 'id comment');
+    try {
+      yield* FirebaseFirestore.instance
+          .collection("commentPost")
+          .doc(docId)
+          .snapshots()
+          .map(
+        (snapshot) {
+          return DetailCommentPost.fromJson(snapshot.data()!);
+        },
+      );
+    } catch (e) {
+      print('Failed to comment');
+    }
+  }
 
   static Future<void> deletePost({String? docId}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
