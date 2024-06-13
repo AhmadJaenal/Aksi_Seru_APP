@@ -1,6 +1,5 @@
 import 'dart:developer' as developer;
 
-import 'package:aksi_seru_app/models/article_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class PostModel {
@@ -9,7 +8,7 @@ class PostModel {
   final String caption;
   final String urlImage;
   final String updatedAt;
-  final List<CommentModel> comments;
+  final List<CommentPostModel> comments;
 
   PostModel({
     required this.docId,
@@ -22,7 +21,8 @@ class PostModel {
 
   factory PostModel.fromJson(Map<String, dynamic> json, String docId) {
     List<dynamic> commentsJson = json['comment'];
-    List<CommentModel> commentsList = CommentModel.fromJsonList(commentsJson);
+    List<CommentPostModel> commentsList =
+        CommentPostModel.fromJsonList(commentsJson);
 
     return PostModel(
       docId: docId,
@@ -41,6 +41,44 @@ class PostModel {
 
       return PostModel.fromJson(data, docId);
     }).toList();
+  }
+}
+
+class CommentPostModel {
+  String idComment;
+  CommentPostModel({required this.idComment});
+
+  factory CommentPostModel.fromJson(Map<String, dynamic> json) {
+    return CommentPostModel(
+      idComment: json['id_comment'],
+    );
+  }
+
+  static List<CommentPostModel> fromJsonList(List<dynamic> jsonList) {
+    return jsonList.map((json) => CommentPostModel.fromJson(json)).toList();
+  }
+}
+
+class DetailCommentPost {
+  final String comment;
+  final String createAt;
+  final String email;
+  final String postId;
+
+  DetailCommentPost({
+    required this.comment,
+    required this.createAt,
+    required this.email,
+    required this.postId,
+  });
+  factory DetailCommentPost.fromJson(Map<String, dynamic> json) {
+    developer.log(json['comment'], name: 'read comment');
+    return DetailCommentPost(
+      comment: json['comment'],
+      email: json['email'],
+      postId: json['postId'],
+      createAt: json['created_at'],
+    );
   }
 }
 
