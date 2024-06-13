@@ -139,7 +139,7 @@ class FeedPage extends StatelessWidget {
             ),
             SliverList(
               delegate: SliverChildBuilderDelegate(
-                (context, index) => Text('contoh'),
+                (context, index) => const Text('contoh'),
                 childCount: 5,
               ),
             )

@@ -50,12 +50,12 @@ class RegisterationController extends GetxController {
       });
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
-        print('The password provided is too weak.');
+        developer.log('The password provided is too weak.');
       } else if (e.code == 'email-already-in-use') {
-        print('The account already exists for that email.');
+        developer.log('The account already exists for that email.');
       }
     } catch (e) {
-      print(e);
+      developer.log(e.toString());
     }
   }
 }

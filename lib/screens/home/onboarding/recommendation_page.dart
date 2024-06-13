@@ -128,7 +128,7 @@ class RecommendationPage extends StatelessWidget {
           itemCount: 10,
           itemBuilder: (context, index) {
             // return CardArticle();
-            return Text('');
+            return const Text('');
           },
         ),
       ),

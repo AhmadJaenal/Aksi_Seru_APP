@@ -51,6 +51,7 @@ class _StoryViewState extends State<StoryView> {
 
   bool _isAnimating = true;
 
+  @override
   void dispose() {
     _pageController.dispose();
     _commentStory.dispose();
