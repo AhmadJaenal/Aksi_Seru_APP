@@ -578,19 +578,22 @@ class CardComment extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String checkDifferenceTime({String? createdAt}) {
-      DateFormat dateFormat = DateFormat("dd-MM-yyyy");
+      DateFormat dateFormat = DateFormat("dd-MM-yyyy HH:mm:ss");
       DateTime parsedDate = dateFormat.parse(createdAt!);
 
       DateTime now = DateTime.now();
-      Duration difference = parsedDate.difference(now);
+      Duration difference = now.difference(parsedDate);
 
       int differenceInDays = difference.inDays;
       int differenceInWeak = (difference.inDays / 7).floor();
 
       int differenceInHours = difference.inHours;
       int differenceInMinute = difference.inMinutes;
+      int differenceInSecond = difference.inSeconds;
 
-      if (differenceInMinute <= 60) {
+      if (differenceInSecond <= 60) {
+        return "$differenceInSecond detik yang lalu";
+      } else if (differenceInMinute <= 60) {
         return "$differenceInMinute menit yang lalu";
       } else if (differenceInHours <= 24) {
         return "$differenceInHours jam yang lalu";
@@ -619,11 +622,16 @@ class CardComment extends StatelessWidget {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text(
-                    'Gionna Van Den Berg',
-                    style: AppTextStyle.paragraphL.copyWith(
-                        color: AppColors.blackColor,
-                        fontWeight: AppFontWeight.medium),
+                  SizedBox(
+                    width: 120,
+                    child: Text(
+                      'Gionna Van Den Berg',
+                      style: AppTextStyle.paragraphL.copyWith(
+                          color: AppColors.blackColor,
+                          fontWeight: AppFontWeight.medium),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
                   const Gap(4),
                   const Verified(width: 12),
