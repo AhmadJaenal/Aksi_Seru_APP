@@ -1,6 +1,7 @@
 import 'dart:developer' as developer;
 import 'dart:io';
 
+import 'package:aksi_seru_app/controller/date_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -34,12 +35,14 @@ class PostController extends GetxController {
 
       final FirebaseFirestore db = FirebaseFirestore.instance;
       final CollectionReference ref = db.collection("postUsers");
+
+      DateController date = DateController();
       final Map<String, dynamic> articleField = {
         "email": email,
         "caption": caption,
         "comment": [],
         "idlike": [],
-        "updated_at": "",
+        "updated_at": date.getDateNow(),
         "urlimage": imageUrl,
       };
       await ref.add(articleField).then((docRef) async {
@@ -122,14 +125,13 @@ class PostController extends GetxController {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String? email = prefs.getString("email");
 
-      DateTime now = DateTime.now();
-      String date = DateFormat('dd-MM-yyyy HH:mm:ss').format(now);
+      DateController date = DateController();
 
       Map<String, dynamic> dataComment = {
         "email": email,
         "postId": postId,
         "comment": comment,
-        "created_at": date,
+        "created_at": date.getDateNow(),
       };
 
       DocumentReference<Map<String, dynamic>> response = await FirebaseFirestore

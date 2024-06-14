@@ -1,3 +1,4 @@
+import 'package:aksi_seru_app/controller/date_controller.dart';
 import 'package:aksi_seru_app/controller/post_controller.dart';
 import 'package:aksi_seru_app/models/post_model.dart';
 import 'package:intl/intl.dart';
@@ -240,7 +241,7 @@ class CardPost extends StatelessWidget {
                                         const Gap(24),
                                         Center(
                                           child: Text(
-                                            'Postingan Mavropanos',
+                                            'Postingan sdhfjsdf',
                                             style: AppTextStyle.paragraphL
                                                 .copyWith(
                                               color: AppColors.blackColor,
@@ -271,7 +272,8 @@ class CardPost extends StatelessWidget {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        const CardCaption(),
+                                        CardCaption(
+                                            datePost: postData.updatedAt),
                                         const Gap(12),
                                         Text(
                                           postData.caption,
@@ -408,7 +410,7 @@ class CardPost extends StatelessWidget {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const CardCaption(),
+                                  CardCaption(datePost: postData.updatedAt),
                                   const Gap(12),
                                   Text(
                                     postData.caption,
@@ -503,15 +505,6 @@ class CardPost extends StatelessWidget {
               ],
             ),
           ),
-          const Gap(16),
-          Text(
-            '4 jam yang lalu',
-            style: AppTextStyle.paragraphL.copyWith(
-              color: AppColors.greyColor,
-            ),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
         ],
       ),
     );
@@ -519,11 +512,14 @@ class CardPost extends StatelessWidget {
 }
 
 class CardCaption extends StatelessWidget {
-  const CardCaption({
+  String datePost;
+  CardCaption({
     super.key,
+    required this.datePost,
   });
 
   @override
+  DateController date = DateController();
   Widget build(BuildContext context) {
     return Row(
       children: [
@@ -556,7 +552,7 @@ class CardCaption extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(bottom: 15),
           child: Text(
-            '4 jam yang lalu',
+            date.checkDifferenceTime(date: datePost),
             style: AppTextStyle.paragraphL.copyWith(
               color: AppColors.greyColor,
             ),
@@ -577,33 +573,7 @@ class CardComment extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String checkDifferenceTime({String? createdAt}) {
-      DateFormat dateFormat = DateFormat("dd-MM-yyyy HH:mm:ss");
-      DateTime parsedDate = dateFormat.parse(createdAt!);
-
-      DateTime now = DateTime.now();
-      Duration difference = now.difference(parsedDate);
-
-      int differenceInDays = difference.inDays;
-      int differenceInWeak = (difference.inDays / 7).floor();
-
-      int differenceInHours = difference.inHours;
-      int differenceInMinute = difference.inMinutes;
-      int differenceInSecond = difference.inSeconds;
-
-      if (differenceInSecond <= 60) {
-        return "$differenceInSecond detik yang lalu";
-      } else if (differenceInMinute <= 60) {
-        return "$differenceInMinute menit yang lalu";
-      } else if (differenceInHours <= 24) {
-        return "$differenceInHours jam yang lalu";
-      } else if (differenceInDays <= 7) {
-        return "$differenceInDays hari yang lalu";
-      } else {
-        return "$differenceInWeak minggu yang lalu";
-      }
-    }
-
+    DateController date = DateController();
     double width = MediaQuery.of(context).size.width;
     return Container(
       color: AppColors.whiteColor,
@@ -637,7 +607,7 @@ class CardComment extends StatelessWidget {
                   const Verified(width: 12),
                   const Gap(10),
                   Text(
-                    checkDifferenceTime(createdAt: createdAt),
+                    date.checkDifferenceTime(date: createdAt),
                     style: AppTextStyle.paragraphL.copyWith(
                       color: AppColors.greyColor,
                     ),

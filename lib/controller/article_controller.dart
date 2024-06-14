@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:aksi_seru_app/controller/date_controller.dart';
 import 'package:aksi_seru_app/controller/user_controller.dart';
 import 'package:aksi_seru_app/getX/nav_bottom_state.dart';
 import 'package:aksi_seru_app/models/article_model.dart';
@@ -69,6 +70,8 @@ class ArticleController extends GetxController {
 
     final FirebaseFirestore db = FirebaseFirestore.instance;
     final CollectionReference ref = db.collection("articles");
+
+    DateController date = DateController();
     final Map<String, dynamic> articleField = {
       "idUser": id,
       "title": title,
@@ -79,7 +82,7 @@ class ArticleController extends GetxController {
       "countcomment": 0,
       "idlike": [],
       "countlike": 0,
-      "updated_at": ""
+      "updated_at": date.getDateNow(),
     };
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
