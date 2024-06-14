@@ -123,7 +123,7 @@ class PostController extends GetxController {
       String? email = prefs.getString("email");
 
       DateTime now = DateTime.now();
-      String date = DateFormat('dd-MM-yyyy').format(now);
+      String date = DateFormat('dd-MM-yyyy HH:mm:ss').format(now);
 
       Map<String, dynamic> dataComment = {
         "email": email,
