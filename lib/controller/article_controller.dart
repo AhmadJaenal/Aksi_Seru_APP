@@ -209,15 +209,39 @@ class ArticleController extends GetxController {
   }
 
   static Future<void> commentArticle(
-      {required String docId, required CommentModel comment}) async {
+      {required String docId, required String comment}) async {
     final FirebaseFirestore db = FirebaseFirestore.instance;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? email = prefs.getString("email");
+    try {
+      DateController date = DateController();
 
-    developer.log(comment.toJson().toString());
+      Map<String, dynamic> dataComment = {
+        "email": email,
+        "postId": docId,
+        "comment": comment,
+        "created_at": date.getDateNow(),
+      };
 
-    DocumentReference postRef = db.collection('articles').doc(docId);
+      developer.log(dataComment.toString(), name: 'testststts');
+
+      DocumentReference<Map<String, dynamic>> response = await FirebaseFirestore
+          .instance
+          .collection("commentArticle")
+          .add(dataComment);
+
+      if (response.id != "") {
+        Map<String, dynamic> idComment = {
+          "id_comment": response.id,
+        };
+        DocumentReference postRef = db.collection("articles").doc(docId);
     postRef.update({
-      'comment': FieldValue.arrayUnion([comment.toJson()])
+          'comment': FieldValue.arrayUnion([idComment])
     });
+      }
+    } catch (e) {
+      developer.log('Failed to comment');
+    }
   }
 
   // static void editArticle(
