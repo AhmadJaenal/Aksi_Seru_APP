@@ -41,6 +41,21 @@ class ArticleController extends GetxController {
       developer.log(e.toString(), name: 'error get article by user');
     }
   }
+  static Stream getDetailCommentArticle({required String docId}) async* {
+    try {
+      yield* FirebaseFirestore.instance
+          .collection("commentArticle")
+          .doc(docId)
+          .snapshots()
+          .map(
+        (snapshot) {
+          return DetailCommentPost.fromJson(snapshot.data()!);
+        },
+      );
+    } catch (e) {
+      developer.log('Failed to comment');
+    }
+  }
 
   static Future<List<ArticleModel>> getRecommendArticle() async {
     QuerySnapshot querySnapshot =
