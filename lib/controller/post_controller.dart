@@ -156,7 +156,6 @@ class PostController extends GetxController {
   }
 
   static Stream getCommentPost(String docId) async* {
-    developer.log(docId, name: 'id comment');
     try {
       yield* FirebaseFirestore.instance
           .collection("commentPost")
