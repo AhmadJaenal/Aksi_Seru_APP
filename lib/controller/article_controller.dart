@@ -41,6 +41,7 @@ class ArticleController extends GetxController {
       developer.log(e.toString(), name: 'error get article by user');
     }
   }
+
   static Stream getDetailCommentArticle({required String docId}) async* {
     try {
       yield* FirebaseFirestore.instance
@@ -235,9 +236,9 @@ class ArticleController extends GetxController {
           "id_comment": response.id,
         };
         DocumentReference postRef = db.collection("articles").doc(docId);
-    postRef.update({
+        postRef.update({
           'comment': FieldValue.arrayUnion([idComment])
-    });
+        });
       }
     } catch (e) {
       developer.log('Failed to comment');
