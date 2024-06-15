@@ -9,13 +9,11 @@ import 'package:gap/gap.dart';
 class SectionComment extends StatelessWidget {
   final double height;
   final PostModel postModel;
-  final List<CommentModel> commentModel;
 
   const SectionComment({
     super.key,
     required this.height,
     required this.postModel,
-    required this.commentModel,
   });
 
   @override
@@ -78,7 +76,7 @@ class SectionComment extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const CardCaption(),
+                  // const CardCaption(),
                   const Gap(12),
                   Text(
                     postModel.caption.toString(),
@@ -92,24 +90,24 @@ class SectionComment extends StatelessWidget {
           ),
           // NOTE :: END CODE SECTION CAPTION POST
           // NOTE :: START CODE SECTION COMMENT POST
-          commentModel.isNotEmpty
-              ? SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                    (context, index) {
-                      final comment = commentModel[index];
-                      return CardComment(
-                        comment: comment.comment,
-                        createdAt: comment.createdAt,
-                      );
-                    },
-                    childCount: commentModel.length,
-                  ),
-                )
-              : const SliverToBoxAdapter(
-                  child: Center(
-                    child: Text('Tidak ada komentar'),
-                  ),
-                ),
+          // commentModel.isNotEmpty
+          //     ? SliverList(
+          //         delegate: SliverChildBuilderDelegate(
+          //           (context, index) {
+          //             final comment = commentModel[index];
+          //             return CardComment(
+          //               comment: comment.comment,
+          //               createdAt: comment.createdAt,
+          //             );
+          //           },
+          //           childCount: commentModel.length,
+          //         ),
+          //       )
+          //     : const SliverToBoxAdapter(
+          //         child: Center(
+          //           child: Text('Tidak ada komentar'),
+          //         ),
+          //       ),
           // NOTE :: END CODE SECTION COMMENT POST
         ],
       ),

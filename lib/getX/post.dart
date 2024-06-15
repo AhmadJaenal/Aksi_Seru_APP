@@ -19,24 +19,24 @@ class LikeUnlikePost extends GetxController {
   }
 }
 
-class CommentState extends GetxController {
-  var comment = <CommentModel>[].obs;
+// class CommentState extends GetxController {
+//   var comment = <CommentModel>[].obs;
 
-  int get length => comment.length;
+//   int get length => comment.length;
 
-  void setComment(List<CommentModel> userComment) {
-    comment.assignAll(userComment);
-  }
+//   void setComment(List<CommentModel> userComment) {
+//     comment.assignAll(userComment);
+//   }
 
-  void addComment(CommentModel newComment) {
-    comment.add(newComment);
-  }
+//   void addComment(CommentModel newComment) {
+//     comment.add(newComment);
+//   }
 
-  void startAutoDeleteTimer() {
-    Timer.periodic(const Duration(seconds: 10), (timer) {
-      if (comment.isNotEmpty) {
-        comment.removeAt(0);
-      }
-    });
-  }
-}
+//   void startAutoDeleteTimer() {
+//     Timer.periodic(const Duration(seconds: 10), (timer) {
+//       if (comment.isNotEmpty) {
+//         comment.removeAt(0);
+//       }
+//     });
+//   }
+// }

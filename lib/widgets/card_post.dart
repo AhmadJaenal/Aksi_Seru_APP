@@ -1,7 +1,6 @@
 import 'package:aksi_seru_app/controller/date_controller.dart';
 import 'package:aksi_seru_app/controller/post_controller.dart';
 import 'package:aksi_seru_app/models/post_model.dart';
-import 'package:intl/intl.dart';
 
 import '../getX/post.dart';
 import '../shared/style.dart';
@@ -519,8 +518,8 @@ class CardCaption extends StatelessWidget {
   });
 
   @override
-  DateController date = DateController();
   Widget build(BuildContext context) {
+    DateController date = DateController();
     return Row(
       children: [
         Image.asset('assets/user_profile.png', width: 48),
@@ -577,10 +576,7 @@ class CardComment extends StatelessWidget {
     double width = MediaQuery.of(context).size.width;
     return Container(
       color: AppColors.whiteColor,
-      padding: EdgeInsets.symmetric(
-        vertical: 12,
-        horizontal: AppMargin.defaultMargin,
-      ),
+      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
