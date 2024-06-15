@@ -20,6 +20,7 @@ class DetailArticle extends StatelessWidget {
     ArticleModel articleModel = Get.arguments;
     return SafeArea(
       child: Scaffold(
+        backgroundColor: AppColors.whiteColor,
         appBar: PreferredSize(
           preferredSize: const Size.fromHeight(96),
           child: Container(
@@ -133,161 +134,192 @@ class DetailArticle extends StatelessWidget {
             ),
           ),
         ),
-        body: Padding(
-          padding: EdgeInsets.symmetric(horizontal: AppMargin.defaultMargin),
-          child: ListView(
-            children: [
-              // NOTE :: START CODE TITLE ARTICLE
-              StreamBuilder(
-                stream: ArticleController.getDetailArticle(
-                    docId: articleModel.docId),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData && snapshot.data != null) {
-                    ArticleModel dataArticle = snapshot.data!;
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          margin: const EdgeInsets.only(bottom: 16),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                '“${dataArticle.title}',
-                                style: AppTextStyle.titlePrimary.copyWith(
-                                  color: AppColors.primary1,
-                                  letterSpacing: -2,
-                                  height: 1,
-                                ),
-                                textAlign: TextAlign.start,
+        body: ListView(
+          children: [
+            // NOTE :: START CODE TITLE ARTICLE
+            StreamBuilder(
+              stream:
+                  ArticleController.getDetailArticle(docId: articleModel.docId),
+              builder: (context, snapshot) {
+                if (snapshot.hasData && snapshot.data != null) {
+                  ArticleModel dataArticle = snapshot.data!;
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: AppMargin.defaultMargin),
+                        margin: const EdgeInsets.only(bottom: 16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              '“${dataArticle.title}',
+                              style: AppTextStyle.titlePrimary.copyWith(
+                                color: AppColors.primary1,
+                                letterSpacing: -2,
+                                height: 1,
                               ),
-                              const Gap(12),
-                              Row(
-                                children: [
-                                  Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 8, vertical: 4),
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(20),
-                                        color: AppColors.greyColor
-                                            .withOpacity(.2)),
-                                    child: Text(
-                                      'Bencana',
-                                      style: AppTextStyle.paragraphM
-                                          .copyWith(color: AppColors.greyColor),
-                                    ),
-                                  ),
-                                  Container(
-                                    margin: const EdgeInsets.symmetric(
-                                        horizontal: 8),
-                                    padding: const EdgeInsets.all(2),
-                                    decoration: const BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: AppColors.greyColor,
-                                    ),
-                                  ),
-                                  Text(
-                                    dataArticle.updatedAt,
-                                    style: AppTextStyle.paragraphM
-                                        .copyWith(color: AppColors.greyColor),
-                                  ),
-                                  Container(
-                                    margin: const EdgeInsets.symmetric(
-                                        horizontal: 8),
-                                    padding: const EdgeInsets.all(2),
-                                    decoration: const BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: AppColors.greyColor,
-                                    ),
-                                  ),
-                                  Text(
-                                    '10 mnt baca',
-                                    style: AppTextStyle.paragraphM
-                                        .copyWith(color: AppColors.greyColor),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                        // NOTE :: END CODE TITLE ARTICLE
-
-                        // NOTE :: START CODE PROFILE TILE
-                        // const Row(
-                        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        //   children: [ProfileTile(), FollowButton()],
-                        // ),
-                        // NOTE :: END CODE PROFILE TILE
-                        const Gap(16),
-                        // NOTE :: START CODE ARTICLE
-                        Container(
-                          width: double.infinity,
-                          height: 250,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                            image: DecorationImage(
-                              fit: BoxFit.cover,
-                              image: NetworkImage(articleModel.urlImage),
+                              textAlign: TextAlign.start,
                             ),
+                            const Gap(12),
+                            Row(
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8, vertical: 4),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20),
+                                      color:
+                                          AppColors.greyColor.withOpacity(.2)),
+                                  child: Text(
+                                    'Bencana',
+                                    style: AppTextStyle.paragraphM
+                                        .copyWith(color: AppColors.greyColor),
+                                  ),
+                                ),
+                                Container(
+                                  margin:
+                                      const EdgeInsets.symmetric(horizontal: 8),
+                                  padding: const EdgeInsets.all(2),
+                                  decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: AppColors.greyColor,
+                                  ),
+                                ),
+                                Text(
+                                  dataArticle.updatedAt,
+                                  style: AppTextStyle.paragraphM
+                                      .copyWith(color: AppColors.greyColor),
+                                ),
+                                Container(
+                                  margin:
+                                      const EdgeInsets.symmetric(horizontal: 8),
+                                  padding: const EdgeInsets.all(2),
+                                  decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: AppColors.greyColor,
+                                  ),
+                                ),
+                                Text(
+                                  '10 mnt baca',
+                                  style: AppTextStyle.paragraphM
+                                      .copyWith(color: AppColors.greyColor),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      // NOTE :: END CODE TITLE ARTICLE
+
+                      // NOTE :: START CODE PROFILE TILE
+                      // const Row(
+                      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //   children: [ProfileTile(), FollowButton()],
+                      // ),
+                      // NOTE :: END CODE PROFILE TILE
+                      const Gap(16),
+                      // NOTE :: START CODE ARTICLE
+                      Container(
+                        width: double.infinity,
+                        height: 250,
+                        margin: EdgeInsets.symmetric(
+                            horizontal: AppMargin.defaultMargin),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image: NetworkImage(articleModel.urlImage),
                           ),
                         ),
-                        const Gap(16),
-                        // NOTE :: START CODE SUB HEADER
-                        Text(
+                      ),
+                      const Gap(16),
+                      // NOTE :: START CODE SUB HEADER
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: AppMargin.defaultMargin),
+                        child: Text(
                           dataArticle.subtitle,
                           style: AppTextStyle.h3.copyWith(
                             color: AppColors.blackColor,
                             fontWeight: AppFontWeight.semiBold,
                           ),
                         ),
-                        // NOTE :: END START SUB HEADER
-                        const Gap(16),
-                        // NOTE :: START CODE SUB CONTENT
-                        Text(
+                      ),
+                      // NOTE :: END START SUB HEADER
+                      const Gap(16),
+                      // NOTE :: START CODE SUB CONTENT
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: AppMargin.defaultMargin),
+                        child: Text(
                           dataArticle.content,
                           style: AppTextStyle.paragraphL.copyWith(
                             color: AppColors.blackColor,
                             fontWeight: AppFontWeight.reguler,
                           ),
                         ),
-                        // NOTE :: END START SUB CONTENT
-                        // NOTE :: END CODE ARTICLE
-                        const Gap(16),
-                        Text(
+                      ),
+                      // NOTE :: END START SUB CONTENT
+                      // NOTE :: END CODE ARTICLE
+                      const Gap(16),
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: AppMargin.defaultMargin),
+                        child: Text(
                           'Komentar',
                           style: AppTextStyle.h3.copyWith(
                             color: AppColors.blackColor,
                             fontWeight: AppFontWeight.reguler,
                           ),
                         ),
-                        Container(
-                          width: double.infinity,
-                          height: 400,
-                          margin: const EdgeInsets.only(bottom: 60),
-                          child: ListView.builder(
-                            itemCount: dataArticle.comments.length,
-                            itemBuilder: (context, index) {
-                              CommentModel commentModel =
-                                  dataArticle.comments[index];
-                              return CardComment(
-                                comment: commentModel.comment,
-                                createdAt: commentModel.createdAt,
-                              );
-                            },
-                          ),
+                      ),
+                      Container(
+                        width: double.infinity,
+                        height: 400,
+                        margin: const EdgeInsets.only(bottom: 60),
+                        child: ListView.builder(
+                          itemCount: dataArticle.comments.length,
+                          itemBuilder: (context, index) {
+                            CommentArticleModel commentModel =
+                                dataArticle.comments[index];
+
+                            return StreamBuilder(
+                              stream: ArticleController.getDetailCommentArticle(
+                                  docId: commentModel.idComment),
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData) {
+                                  DetailCommentPost detailComment =
+                                      snapshot.data;
+                                  return CardComment(
+                                    comment: detailComment.comment,
+                                    createdAt: detailComment.createAt,
+                                  );
+                                } else {
+                                  return const Text("Belum ada komentar");
+                                }
+                              },
+                            );
+
+                            // return CardComment(
+                            //   comment: commentModel.idComment,
+                            //   createdAt: commentModel.createdAt,
+                            // );
+                          },
                         ),
-                      ],
-                    );
-                  } else {
-                    return const Padding(
-                      padding: EdgeInsets.only(top: 300),
-                      child: Center(child: CircularProgressIndicator()),
-                    );
-                  }
-                },
-              )
-            ],
-          ),
+                      ),
+                    ],
+                  );
+                } else {
+                  return const Padding(
+                    padding: EdgeInsets.only(top: 300),
+                    child: Center(child: CircularProgressIndicator()),
+                  );
+                }
+              },
+            )
+          ],
         ),
         floatingActionButton: Form(
           key: formKey,
@@ -307,13 +339,9 @@ class DetailArticle extends StatelessWidget {
                   icon: Icon(Icons.send, color: AppColors.whiteColor),
                   onTap: () async {
                     if (formKey.currentState!.validate()) {
-                      CommentModel comment = CommentModel(
-                        comment: _commentArticle.text,
-                        createdAt: 'createdAt',
-                      );
-
                       ArticleController.commentArticle(
-                          docId: articleModel.docId, comment: comment);
+                          docId: articleModel.docId,
+                          comment: _commentArticle.text);
 
                       _commentArticle.clear();
                     }
