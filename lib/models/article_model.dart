@@ -6,7 +6,7 @@ class ArticleModel {
   final String title;
   final String subtitle;
   final String content;
-  final List<CommentModel> comments;
+  final List<CommentArticleModel> comments;
   // final Map<String, dynamic> like;
   final int countlike;
   final int countComment;
@@ -29,7 +29,8 @@ class ArticleModel {
 
   factory ArticleModel.fromJson(Map<String, dynamic> json, String docId) {
     List<dynamic> commentsJson = json['comment'];
-    List<CommentModel> commentsList = CommentModel.fromJsonList(commentsJson);
+    List<CommentArticleModel> commentsList =
+        CommentArticleModel.fromJsonList(commentsJson);
 
     return ArticleModel(
       docId: docId,
@@ -55,30 +56,39 @@ class ArticleModel {
   }
 }
 
-class CommentModel {
-  final String comment;
-  final String createdAt;
+class CommentArticleModel {
+  String idComment;
+  CommentArticleModel({required this.idComment});
 
-  CommentModel({required this.comment, required this.createdAt});
-
-  factory CommentModel.fromJson(Map<String, dynamic> json) {
-    return CommentModel(
-      comment: json['comment'],
-      createdAt: json['created_at'],
+  factory CommentArticleModel.fromJson(Map<String, dynamic> json) {
+    return CommentArticleModel(
+      idComment: json['id_comment'],
     );
   }
 
-  Map<String, dynamic> toJson() {
-    return {
-      'comment': comment,
-      'created_at': createdAt,
-    };
+  static List<CommentArticleModel> fromJsonList(List<dynamic> jsonList) {
+    return jsonList.map((json) => CommentArticleModel.fromJson(json)).toList();
   }
+}
 
-  static List<CommentModel> fromJsonList(List<dynamic> jsonMap) {
-    return jsonMap.map((entry) {
-      Map<String, dynamic> commentData = entry as Map<String, dynamic>;
-      return CommentModel.fromJson(commentData);
-    }).toList();
+class DetailCommentPost {
+  final String comment;
+  final String createAt;
+  final String email;
+  final String postId;
+
+  DetailCommentPost({
+    required this.comment,
+    required this.createAt,
+    required this.email,
+    required this.postId,
+  });
+  factory DetailCommentPost.fromJson(Map<String, dynamic> json) {
+    return DetailCommentPost(
+      comment: json['comment'],
+      email: json['email'],
+      postId: json['postId'],
+      createAt: json['created_at'],
+    );
   }
 }
