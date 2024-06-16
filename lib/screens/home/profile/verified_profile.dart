@@ -1,14 +1,12 @@
 import 'package:aksi_seru_app/controller/auth_controller.dart';
 import 'package:aksi_seru_app/controller/user_controller.dart';
 import 'package:aksi_seru_app/getX/counter_follow_user.dart';
-import 'package:aksi_seru_app/getX/show_recommend_user.dart';
 import 'package:aksi_seru_app/models/user_model.dart';
 import 'package:aksi_seru_app/screens/home/profile/list_article.dart';
 import 'package:aksi_seru_app/screens/home/profile/list_following.dart';
 import 'package:aksi_seru_app/screens/home/profile/list_post.dart';
 import 'package:aksi_seru_app/shared/style.dart';
 import 'package:aksi_seru_app/widgets/custom_button.dart';
-import 'package:aksi_seru_app/widgets/user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
@@ -35,11 +33,6 @@ class _VerifiedProfileState extends State<VerifiedProfile>
     _tabController.dispose();
     super.dispose();
   }
-
-  String avatar = '';
-
-  final ShowRecommendUserState showRecommendUser =
-      Get.put(ShowRecommendUserState());
 
   final ListFollowersCounter listFollowers = ListFollowersCounter();
 
@@ -83,7 +76,7 @@ class _VerifiedProfileState extends State<VerifiedProfile>
             children: [
               Image.asset('assets/icon_article.png', width: 24),
               const Gap(8),
-              const Text('Saran pengguna'),
+              const Text('Artikel'),
             ],
           ),
         ),
@@ -98,6 +91,7 @@ class _VerifiedProfileState extends State<VerifiedProfile>
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             UserModel user = snapshot.data!;
+
             counterFollowUser.setCountUserFollowers(user.followers);
             counterFollowUser.setCountUserFollow(user.following);
 
@@ -189,8 +183,7 @@ class _VerifiedProfileState extends State<VerifiedProfile>
                         const Gap(12),
                       ],
                       bottom: PreferredSize(
-                        preferredSize: Size.fromHeight(
-                            showRecommendUser.showRecommend() ? 680 : 440),
+                        preferredSize: const Size.fromHeight(440),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
@@ -209,9 +202,9 @@ class _VerifiedProfileState extends State<VerifiedProfile>
                                     child: ClipRRect(
                                       borderRadius: const BorderRadius.all(
                                           Radius.circular(100)),
-                                      child: avatar != ''
+                                      child: user.avatar != ''
                                           ? Image.network(
-                                              avatar,
+                                              user.avatar,
                                               fit: BoxFit.cover,
                                               width: 70,
                                               height: 70,
@@ -377,94 +370,10 @@ class _VerifiedProfileState extends State<VerifiedProfile>
                                           titleColor: AppColors.primary1,
                                         ),
                                       ),
-                                      const Gap(8),
-                                      Expanded(
-                                        child: MiniButton(
-                                          icon: 'icon_arrow_up.png',
-                                          title: 'Saran user',
-                                          ontap: () {
-                                            showRecommendUser.show();
-                                          },
-                                          color: AppColors.primary1,
-                                          iconColor: AppColors.primary1,
-                                          titleColor: AppColors.primary1,
-                                        ),
-                                      ),
                                     ],
                                   ),
                                 ],
                               ),
-                            ),
-                            Obx(
-                              () => showRecommendUser.showRecommend()
-                                  ? Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: AnimatedContainer(
-                                        duration: const Duration(seconds: 1),
-                                        width: double.infinity,
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: AppMargin.defaultMargin,
-                                            vertical: 16),
-                                        decoration: BoxDecoration(
-                                          border: Border(
-                                            top: BorderSide(
-                                              color: AppColors.greyColor
-                                                  .withOpacity(.2),
-                                              width: 1,
-                                            ),
-                                          ),
-                                        ),
-                                        child: Text(
-                                          'Saran pengguna',
-                                          style: AppTextStyle.h3.copyWith(
-                                            color: AppColors.blackColor,
-                                            fontWeight: AppFontWeight.semiBold,
-                                          ),
-                                          textAlign: TextAlign.left,
-                                        ),
-                                      ),
-                                    )
-                                  : Container(),
-                            ),
-                            Obx(
-                              () => showRecommendUser.showRecommend()
-                                  ? SizedBox(
-                                      width: double.infinity,
-                                      height: 180,
-                                      child: FutureBuilder(
-                                        future: UserData.getRandomUser(),
-                                        builder: (context, snapshot) {
-                                          if (snapshot.connectionState ==
-                                              ConnectionState.done) {
-                                            if (snapshot.hasData) {
-                                              return ListView.builder(
-                                                scrollDirection:
-                                                    Axis.horizontal,
-                                                itemCount:
-                                                    snapshot.data!.length,
-                                                itemBuilder: (context, index) {
-                                                  UserModel userData =
-                                                      snapshot.data![index];
-                                                  return UserProfile(
-                                                    userData: userData,
-                                                  );
-                                                },
-                                              );
-                                            } else {
-                                              return const Center(
-                                                child:
-                                                    CircularProgressIndicator(),
-                                              );
-                                            }
-                                          } else {
-                                            return const Center(
-                                              child: Text("Tunggu"),
-                                            );
-                                          }
-                                        },
-                                      ),
-                                    )
-                                  : Container(),
                             ),
                             Container(
                               padding:
