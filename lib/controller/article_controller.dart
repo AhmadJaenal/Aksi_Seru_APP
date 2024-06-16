@@ -224,8 +224,6 @@ class ArticleController extends GetxController {
         "created_at": date.getDateNow(),
       };
 
-      developer.log(dataComment.toString(), name: 'testststts');
-
       DocumentReference<Map<String, dynamic>> response = await FirebaseFirestore
           .instance
           .collection("commentArticle")
@@ -244,86 +242,4 @@ class ArticleController extends GetxController {
       developer.log('Failed to comment');
     }
   }
-
-  // static void editArticle(
-  //     {int? id, String? title, subtitle, content, category, image64}) async {
-  //   String? token = await UserData.getToken();
-
-  //   final uri = Uri.parse(ApiEndPoints.baseUrl + Article.updateArticle);
-
-  //   var headers = {'X-Authorization': '$token'};
-  //   var body = jsonEncode({
-  //     'id': id,
-  //     'title': title,
-  //     'subtitle': subtitle,
-  //     'content': content,
-  //     'category': category,
-  //     'image': image64,
-  //   });
-
-  //   final LandingPageController landingPageController =
-  //       Get.put(LandingPageController(), permanent: false);
-
-  //   try {
-  //     final response = await http.post(uri, headers: headers, body: body);
-  //     if (response.statusCode == 200) {
-  //       customPopUp(
-  //         icon: Icons.check_circle_outline_rounded,
-  //         message: 'Berhasil edit artikel',
-  //         onTap: () {
-  //           Get.offAllNamed('/nav-bar');
-  //           landingPageController.changeTabIndex(4);
-  //         },
-  //         titleButton: 'Kembali',
-  //       );
-  //     } else {
-  //       developer.log(response.statusCode.toString(),
-  //           name: 'update edit article');
-  //       customPopUp(
-  //         icon: Icons.cancel_outlined,
-  //         message: 'Gagal menghapus artikel',
-  //         isSuccess: false,
-  //         onTap: () => Get.back(),
-  //         titleButton: 'Kembali',
-  //       );
-  //     }
-  //   } catch (e) {
-  //     developer.log(e.toString(), name: 'catch get article');
-  //   }
-  // }
-
-  // static Future<List<dynamic>?> getRecommendArticle(
-  //     {int? id, String? title, subtitle, content, category, image64}) async {
-  //   String? token = await UserData.getToken();
-
-  //   final uri =
-  //       Uri.parse("http://192.168.177.106/api/api/article/recommendation.php");
-
-  //   var headers = {'X-Authorization': '$token'};
-
-  //   final LandingPageController landingPageController =
-  //       Get.put(LandingPageController(), permanent: false);
-
-  //   try {
-  //     final response = await http.get(uri, headers: headers);
-  //     if (response.statusCode == 200) {
-  //       developer.log(response.statusCode.toString(),
-  //           name: 'test response get random article');
-  //       Map<String, dynamic> jsonResponse = jsonDecode(response.body)['data'];
-  //       List listArticleAndLike = [];
-
-  //       jsonResponse.forEach((key, value) {
-  //         listArticleAndLike.add([
-  //           ArticleModel.fromJson(value['article'][0]),
-  //         ]);
-  //       });
-
-  //       return listArticleAndLike;
-  //     } else {
-  //       developer.log(response.body.toString(), name: 'response get article');
-  //     }
-  //   } catch (e) {
-  //     developer.log(e.toString(), name: 'catch get article');
-  //   }
-  // }
 }
