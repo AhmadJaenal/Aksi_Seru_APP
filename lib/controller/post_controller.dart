@@ -41,7 +41,7 @@ class PostController extends GetxController {
         "email": email,
         "caption": caption,
         "comment": [],
-        "idlike": [],
+        "likes": [],
         "updated_at": date.getDateNow(),
         "urlimage": imageUrl,
       };
@@ -238,11 +238,9 @@ class PostController extends GetxController {
 
     try {
       if (image != null) {
-        String imageUrl = await _uploadImage(image);
+        String imageUrl = await uploadImage(image);
         updatedData["urlimage"] = imageUrl;
       }
-
-      developer.log(updatedData.toString(), name: 'test updated data');
 
       await FirebaseFirestore.instance
           .collection("postUsers")
@@ -272,7 +270,7 @@ class PostController extends GetxController {
     }
   }
 
-  static Future<String> _uploadImage(File image) async {
+  static Future<String> uploadImage(File image) async {
     final storageRef = FirebaseStorage.instance.ref();
     final imageRef = storageRef
         .child('postImage/${DateTime.now().millisecondsSinceEpoch}.jpg');
@@ -282,51 +280,41 @@ class PostController extends GetxController {
     return urlImage;
   }
 
-  // static Future<void> likePost({int? id}) async {
-  //   String? token = await UserData.getToken();
+  static Future<void> likePost({String? idPost}) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? email = prefs.getString("email");
 
-  //   var headers = {
-  //     'X-Authorization': '$token',
-  //   };
-  //   var body = jsonEncode({'id': id});
-  //   final uri = Uri.parse(ApiEndPoints.baseUrl + Post.likePost);
+    final Map<String, dynamic> dataLike = {
+      "email": email,
+    };
 
-  //   try {
-  //     final response = await http.post(uri, headers: headers, body: body);
+    try {
+      final FirebaseFirestore db = FirebaseFirestore.instance;
+      DocumentReference postRef = db.collection("postUsers").doc(idPost);
 
-  //     Map<String, dynamic> jsonResponse = jsonDecode(response.body);
-  //     developer.log(jsonResponse.toString(), name: 'success like');
-  //     if (response.statusCode == 200) {
-  //       developer.log(jsonResponse['data'].toString(), name: 'success like');
-  //     } else {
-  //       developer.log(jsonResponse['errors'].toString(), name: 'failed like');
-  //     }
-  //   } catch (e) {
-  //     developer.log(e.toString(), name: 'catch like');
-  //   }
-  // }
+      postRef.update({
+        'likes': FieldValue.arrayUnion([dataLike])
+      });
+    } catch (e) {
+      developer.log('Failed to like post');
+    }
+  }
 
-  // static Future<void> unLikePost({int? id}) async {
-  //   String? token = await UserData.getToken();
+  static Future<void> unlikePost({String? idPost}) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? email = prefs.getString("email");
 
-  //   var headers = {
-  //     'X-Authorization': '$token',
-  //   };
-  //   var body = jsonEncode({'idlike': id});
-  //   developer.log(body.toString(), name: 'idlike');
-  //   final uri = Uri.parse(ApiEndPoints.baseUrl + Post.unlikePost);
+    final Map<String, dynamic> dataUnLike = {"email": email};
 
-  //   try {
-  //     final response = await http.delete(uri, headers: headers, body: body);
+    try {
+      final FirebaseFirestore db = FirebaseFirestore.instance;
+      DocumentReference postRef = db.collection("postUsers").doc(idPost);
 
-  //     Map<String, dynamic> jsonResponse = jsonDecode(response.body);
-  //     if (response.statusCode == 200) {
-  //       developer.log(jsonResponse.toString(), name: 'success unlike');
-  //     } else {
-  //       developer.log(jsonResponse.toString(), name: 'failed unlike');
-  //     }
-  //   } catch (e) {
-  //     developer.log(e.toString(), name: 'catch post');
-  //   }
-  // }
+      await postRef.update({
+        "likes": FieldValue.arrayRemove([dataUnLike])
+      });
+    } catch (e) {
+      developer.log('Failed to like post');
+    }
+  }
 }
