@@ -192,8 +192,17 @@ class CardPost extends StatelessWidget {
             children: [
               Obx(
                 () => likeUnlikePost.isLiked()
-                    ? Image.asset('assets/icon_like.png', width: 24)
-                    : Image.asset('assets/icon_unLike.png', width: 24),
+                    ? GestureDetector(
+                        onTap: () {
+                          likeUnlikePost.setLikeUnlike(idPost: postData.docId);
+                        },
+                        child: Image.asset('assets/icon_like.png', width: 24))
+                    : GestureDetector(
+                        onTap: () {
+                          likeUnlikePost.setLikeUnlike(idPost: postData.docId);
+                        },
+                        child:
+                            Image.asset('assets/icon_unLike.png', width: 24)),
               ),
               const Gap(16),
               GestureDetector(
@@ -240,7 +249,7 @@ class CardPost extends StatelessWidget {
                                         const Gap(24),
                                         Center(
                                           child: Text(
-                                            'Postingan sdhfjsdf',
+                                            'Postingan dfgdfg',
                                             style: AppTextStyle.paragraphL
                                                 .copyWith(
                                               color: AppColors.blackColor,
@@ -332,7 +341,7 @@ class CardPost extends StatelessWidget {
           GestureDetector(
             onTap: () {},
             child: Text(
-              'Disukai like orang',
+              'Disukai ${postData.likes.length} orang',
               style: AppTextStyle.paragraphL.copyWith(
                 color: AppColors.blackColor,
               ),
@@ -424,24 +433,32 @@ class CardPost extends StatelessWidget {
                           // NOTE :: END CODE SECTION CAPTION POST,
 
                           // NOTE :: STAR CODE SECTION COMMENT POST
-                          // commentModel.isNotEmpty
-                          //     ? SliverList(
-                          //         delegate: SliverChildBuilderDelegate(
-                          //           (context, index) {
-                          //             final comment = commentModel[index];
-                          //             return CardComment(
-                          //               comment: comment.comment,
-                          //               createdAt: comment.createdAt,
-                          //             );
-                          //           },
-                          //           childCount: commentModel.length,
-                          //         ),
-                          //       )
-                          //     : const SliverToBoxAdapter(
-                          //         child: Center(
-                          //           child: Text('Tidak ada komentar'),
-                          //         ),
-                          //       )
+                          SliverList(
+                            delegate: SliverChildBuilderDelegate(
+                              (context, index) {
+                                CommentPostModel idComment =
+                                    postData.comments[index];
+
+                                return StreamBuilder(
+                                  stream: PostController.getCommentPost(
+                                      idComment.idComment),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.hasData) {
+                                      DetailCommentPost detailComment =
+                                          snapshot.data;
+                                      return CardComment(
+                                        comment: detailComment.comment,
+                                        createdAt: detailComment.createAt,
+                                      );
+                                    } else {
+                                      return const Text("Belum ada komentar");
+                                    }
+                                  },
+                                );
+                              },
+                              childCount: postData.comments.length,
+                            ),
+                          )
                           // NOTE :: END CODE SECTION COMMENT POST
                         ],
                       ),
