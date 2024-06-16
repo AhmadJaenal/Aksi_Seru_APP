@@ -1,4 +1,4 @@
-import 'package:aksi_seru_app/controller/user.dart';
+import 'package:aksi_seru_app/controller/user_controller.dart';
 import 'package:aksi_seru_app/getX/show_recommend_user.dart';
 import 'package:aksi_seru_app/models/user_model.dart';
 import 'package:aksi_seru_app/shared/style.dart';
@@ -7,8 +7,6 @@ import 'package:aksi_seru_app/widgets/user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-
-import 'dart:developer' as developer;
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
@@ -94,13 +92,7 @@ class _SearchPageState extends State<SearchPage> {
                                 padding: const MaterialStatePropertyAll(
                                     EdgeInsets.all(12)),
                               ),
-                              onPressed: () {
-                                setState(() {
-                                  UserData.searchUser(
-                                    username: _searchC.text,
-                                  );
-                                });
-                              },
+                              onPressed: () {},
                               icon: Image.asset(
                                 'assets/icon_search.png',
                                 width: 24,
@@ -198,44 +190,44 @@ class _SearchPageState extends State<SearchPage> {
                   : Container(),
             ),
           ),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding:
-                  EdgeInsets.symmetric(horizontal: AppMargin.defaultMargin),
-              child: StreamBuilder(
-                stream: UserData.searchUser(username: _searchC.text),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-                    return SizedBox(
-                      height: MediaQuery.of(context).size.height * .65,
-                      child: ListView.builder(
-                        physics: const BouncingScrollPhysics(),
-                        itemCount: snapshot.data!.length,
-                        itemBuilder: (context, index) {
-                          UserModel userData = snapshot.data![index];
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 5),
-                            child: OtherUserProfileWidget(
-                              userData: userData,
-                            ),
-                          );
-                        },
-                      ),
-                    );
-                  } else {
-                    return Center(
-                      child: Text(
-                        'Pengguna tidak ditemukan',
-                        style: AppTextStyle.paragraphL.copyWith(
-                          color: AppColors.blackColor,
-                        ),
-                      ),
-                    );
-                  }
-                },
-              ),
-            ),
-          ),
+          // SliverToBoxAdapter(
+          //   child: Padding(
+          //     padding:
+          //         EdgeInsets.symmetric(horizontal: AppMargin.defaultMargin),
+          //     child: StreamBuilder(
+          //       stream: UserData.searchUser(username: _searchC.text),
+          //       builder: (context, snapshot) {
+          //         if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+          //           return SizedBox(
+          //             height: MediaQuery.of(context).size.height * .65,
+          //             child: ListView.builder(
+          //               physics: const BouncingScrollPhysics(),
+          //               itemCount: snapshot.data!.length,
+          //               itemBuilder: (context, index) {
+          //                 UserModel userData = snapshot.data![index];
+          //                 return Padding(
+          //                   padding: const EdgeInsets.symmetric(vertical: 5),
+          //                   child: OtherUserProfileWidget(
+          //                     userData: userData,
+          //                   ),
+          //                 );
+          //               },
+          //             ),
+          //           );
+          //         } else {
+          //           return Center(
+          //             child: Text(
+          //               'Pengguna tidak ditemukan',
+          //               style: AppTextStyle.paragraphL.copyWith(
+          //                 color: AppColors.blackColor,
+          //               ),
+          //             ),
+          //           );
+          //         }
+          //       },
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );

@@ -1,29 +1,20 @@
+import 'package:aksi_seru_app/controller/date_controller.dart';
 import 'package:aksi_seru_app/controller/post_controller.dart';
-import 'package:aksi_seru_app/getX/post.dart';
 import 'package:aksi_seru_app/models/post_model.dart';
-import 'package:aksi_seru_app/screens/home/feed/edit_post.dart';
-import 'package:aksi_seru_app/shared/style.dart';
-import 'package:aksi_seru_app/utils/api.dart';
-import 'package:aksi_seru_app/widgets/custom_button.dart';
-import 'package:aksi_seru_app/widgets/custom_textfield.dart';
-import 'package:aksi_seru_app/widgets/user_profile.dart';
+
+import '../getX/post.dart';
+import '../shared/style.dart';
+import 'custom_button.dart';
+import 'custom_textfield.dart';
+import 'user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
-import 'dart:developer' as developer;
-
 class CardPost extends StatelessWidget {
-  final PostModel postModel;
-  final List<LikeModel> likeModel;
-  final List<CommentModel> commentModel;
+  final PostModel postData;
 
-  CardPost({
-    super.key,
-    required this.postModel,
-    required this.likeModel,
-    required this.commentModel,
-  });
+  CardPost({super.key, required this.postData});
 
   final TextEditingController _commentPostC = TextEditingController();
 
@@ -33,22 +24,12 @@ class CardPost extends StatelessWidget {
     _commentPostC.dispose();
   }
 
-  String imagePost = '';
-
   LikeUnlikePost likeUnlikePost = LikeUnlikePost();
 
   @override
   Widget build(BuildContext context) {
-    if (postModel.url != '') {
-      List<String> userAvatar = postModel.url.split('localhost');
-      imagePost = "${userAvatar[0]}${ApiEndPoints.ip}${userAvatar[1]}";
-    }
-
     final double height = MediaQuery.of(context).size.height;
     final double width = MediaQuery.of(context).size.width;
-
-    CommentState commentState = Get.put(CommentState());
-    commentState.setComment(commentModel);
 
     return Container(
       width: double.infinity,
@@ -133,16 +114,8 @@ class CardPost extends StatelessWidget {
                                       icon: 'icon_block.png',
                                       title: 'Edit Postingan',
                                       ontap: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => EditPost(
-                                              caption: postModel.caption,
-                                              image: imagePost,
-                                              idPost: postModel.idPost,
-                                            ),
-                                          ),
-                                        );
+                                        Get.toNamed('/edit-post',
+                                            arguments: postData);
                                       },
                                     ),
                                   ),
@@ -169,10 +142,10 @@ class CardPost extends StatelessWidget {
                                                 icon: 'icon_block.png',
                                                 title: 'Hapus',
                                                 ontap: () {
+                                                  Get.back();
+                                                  Get.back();
                                                   PostController.deletePost(
-                                                    idPost: postModel.idPost,
-                                                    context: context,
-                                                  );
+                                                      docId: postData.docId);
                                                 },
                                               ),
                                             ],
@@ -198,7 +171,7 @@ class CardPost extends StatelessWidget {
           SizedBox(
             width: double.infinity,
             child: Text(
-              postModel.caption,
+              postData.caption,
               style: AppTextStyle.paragraphL.copyWith(
                 color: AppColors.blackColor,
               ),
@@ -210,10 +183,8 @@ class CardPost extends StatelessWidget {
           ClipRRect(
             borderRadius: BorderRadius.circular(12),
             child: GestureDetector(
-              onDoubleTap: () {
-                PostController.likePost(id: postModel.idPost);
-              },
-              child: Image.network(imagePost),
+              onDoubleTap: () {},
+              child: Image.network(postData.urlImage),
             ),
           ),
           const Gap(16),
@@ -221,8 +192,17 @@ class CardPost extends StatelessWidget {
             children: [
               Obx(
                 () => likeUnlikePost.isLiked()
-                    ? Image.asset('assets/icon_like.png', width: 24)
-                    : Image.asset('assets/icon_unLike.png', width: 24),
+                    ? GestureDetector(
+                        onTap: () {
+                          likeUnlikePost.setLikeUnlike(idPost: postData.docId);
+                        },
+                        child: Image.asset('assets/icon_like.png', width: 24))
+                    : GestureDetector(
+                        onTap: () {
+                          likeUnlikePost.setLikeUnlike(idPost: postData.docId);
+                        },
+                        child:
+                            Image.asset('assets/icon_unLike.png', width: 24)),
               ),
               const Gap(16),
               GestureDetector(
@@ -269,7 +249,7 @@ class CardPost extends StatelessWidget {
                                         const Gap(24),
                                         Center(
                                           child: Text(
-                                            'Postingan Mavropanos',
+                                            'Postingan dfgdfg',
                                             style: AppTextStyle.paragraphL
                                                 .copyWith(
                                               color: AppColors.blackColor,
@@ -300,10 +280,11 @@ class CardPost extends StatelessWidget {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        const CardCaption(),
+                                        CardCaption(
+                                            datePost: postData.updatedAt),
                                         const Gap(12),
                                         Text(
-                                          postModel.caption.toString(),
+                                          postData.caption,
                                           style:
                                               AppTextStyle.paragraphL.copyWith(
                                             color: AppColors.blackColor,
@@ -316,24 +297,33 @@ class CardPost extends StatelessWidget {
                                 // NOTE :: END CODE SECTION CAPTION POST,
 
                                 // NOTE :: STAR CODE SECTION COMMENT POST
-                                commentModel.isNotEmpty
-                                    ? SliverList(
-                                        delegate: SliverChildBuilderDelegate(
-                                          (context, index) {
-                                            final comment = commentModel[index];
+                                SliverList(
+                                  delegate: SliverChildBuilderDelegate(
+                                    (context, index) {
+                                      CommentPostModel idComment =
+                                          postData.comments[index];
+
+                                      return StreamBuilder(
+                                        stream: PostController.getCommentPost(
+                                            idComment.idComment),
+                                        builder: (context, snapshot) {
+                                          if (snapshot.hasData) {
+                                            DetailCommentPost detailComment =
+                                                snapshot.data;
                                             return CardComment(
-                                              comment: comment.comment,
-                                              createdAt: comment.createdAt,
+                                              comment: detailComment.comment,
+                                              createdAt: detailComment.createAt,
                                             );
-                                          },
-                                          childCount: commentModel.length,
-                                        ),
-                                      )
-                                    : const SliverToBoxAdapter(
-                                        child: Center(
-                                          child: Text('Tidak ada komentar'),
-                                        ),
-                                      )
+                                          } else {
+                                            return const Text(
+                                                "Belum ada komentar");
+                                          }
+                                        },
+                                      );
+                                    },
+                                    childCount: postData.comments.length,
+                                  ),
+                                )
                                 // NOTE :: END CODE SECTION COMMENT POST
                               ],
                             ),
@@ -351,7 +341,7 @@ class CardPost extends StatelessWidget {
           GestureDetector(
             onTap: () {},
             child: Text(
-              'Disukai ${postModel.countLike} orang',
+              'Disukai ${postData.likes.length} orang',
               style: AppTextStyle.paragraphL.copyWith(
                 color: AppColors.blackColor,
               ),
@@ -428,10 +418,10 @@ class CardPost extends StatelessWidget {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const CardCaption(),
+                                  CardCaption(datePost: postData.updatedAt),
                                   const Gap(12),
                                   Text(
-                                    postModel.caption.toString(),
+                                    postData.caption,
                                     style: AppTextStyle.paragraphL.copyWith(
                                       color: AppColors.blackColor,
                                     ),
@@ -443,24 +433,32 @@ class CardPost extends StatelessWidget {
                           // NOTE :: END CODE SECTION CAPTION POST,
 
                           // NOTE :: STAR CODE SECTION COMMENT POST
-                          commentModel.isNotEmpty
-                              ? SliverList(
-                                  delegate: SliverChildBuilderDelegate(
-                                    (context, index) {
-                                      final comment = commentModel[index];
+                          SliverList(
+                            delegate: SliverChildBuilderDelegate(
+                              (context, index) {
+                                CommentPostModel idComment =
+                                    postData.comments[index];
+
+                                return StreamBuilder(
+                                  stream: PostController.getCommentPost(
+                                      idComment.idComment),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.hasData) {
+                                      DetailCommentPost detailComment =
+                                          snapshot.data;
                                       return CardComment(
-                                        comment: comment.comment,
-                                        createdAt: comment.createdAt,
+                                        comment: detailComment.comment,
+                                        createdAt: detailComment.createAt,
                                       );
-                                    },
-                                    childCount: commentModel.length,
-                                  ),
-                                )
-                              : const SliverToBoxAdapter(
-                                  child: Center(
-                                    child: Text('Tidak ada komentar'),
-                                  ),
-                                )
+                                    } else {
+                                      return const Text("Belum ada komentar");
+                                    }
+                                  },
+                                );
+                              },
+                              childCount: postData.comments.length,
+                            ),
+                          )
                           // NOTE :: END CODE SECTION COMMENT POST
                         ],
                       ),
@@ -512,26 +510,16 @@ class CardPost extends StatelessWidget {
                   icon: Icon(Icons.send, color: AppColors.whiteColor),
                   onTap: () async {
                     if (formKey.currentState!.validate()) {
-                      final newComment = await PostController.commentPost(
+                      PostController.commentPost(
                         comment: _commentPostC.text,
-                        id: postModel.idPost,
+                        postId: postData.docId,
                       );
-
                       _commentPostC.clear();
                     }
                   },
                 ),
               ],
             ),
-          ),
-          const Gap(16),
-          Text(
-            '4 jam yang lalu',
-            style: AppTextStyle.paragraphL.copyWith(
-              color: AppColors.greyColor,
-            ),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
           ),
         ],
       ),
@@ -540,12 +528,15 @@ class CardPost extends StatelessWidget {
 }
 
 class CardCaption extends StatelessWidget {
-  const CardCaption({
+  String datePost;
+  CardCaption({
     super.key,
+    required this.datePost,
   });
 
   @override
   Widget build(BuildContext context) {
+    DateController date = DateController();
     return Row(
       children: [
         Image.asset('assets/user_profile.png', width: 48),
@@ -577,7 +568,7 @@ class CardCaption extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(bottom: 15),
           child: Text(
-            '4 jam yang lalu',
+            date.checkDifferenceTime(date: datePost),
             style: AppTextStyle.paragraphL.copyWith(
               color: AppColors.greyColor,
             ),
@@ -598,13 +589,11 @@ class CardComment extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    DateController date = DateController();
     double width = MediaQuery.of(context).size.width;
     return Container(
       color: AppColors.whiteColor,
-      padding: EdgeInsets.symmetric(
-        horizontal: AppMargin.defaultMargin,
-        vertical: 12,
-      ),
+      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -616,17 +605,22 @@ class CardComment extends StatelessWidget {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text(
-                    'Gionna Van Den Berg',
-                    style: AppTextStyle.paragraphL.copyWith(
-                        color: AppColors.blackColor,
-                        fontWeight: AppFontWeight.medium),
+                  SizedBox(
+                    width: 120,
+                    child: Text(
+                      'Gionna Van Den Berg',
+                      style: AppTextStyle.paragraphL.copyWith(
+                          color: AppColors.blackColor,
+                          fontWeight: AppFontWeight.medium),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
                   const Gap(4),
                   const Verified(width: 12),
                   const Gap(10),
                   Text(
-                    '3 jam',
+                    date.checkDifferenceTime(date: createdAt),
                     style: AppTextStyle.paragraphL.copyWith(
                       color: AppColors.greyColor,
                     ),

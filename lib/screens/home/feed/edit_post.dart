@@ -1,7 +1,7 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:aksi_seru_app/controller/post_controller.dart';
+import 'package:aksi_seru_app/models/post_model.dart';
 import 'package:aksi_seru_app/shared/style.dart';
 import 'package:aksi_seru_app/widgets/custom_button.dart';
 import 'package:aksi_seru_app/widgets/custom_popup.dart';
@@ -11,21 +11,10 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
-import 'dart:developer' as developer;
-
 import 'package:image_picker/image_picker.dart';
 
 class EditPost extends StatefulWidget {
-  final String caption;
-  String image;
-  final int idPost;
-
-  EditPost({
-    super.key,
-    required this.caption,
-    required this.image,
-    required this.idPost,
-  });
+  const EditPost({super.key});
 
   @override
   State<EditPost> createState() => _EditPostState();
@@ -34,10 +23,12 @@ class EditPost extends StatefulWidget {
 class _EditPostState extends State<EditPost> {
   late TextEditingController _captionC;
 
+  PostModel postData = Get.arguments;
+
   @override
   void initState() {
     super.initState();
-    _captionC = TextEditingController(text: widget.caption);
+    _captionC = TextEditingController(text: postData.caption);
   }
 
   @override
@@ -49,7 +40,6 @@ class _EditPostState extends State<EditPost> {
   final formKey = GlobalKey<FormState>();
 
   File? image;
-  String? imagebase64;
 
   Future<void> _getImageFromGallery() async {
     final picker = ImagePicker();
@@ -62,7 +52,7 @@ class _EditPostState extends State<EditPost> {
         image = File(pickedImage.path);
       });
     } else {
-      CustomPopUp(
+      customPopUp(
         icon: Icons.photo_size_select_actual_outlined,
         message: 'Ukuran foto harus kurang dari 2000kb',
         isSuccess: false,
@@ -72,15 +62,10 @@ class _EditPostState extends State<EditPost> {
         titleButton: 'Kembali',
       );
     }
-    List<int> imageBytes = File(image!.path).readAsBytesSync();
-    var base64StringImage = base64Encode(imageBytes);
-
-    imagebase64 = base64StringImage;
   }
 
   @override
   Widget build(BuildContext context) {
-    developer.log(widget.image, name: 'string image');
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: false,
@@ -109,7 +94,10 @@ class _EditPostState extends State<EditPost> {
                         MaterialStatePropertyAll(AppColors.primary1),
                     padding: const MaterialStatePropertyAll(EdgeInsets.all(12)),
                   ),
-                  onPressed: () => Get.back(),
+                  onPressed: () {
+                    Get.back();
+                    Get.back();
+                  },
                   icon: Icon(
                     Icons.arrow_back,
                     color: AppColors.whiteColor,
@@ -144,7 +132,7 @@ class _EditPostState extends State<EditPost> {
                         borderRadius: BorderRadius.circular(12),
                         child: GestureDetector(
                           onDoubleTap: () {},
-                          child: Image.network(widget.image),
+                          child: Image.network(postData.urlImage),
                         ),
                       )
                     : ClipRRect(
@@ -169,22 +157,13 @@ class _EditPostState extends State<EditPost> {
                 const Gap(24),
                 PrimaryButton(
                   ontap: () {
-                    if (formKey.currentState!.validate() && image != null) {
+                    if (formKey.currentState!.validate()) {
                       PostController.updatePost(
-                        base64Image: imagebase64!,
+                        docId: postData.docId,
                         caption: _captionC.text,
-                        idPost: widget.idPost,
+                        image: image,
                       );
-                    } else {
-                      CustomPopUp(
-                        icon: Icons.image,
-                        message: 'Upload kembali gambar',
-                        onTap: () {
-                          Get.back();
-                        },
-                        titleButton: 'Kembali',
-                      );
-                    }
+                    } else {}
                   },
                   title: 'Simpan Perubahan',
                 ),

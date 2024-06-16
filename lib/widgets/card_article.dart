@@ -1,7 +1,6 @@
 import 'package:aksi_seru_app/controller/article_controller.dart';
 import 'package:aksi_seru_app/models/article_model.dart';
 import 'package:aksi_seru_app/shared/style.dart';
-import 'package:aksi_seru_app/utils/api.dart';
 import 'package:aksi_seru_app/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -9,20 +8,14 @@ import 'package:get/get.dart';
 
 class CardArticle extends StatelessWidget {
   final ArticleModel article;
-  CardArticle({super.key, required this.article});
+  const CardArticle({super.key, required this.article});
 
-  late String image;
   @override
   Widget build(BuildContext context) {
-    if (article.urlImage != '') {
-      List<String> articleImage = article.urlImage.split('localhost');
-      image = "${articleImage[0]}${ApiEndPoints.ip}${articleImage[1]}";
-    }
-
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return GestureDetector(
-      onTap: () => Get.toNamed('/detail-article'),
+      onTap: () => Get.toNamed('/detail-article', arguments: article),
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 5),
         padding: EdgeInsets.symmetric(horizontal: AppMargin.defaultMargin),
@@ -32,7 +25,7 @@ class CardArticle extends StatelessWidget {
             ClipRRect(
               borderRadius: BorderRadius.circular(6),
               child: Image.network(
-                image,
+                article.urlImage,
                 width: width * .4,
                 height: 150,
                 fit: BoxFit.cover,
@@ -50,7 +43,7 @@ class CardArticle extends StatelessWidget {
                     SizedBox(
                       width: width * .3,
                       child: Text(
-                        'Alexander Keantoa',
+                        article.docId,
                         style: AppTextStyle.paragraphL.copyWith(
                           color: AppColors.blackColor,
                         ),
@@ -120,7 +113,7 @@ class CardArticle extends StatelessWidget {
                             builder: (context) {
                               return SizedBox(
                                 width: double.infinity,
-                                height: height * .73,
+                                height: height * .4,
                                 child: Column(
                                   children: [
                                     const Gap(16),
@@ -159,28 +152,12 @@ class CardArticle extends StatelessWidget {
                                         children: [
                                           MiniButton(
                                             icon: 'icon_bookmark.png',
-                                            title: 'Simpan',
-                                            ontap: () {},
+                                            title: 'Edit Article',
+                                            ontap: () {
+                                              Get.toNamed('/edit-article',
+                                                  arguments: article);
+                                            },
                                           ),
-                                          const Gap(12),
-                                          MiniButton(
-                                            icon: 'icon_share.png',
-                                            title: 'Bagikan artikel',
-                                            ontap: () {},
-                                          ),
-                                          const Gap(12),
-                                          MiniButton(
-                                            icon: 'icon_closed_eye.png',
-                                            title: 'Sembunyikan',
-                                            ontap: () {},
-                                          ),
-                                          const Gap(12),
-                                          MiniButton(
-                                            icon: 'icon_information.png',
-                                            title: 'Tentang kreator',
-                                            ontap: () {},
-                                          ),
-                                          const Gap(12),
                                         ],
                                       ),
                                     ),
@@ -193,31 +170,7 @@ class CardArticle extends StatelessWidget {
                                           icon: 'icon_dislike.png',
                                           title: 'Hapus Artikel',
                                           ontap: () {
-                                            showDialog(
-                                              context: context,
-                                              builder: (context) => AlertDialog(
-                                                title: const Text(
-                                                    'Yakin hapus artikel ini?'),
-                                                alignment: Alignment.center,
-                                                actions: [
-                                                  MiniButton(
-                                                      icon: 'icon_block.png',
-                                                      title: 'Kembali',
-                                                      ontap: () {
-                                                        Get.back();
-                                                      }),
-                                                  DangerMiniButton(
-                                                    icon: 'icon_block.png',
-                                                    title: 'Hapus',
-                                                    ontap: () {
-                                                      ArticleController
-                                                          .deleteArticle(
-                                                              id: article.id);
-                                                    },
-                                                  ),
-                                                ],
-                                              ),
-                                            );
+                                            confirmDeletePost(context);
                                           },
                                         ),
                                       ),
@@ -237,6 +190,69 @@ class CardArticle extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  Future<dynamic> confirmDeletePost(BuildContext context) {
+    return showModalBottomSheet(
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      context: context,
+      builder: (context) {
+        return Container(
+          width: double.infinity,
+          height: 180,
+          padding: const EdgeInsets.symmetric(vertical: 22, horizontal: 32),
+          margin: EdgeInsets.all(AppMargin.defaultMargin),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+            color: AppColors.whiteColor,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Hapus Postingan",
+                style: AppTextStyle.h3.copyWith(
+                  fontWeight: AppFontWeight.bold,
+                  color: AppColors.blackColor,
+                ),
+              ),
+              const Gap(9),
+              Text(
+                "Apakah Anda yakin ingin hapus postingan ini?",
+                style: AppTextStyle.paragraphL.copyWith(
+                  color: AppColors.blackColor,
+                ),
+              ),
+              const Gap(8),
+              Row(
+                children: [
+                  Expanded(
+                    child: MiniButton(
+                        icon: 'icon_block.png',
+                        title: 'Kembali',
+                        ontap: () {
+                          Get.back();
+                        }),
+                  ),
+                  const Gap(8),
+                  Expanded(
+                    child: DangerMiniButton(
+                      icon: 'icon_block.png',
+                      title: 'Hapus',
+                      ontap: () {
+                        // ArticleController.deleteArticle(id: article.id);
+                        ArticleController.deleteArticle(docId: article.docId);
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

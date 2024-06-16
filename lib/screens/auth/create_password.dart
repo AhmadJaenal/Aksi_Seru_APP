@@ -1,4 +1,4 @@
-import 'package:aksi_seru_app/controller/auth.dart';
+import 'package:aksi_seru_app/controller/auth_controller.dart';
 import 'package:aksi_seru_app/shared/style.dart';
 import 'package:aksi_seru_app/widgets/custom_button.dart';
 import 'package:aksi_seru_app/widgets/custom_textfield.dart';

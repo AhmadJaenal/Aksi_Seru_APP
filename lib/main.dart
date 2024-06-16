@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:aksi_seru_app/firebase_options.dart';
 import 'package:aksi_seru_app/screens/auth/create_password.dart';
 import 'package:aksi_seru_app/screens/auth/create_username.dart';
 import 'package:aksi_seru_app/screens/auth/login.dart';
@@ -8,6 +9,7 @@ import 'package:aksi_seru_app/screens/auth/success_register.dart';
 import 'package:aksi_seru_app/screens/home/article/article_page.dart';
 import 'package:aksi_seru_app/screens/home/article/create_article.dart';
 import 'package:aksi_seru_app/screens/home/article/detail_article.dart';
+import 'package:aksi_seru_app/screens/home/article/edit_article.dart';
 import 'package:aksi_seru_app/screens/home/article/following_page.dart';
 import 'package:aksi_seru_app/screens/home/article/for_you_page.dart';
 import 'package:aksi_seru_app/screens/home/article/trending_page.dart';
@@ -16,6 +18,7 @@ import 'package:aksi_seru_app/screens/home/chat/message_page.dart';
 import 'package:aksi_seru_app/screens/home/chat/room_message.dart';
 import 'package:aksi_seru_app/screens/home/errors/check_connection.dart';
 import 'package:aksi_seru_app/screens/home/feed/create_post.dart';
+import 'package:aksi_seru_app/screens/home/feed/edit_post.dart';
 import 'package:aksi_seru_app/screens/home/feed/feed_page.dart';
 import 'package:aksi_seru_app/screens/home/feed/review_post.dart';
 import 'package:aksi_seru_app/screens/home/feed/story_view.dart';
@@ -36,6 +39,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'screens/home/feed/create_story.dart';
 import 'screens/home/nav/nav_bottom.dart';
 
+import 'package:firebase_core/firebase_core.dart';
+
 class PostHttpOverrides extends HttpOverrides {
   @override
   HttpClient createHttpClient(context) {
@@ -45,8 +50,12 @@ class PostHttpOverrides extends HttpOverrides {
   }
 }
 
-void main() {
+void main() async {
   HttpOverrides.global = PostHttpOverrides();
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
@@ -58,12 +67,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-  Future<void> setToken() async {
-    final SharedPreferences prefs = await _prefs;
-    await prefs.setString('token', '');
-  }
-
   Future<Widget> getToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? token = prefs.getString('token');
@@ -75,15 +78,16 @@ class _MyAppState extends State<MyApp> {
     }
   }
 
-  static String email = '';
+  static String token = '';
   Future<String> getValidationData() async {
     final SharedPreferences sharedPreferences =
         await SharedPreferences.getInstance();
-    var obtainEmail = sharedPreferences.getString('email');
+    var tokenResult = sharedPreferences.getString('token');
+
     setState(() {
-      email = obtainEmail!;
+      token = tokenResult!;
     });
-    return email;
+    return token;
   }
 
   @override
@@ -96,7 +100,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      home: email != ''
+      home: token != ''
           ? const CheckConnection(page: CustomNavBottom())
           : const CheckConnection(page: SplashScreen()),
       getPages: [
@@ -166,7 +170,7 @@ class _MyAppState extends State<MyApp> {
         ),
         GetPage(
           name: '/detail-article',
-          page: () => const CheckConnection(page: DetailArticle()),
+          page: () => CheckConnection(page: DetailArticle()),
         ),
         GetPage(
           name: '/trending-article',
@@ -186,7 +190,7 @@ class _MyAppState extends State<MyApp> {
         ),
         GetPage(
           name: '/verified-profile',
-          page: () => CheckConnection(page: VerifiedProfile()),
+          page: () => const CheckConnection(page: VerifiedProfile()),
         ),
         GetPage(
           name: '/public-profile',
@@ -218,7 +222,11 @@ class _MyAppState extends State<MyApp> {
         ),
         GetPage(
           name: '/edit-post',
-          page: () => const CheckConnection(page: ListFollowers()),
+          page: () => const CheckConnection(page: EditPost()),
+        ),
+        GetPage(
+          name: '/edit-article',
+          page: () => const CheckConnection(page: EditArticle()),
         ),
       ],
     );

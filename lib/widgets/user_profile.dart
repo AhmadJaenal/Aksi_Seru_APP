@@ -1,7 +1,5 @@
-import 'package:aksi_seru_app/controller/user.dart';
 import 'package:aksi_seru_app/models/user_model.dart';
 import 'package:aksi_seru_app/shared/style.dart';
-import 'package:aksi_seru_app/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
@@ -42,11 +40,11 @@ class _UserProfileState extends State<UserProfile> {
             ],
           ),
           const Gap(8),
-          FollowButton(
-            onTap: () {
-              UserData.followUser(userData: widget.userData);
-            },
-          ),
+          // FollowButton(
+          //   onTap: () {
+          //     UserData.followUser(userData: widget.userData);
+          //   },
+          // ),
         ],
       ),
     );
@@ -250,13 +248,13 @@ class _OtherUserProfileWidgetState extends State<OtherUserProfileWidget> {
             ],
           ),
           const Spacer(),
-          FollowButton(
-            onTap: () {
-              setState(() {
-                UserData.followUser(userData: widget.userData);
-              });
-            },
-          ),
+          // FollowButton(
+          //   onTap: () {
+          //     setState(() {
+          //       UserData.followUser(userData: widget.userData);
+          //     });
+          //   },
+          // ),
         ],
       ),
     );

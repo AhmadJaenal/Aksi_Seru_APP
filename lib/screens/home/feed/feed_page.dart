@@ -1,12 +1,9 @@
 import 'package:aksi_seru_app/shared/style.dart';
-import 'package:aksi_seru_app/widgets/card_post.dart';
 import 'package:aksi_seru_app/widgets/custom_textfield.dart';
 import 'package:aksi_seru_app/widgets/user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-
-import 'dart:developer' as developer;
 
 class FeedPage extends StatelessWidget {
   FeedPage({super.key});
@@ -142,7 +139,7 @@ class FeedPage extends StatelessWidget {
             ),
             SliverList(
               delegate: SliverChildBuilderDelegate(
-                (context, index) => Text('contoh'),
+                (context, index) => const Text('contoh'),
                 childCount: 5,
               ),
             )

@@ -1,6 +1,6 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, must_be_immutable
 
-import 'package:aksi_seru_app/controller/auth.dart';
+import 'package:aksi_seru_app/controller/auth_controller.dart';
 import 'package:aksi_seru_app/shared/style.dart';
 import 'package:aksi_seru_app/widgets/custom_button.dart';
 import 'package:aksi_seru_app/widgets/custom_popup.dart';
@@ -65,7 +65,7 @@ class Login extends StatelessWidget {
                   if (formKey.currentState!.validate() && isValidEmail) {
                     loginController.loginWithEmail();
                   } else {
-                    CustomPopUp(
+                    customPopUp(
                       icon: Icons.alternate_email_rounded,
                       isSuccess: false,
                       onTap: () => Get.back(),

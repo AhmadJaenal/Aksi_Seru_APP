@@ -1,29 +1,29 @@
 import 'dart:convert';
 import 'dart:io';
 
-import '../../../controller/article_controller.dart';
-import '../../../shared/style.dart';
-import '../../../widgets/custom_button.dart';
-import '../../../widgets/custom_popup.dart';
+import 'package:aksi_seru_app/models/article_model.dart';
+import 'package:aksi_seru_app/shared/style.dart';
+import 'package:aksi_seru_app/widgets/custom_button.dart';
+import 'package:aksi_seru_app/widgets/custom_popup.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
-class CreateArticle extends StatefulWidget {
-  const CreateArticle({super.key});
+class EditArticle extends StatefulWidget {
+  const EditArticle({super.key});
 
   @override
-  State<CreateArticle> createState() => _CreateArticleState();
+  State<EditArticle> createState() => _CreateArticleState();
 }
 
 final formKey = GlobalKey<FormState>();
 
-class _CreateArticleState extends State<CreateArticle> {
-  final TextEditingController titleController = TextEditingController();
-  final TextEditingController subtitleController = TextEditingController();
-  final TextEditingController contentController = TextEditingController();
-  final TextEditingController categoryController = TextEditingController();
+class _CreateArticleState extends State<EditArticle> {
+  TextEditingController titleController = TextEditingController();
+  TextEditingController subtitleController = TextEditingController();
+  TextEditingController contentController = TextEditingController();
+  TextEditingController categoryController = TextEditingController();
 
   File? _image;
 
@@ -53,6 +53,16 @@ class _CreateArticleState extends State<CreateArticle> {
     List<int> imageBytes = File(_image!.path).readAsBytesSync();
     var base64StringImage = base64Encode(imageBytes);
     imagebase64 = base64StringImage;
+  }
+
+  final ArticleModel articleModel = Get.arguments;
+
+  @override
+  void initState() {
+    titleController = TextEditingController(text: articleModel.title);
+    subtitleController = TextEditingController(text: articleModel.subtitle);
+    contentController = TextEditingController(text: articleModel.content);
+    super.initState();
   }
 
   @override
@@ -102,7 +112,7 @@ class _CreateArticleState extends State<CreateArticle> {
                 ),
                 const Gap(16),
                 Text(
-                  'Buat postingan',
+                  'Edit Artikel',
                   style: AppTextStyle.appbarTitle.copyWith(
                     color: AppColors.primary1,
                   ),
@@ -205,23 +215,17 @@ class _CreateArticleState extends State<CreateArticle> {
                 PrimaryButton(
                   ontap: () {
                     if (formKey.currentState!.validate() && _image != null) {
-                      // ArticleController.createArticle(
+                      // ArticleController.editArticle(
+                      //   id: articleModel.id,
                       //   title: titleController.text,
                       //   subtitle: subtitleController.text,
-                      //   category: categoryController.text,
                       //   content: contentController.text,
-                      //   base64Image: imagebase64,
+                      //   image64: imagebase64,
+                      //   category: '',
                       // );
-                      ArticleController.createArticleFirebase(
-                        id: 1,
-                        title: titleController.text,
-                        subtitle: subtitleController.text,
-                        content: contentController.text,
-                        image: _image!,
-                      );
                     }
                   },
-                  title: 'Publish',
+                  title: 'Simpan Perubahan',
                 ),
               ],
             ),

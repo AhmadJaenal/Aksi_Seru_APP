@@ -33,7 +33,7 @@ class ListFollowingCounter extends GetxController {
   }
 
   void unFollow(int id) {
-    userData.removeWhere((user) => user.id == id);
+    // userData.removeWhere((user) => user.id == id);
     userData.refresh();
   }
 }
@@ -48,7 +48,7 @@ class ListFollowersCounter extends GetxController {
   }
 
   void deleteFollowers(int id) {
-    userData.removeWhere((user) => user.id == id);
+    // userData.removeWhere((user) => user.id == id);
     userData.refresh();
   }
 }

@@ -1,4 +1,4 @@
-import 'package:aksi_seru_app/controller/auth.dart';
+import 'package:aksi_seru_app/controller/auth_controller.dart';
 import 'package:aksi_seru_app/shared/style.dart';
 import 'package:aksi_seru_app/widgets/custom_button.dart';
 import 'package:aksi_seru_app/widgets/custom_textfield.dart';
@@ -63,8 +63,12 @@ class CreateUsername extends StatelessWidget {
               PrimaryButton(
                 ontap: () {
                   if (formKey.currentState!.validate()) {
-                    developer.log('create username');
                     registerationController.registerWithEmail();
+
+                    registerationController.emailController.clear();
+                    registerationController.usernameController.clear();
+                    registerationController.nameController.clear();
+                    registerationController.passwordController.clear();
                   } else {
                     developer.log('validasi gagal');
                   }

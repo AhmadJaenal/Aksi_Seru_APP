@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "238605389958",
+    "project_id": "aksiseru-3a49f",
+    "storage_bucket": "aksiseru-3a49f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:238605389958:android:2c283c678311a6b38a4107",
+        "android_client_info": {
+          "package_name": "com.example.aksi_seru_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAneFof1umKTrOM9Tacb2ET0Zxcfm_A4DY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

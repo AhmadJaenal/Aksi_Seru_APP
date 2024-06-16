@@ -10,8 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
-import 'dart:developer' as developer;
-
 import 'package:image_picker/image_picker.dart';
 
 class CreatePost extends StatefulWidget {
@@ -41,7 +39,7 @@ class _CreatePostState extends State<CreatePost> {
         _image = File(pickedImage.path);
       });
     } else {
-      CustomPopUp(
+      customPopUp(
         icon: Icons.photo_size_select_actual_outlined,
         message: 'Ukuran foto harus kurang dari 2000kb',
         isSuccess: false,
@@ -146,7 +144,7 @@ class _CreatePostState extends State<CreatePost> {
                         ],
                       );
                     } else {
-                      CustomPopUp(
+                      customPopUp(
                         icon: Icons.image_not_supported_outlined,
                         message: 'Foto tidak boleh kosong',
                         isSuccess: false,

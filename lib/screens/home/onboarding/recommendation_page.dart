@@ -1,7 +1,6 @@
-import 'package:aksi_seru_app/controller/user.dart';
+import 'package:aksi_seru_app/controller/user_controller.dart';
 import 'package:aksi_seru_app/models/user_model.dart';
 import 'package:aksi_seru_app/shared/style.dart';
-import 'package:aksi_seru_app/widgets/card_article.dart';
 import 'package:aksi_seru_app/widgets/user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -129,7 +128,7 @@ class RecommendationPage extends StatelessWidget {
           itemCount: 10,
           itemBuilder: (context, index) {
             // return CardArticle();
-            return Text('');
+            return const Text('');
           },
         ),
       ),
