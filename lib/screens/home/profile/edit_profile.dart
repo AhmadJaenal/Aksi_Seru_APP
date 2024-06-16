@@ -1,10 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:aksi_seru_app/controller/user_controller.dart';
 import 'package:aksi_seru_app/models/user_model.dart';
 import 'package:aksi_seru_app/shared/style.dart';
 import 'package:aksi_seru_app/widgets/custom_button.dart';
 import 'package:aksi_seru_app/widgets/custom_textfield.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -25,7 +27,6 @@ class _EditProfileState extends State<EditProfile> {
   final formKey = GlobalKey<FormState>();
 
   File? _image;
-  String? imagebase64;
 
   Future<void> _getImageFromGallery() async {
     final picker = ImagePicker();
@@ -38,9 +39,6 @@ class _EditProfileState extends State<EditProfile> {
         _image = File(pickedImage.path);
       });
     }
-    List<int> imageBytes = File(_image!.path).readAsBytesSync();
-    var base64StringImage = base64Encode(imageBytes);
-    imagebase64 = base64StringImage;
   }
 
   @override
@@ -51,6 +49,13 @@ class _EditProfileState extends State<EditProfile> {
   }
 
   final user = Get.arguments['user'] as UserModel;
+
+  @override
+  void initState() {
+    nameController = TextEditingController(text: user.name);
+    bioController = TextEditingController(text: user.bio);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -158,7 +163,13 @@ class _EditProfileState extends State<EditProfile> {
                 const Gap(16),
                 PrimaryButton(
                   ontap: () {
-                    if (formKey.currentState!.validate()) {}
+                    if (formKey.currentState!.validate()) {
+                      UserData.updateProfile(
+                        image: _image,
+                        name: nameController.text,
+                        bio: bioController.text,
+                      );
+                    }
                   },
                   title: 'Simpan Perubahan',
                 )
