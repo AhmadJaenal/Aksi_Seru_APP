@@ -9,6 +9,7 @@ class PostModel {
   final String urlImage;
   final String updatedAt;
   final List<CommentPostModel> comments;
+  final List<LikeModel> likes;
 
   PostModel({
     required this.docId,
@@ -17,12 +18,16 @@ class PostModel {
     required this.urlImage,
     required this.updatedAt,
     required this.comments,
+    required this.likes,
   });
 
   factory PostModel.fromJson(Map<String, dynamic> json, String docId) {
     List<dynamic> commentsJson = json['comment'];
     List<CommentPostModel> commentsList =
         CommentPostModel.fromJsonList(commentsJson);
+
+    List<dynamic> likesJson = json['likes'];
+    List<LikeModel> likesList = LikeModel.fromJsonList(likesJson);
 
     return PostModel(
       docId: docId,
@@ -31,6 +36,7 @@ class PostModel {
       urlImage: json['urlimage'],
       updatedAt: json['updated_at'],
       comments: commentsList,
+      likes: likesList,
     );
   }
 
@@ -83,20 +89,14 @@ class DetailCommentPost {
 }
 
 class LikeModel {
-  final int id;
-  final int userId;
-  final int postId;
+  final String email;
 
   LikeModel({
-    required this.id,
-    required this.userId,
-    required this.postId,
+    required this.email,
   });
   factory LikeModel.fromJson(Map<String, dynamic> json) {
     return LikeModel(
-      id: json['id'],
-      userId: json['user_id'],
-      postId: json['post_id'],
+      email: json['email'],
     );
   }
 
