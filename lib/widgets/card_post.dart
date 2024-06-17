@@ -28,6 +28,8 @@ class CardPost extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    likeUnlikePost.initializeLikeState(postData.likes);
+
     final double height = MediaQuery.of(context).size.height;
     final double width = MediaQuery.of(context).size.width;
 
@@ -191,18 +193,34 @@ class CardPost extends StatelessWidget {
           Row(
             children: [
               Obx(
-                () => likeUnlikePost.isLiked()
-                    ? GestureDetector(
-                        onTap: () {
-                          likeUnlikePost.setLikeUnlike(idPost: postData.docId);
-                        },
-                        child: Image.asset('assets/icon_like.png', width: 24))
-                    : GestureDetector(
-                        onTap: () {
-                          likeUnlikePost.setLikeUnlike(idPost: postData.docId);
-                        },
-                        child:
-                            Image.asset('assets/icon_unLike.png', width: 24)),
+                () => GestureDetector(
+                  onTap: () {
+                    likeUnlikePost.setLikeUnlike(idPost: postData.docId);
+                  },
+                  child: AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 100),
+                    transitionBuilder:
+                        (Widget child, Animation<double> animation) {
+                      return ScaleTransition(
+                        scale: animation,
+                        child: child,
+                      );
+                    },
+                    child: likeUnlikePost.isLiked.value
+                        ? Image.asset(
+                            'assets/icon_like.png',
+                            width: 24,
+                            key: const ValueKey('icon_like'),
+                            fit: BoxFit.contain,
+                          )
+                        : Image.asset(
+                            'assets/icon_unLike.png',
+                            width: 24,
+                            key: const ValueKey('icon_unLike'),
+                            fit: BoxFit.contain,
+                          ),
+                  ),
+                ),
               ),
               const Gap(16),
               GestureDetector(
