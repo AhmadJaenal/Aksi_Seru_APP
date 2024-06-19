@@ -1,6 +1,7 @@
 import 'package:aksi_seru_app/controller/date_controller.dart';
 import 'package:aksi_seru_app/controller/post_controller.dart';
 import 'package:aksi_seru_app/models/post_model.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 import '../getX/post.dart';
 import '../shared/style.dart';
@@ -25,6 +26,8 @@ class CardPost extends StatelessWidget {
   }
 
   LikeUnlikePost likeUnlikePost = LikeUnlikePost();
+
+  AudioPlayer player = AudioPlayer();
 
   @override
   Widget build(BuildContext context) {
@@ -185,7 +188,10 @@ class CardPost extends StatelessWidget {
           ClipRRect(
             borderRadius: BorderRadius.circular(12),
             child: GestureDetector(
-              onDoubleTap: () {},
+              onDoubleTap: () {
+                player.play(AssetSource("audio/tombol_ditekan.mp3"));
+                likeUnlikePost.setLikeUnlike(idPost: postData.docId);
+              },
               child: Image.network(postData.urlImage),
             ),
           ),
