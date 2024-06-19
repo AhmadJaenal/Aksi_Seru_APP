@@ -1,6 +1,9 @@
-import 'package:aksi_seru_app/shared/style.dart';
-import 'package:aksi_seru_app/widgets/custom_textfield.dart';
-import 'package:aksi_seru_app/widgets/user_profile.dart';
+import '../../../controller/post_controller.dart';
+import '../../../models/post_model.dart';
+import '../../../shared/style.dart';
+import '../../../widgets/card_post.dart';
+import '../../../widgets/custom_textfield.dart';
+import '../../../widgets/user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
@@ -137,10 +140,34 @@ class FeedPage extends StatelessWidget {
             const SliverToBoxAdapter(
               child: Gap(24),
             ),
-            SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (context, index) => const Text('contoh'),
-                childCount: 5,
+            SliverToBoxAdapter(
+              child: SizedBox(
+                width: double.infinity,
+                height: MediaQuery.of(context).size.height * .7,
+                child: StreamBuilder<List<PostModel>>(
+                  stream: PostController.getRandomPost(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return ListView.builder(
+                        physics: const BouncingScrollPhysics(),
+                        itemCount: snapshot.data!.length,
+                        itemBuilder: (context, index) {
+                          PostModel postData = snapshot.data![index];
+                          return CardPost(postData: postData);
+                        },
+                      );
+                    } else {
+                      return Center(
+                        child: Text(
+                          'Belum ada postingan',
+                          style: AppTextStyle.h2.copyWith(
+                            color: AppColors.blackColor,
+                          ),
+                        ),
+                      );
+                    }
+                  },
+                ),
               ),
             )
           ],
