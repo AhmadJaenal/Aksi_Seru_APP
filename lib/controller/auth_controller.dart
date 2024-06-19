@@ -36,6 +36,10 @@ class RegisterationController extends GetxController {
         "username": usernameController.text,
         "count_post": 0,
         "count_article": 0,
+        "avatar": "",
+        "bio": "",
+        "followers": 0,
+        "following": 0,
       };
 
       await ref.add(userData).then((docRef) {
@@ -48,6 +52,10 @@ class RegisterationController extends GetxController {
           titleButton: 'Lanjut Login',
         );
       });
+      emailController.clear();
+      usernameController.clear();
+      nameController.clear();
+      passwordController.clear();
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         developer.log('The password provided is too weak.');
