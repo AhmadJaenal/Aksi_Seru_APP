@@ -105,11 +105,24 @@ class PostController extends GetxController {
 
   static Stream<List<PostModel>> getPostByUser() async* {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.getString("email");
+    String? email = prefs.getString("email");
     try {
       yield* FirebaseFirestore.instance
           .collection("postUsers")
-          .where("email", isEqualTo: "jenal@gmail.com")
+          .where("email", isEqualTo: email)
+          .snapshots()
+          .map((snapshot) => PostModel.fromJsonList(snapshot));
+    } catch (e) {
+      developer.log(e.toString(), name: 'error get post by user');
+    }
+  }
+
+  static Stream<List<PostModel>> getRandomPost() async* {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    try {
+      yield* FirebaseFirestore.instance
+          .collection("postUsers")
+          .limit(10)
           .snapshots()
           .map((snapshot) => PostModel.fromJsonList(snapshot));
     } catch (e) {
