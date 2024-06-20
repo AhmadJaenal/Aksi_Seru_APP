@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class UserModel {
   final String username;
   final String name;
@@ -5,11 +7,9 @@ class UserModel {
   final String avatar;
   final int countPost;
   final int countArticle;
-  final int followers;
-  final int following;
+  final List<dynamic> followers;
+  final List<dynamic> following;
   final String bio;
-  // final int idPost;
-  // final int idArticle;
 
   const UserModel({
     required this.username,
@@ -21,8 +21,6 @@ class UserModel {
     required this.followers,
     required this.following,
     required this.bio,
-    // required this.idPost,
-    // required this.idArticle,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
@@ -36,8 +34,13 @@ class UserModel {
       followers: json['followers'],
       following: json['following'],
       bio: json['bio'] != null ? json['bio'].toString() : '',
-      // idPost: json['idPost'],
-      // idArticle: json['idArticle'],
     );
+  }
+
+  static List<UserModel> fromJsonList(QuerySnapshot querySnapshot) {
+    return querySnapshot.docs.map((doc) {
+      Map<String, dynamic> user = doc.data() as Map<String, dynamic>;
+      return UserModel.fromJson(user);
+    }).toList();
   }
 }
