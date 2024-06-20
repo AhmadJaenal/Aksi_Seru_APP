@@ -41,6 +41,17 @@ class UserData extends GetxController {
       return null;
     });
   }
+  static Stream<List<UserModel>?> getRandomUser() async* {
+    try {
+      yield* FirebaseFirestore.instance
+          .collection("users")
+          .limit(10)
+          .snapshots()
+          .map((users) => UserModel.fromJsonList(users));
+    } catch (e) {
+      developer.log(e.toString());
+    }
+  }
 
   static updateProfile({String? name, bio, File? image}) async {
     Map<String, dynamic> updatedData = {
