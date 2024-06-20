@@ -92,9 +92,6 @@ class _VerifiedProfileState extends State<VerifiedProfile>
           if (snapshot.hasData) {
             UserModel user = snapshot.data!;
 
-            counterFollowUser.setCountUserFollowers(user.followers);
-            counterFollowUser.setCountUserFollow(user.following);
-
             return DefaultTabController(
               length: 2,
               initialIndex: 1,
@@ -302,16 +299,12 @@ class _VerifiedProfileState extends State<VerifiedProfile>
                                             Get.toNamed('/list-followers'),
                                         child: Column(
                                           children: [
-                                            Obx(
-                                              () => Text(
-                                                counterFollowUser
-                                                    .counterUserFollowers
-                                                    .toString(),
-                                                style: AppTextStyle.h3.copyWith(
-                                                  fontWeight:
-                                                      AppFontWeight.semiBold,
-                                                  color: AppColors.blackColor,
-                                                ),
+                                            Text(
+                                              user.followers.length.toString(),
+                                              style: AppTextStyle.h3.copyWith(
+                                                fontWeight:
+                                                    AppFontWeight.semiBold,
+                                                color: AppColors.blackColor,
                                               ),
                                             ),
                                             const Gap(8),
@@ -326,20 +319,17 @@ class _VerifiedProfileState extends State<VerifiedProfile>
                                         ),
                                       ),
                                       GestureDetector(
-                                        onTap: () =>
-                                            Get.toNamed('/list-following'),
+                                        onTap: () => Get.toNamed(
+                                            '/list-following',
+                                            arguments: user.following),
                                         child: Column(
                                           children: [
-                                            Obx(
-                                              () => Text(
-                                                counterFollowUser
-                                                    .counterUserFollowing
-                                                    .toString(),
-                                                style: AppTextStyle.h3.copyWith(
-                                                  fontWeight:
-                                                      AppFontWeight.semiBold,
-                                                  color: AppColors.blackColor,
-                                                ),
+                                            Text(
+                                              user.following.length.toString(),
+                                              style: AppTextStyle.h3.copyWith(
+                                                fontWeight:
+                                                    AppFontWeight.semiBold,
+                                                color: AppColors.blackColor,
                                               ),
                                             ),
                                             const Gap(8),

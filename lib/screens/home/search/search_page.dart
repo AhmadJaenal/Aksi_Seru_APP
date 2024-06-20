@@ -155,33 +155,21 @@ class _SearchPageState extends State<SearchPage> {
                           ),
                         ),
                       ),
-                      child: FutureBuilder(
-                        future: UserData.getRandomUser(),
+                      child: StreamBuilder(
+                        stream: UserData.getRandomUser(),
                         builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.done) {
-                            if (snapshot.hasData) {
-                              return ListView.builder(
-                                scrollDirection: Axis.horizontal,
-                                itemCount: snapshot.data!.length,
-                                itemBuilder: (context, index) {
-                                  UserModel userData = snapshot.data![index];
-                                  return UserProfile(userData: userData);
-                                },
-                              );
-                            } else {
-                              return const Center(
-                                child: CircularProgressIndicator(),
-                              );
-                            }
+                          if (snapshot.hasData) {
+                            return ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: snapshot.data!.length,
+                              itemBuilder: (context, index) {
+                                UserModel userData = snapshot.data![index];
+                                return UserProfile(userData: userData);
+                              },
+                            );
                           } else {
-                            return Center(
-                              child: Text(
-                                "Tunggu",
-                                style: AppTextStyle.paragraphL.copyWith(
-                                  color: AppColors.blackColor,
-                                ),
-                              ),
+                            return const Center(
+                              child: CircularProgressIndicator(),
                             );
                           }
                         },

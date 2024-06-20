@@ -73,40 +73,40 @@ class RecommendationPage extends StatelessWidget {
                     ),
                   ),
                 ),
-                child: FutureBuilder(
-                  future: UserData.getRandomUser(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.done) {
-                      if (snapshot.hasData) {
-                        return ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          physics: const BouncingScrollPhysics(),
-                          itemCount: snapshot.data!.length,
-                          itemBuilder: (context, index) {
-                            UserModel userData = snapshot.data![index];
-                            return Padding(
-                              padding: index == 0
-                                  ? EdgeInsets.only(
-                                      left: AppMargin.defaultMargin)
-                                  : index == 9
-                                      ? EdgeInsets.only(
-                                          left: 8,
-                                          right: AppMargin.defaultMargin)
-                                      : const EdgeInsets.only(left: 8),
-                              child: UserProfile(
-                                userData: userData,
-                              ),
-                            );
-                          },
-                        );
-                      } else {
-                        return const Text('Tidak ada data');
-                      }
-                    } else {
-                      return const Center(child: CircularProgressIndicator());
-                    }
-                  },
-                ),
+                // child: FutureBuilder(
+                //   future: UserData.getRandomUser(),
+                //   builder: (context, snapshot) {
+                //     if (snapshot.connectionState == ConnectionState.done) {
+                //       if (snapshot.hasData) {
+                //         return ListView.builder(
+                //           scrollDirection: Axis.horizontal,
+                //           physics: const BouncingScrollPhysics(),
+                //           itemCount: snapshot.data!.length,
+                //           itemBuilder: (context, index) {
+                //             UserModel userData = snapshot.data![index];
+                //             return Padding(
+                //               padding: index == 0
+                //                   ? EdgeInsets.only(
+                //                       left: AppMargin.defaultMargin)
+                //                   : index == 9
+                //                       ? EdgeInsets.only(
+                //                           left: 8,
+                //                           right: AppMargin.defaultMargin)
+                //                       : const EdgeInsets.only(left: 8),
+                //               child: UserProfile(
+                //                 userData: userData,
+                //               ),
+                //             );
+                //           },
+                //         );
+                //       } else {
+                //         return const Text('Tidak ada data');
+                //       }
+                //     } else {
+                //       return const Center(child: CircularProgressIndicator());
+                //     }
+                //   },
+                // ),
               ),
               const Gap(8),
               Padding(

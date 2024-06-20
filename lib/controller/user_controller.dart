@@ -41,6 +41,7 @@ class UserData extends GetxController {
       return null;
     });
   }
+
   static Stream<List<UserModel>?> getRandomUser() async* {
     try {
       yield* FirebaseFirestore.instance
@@ -58,8 +59,6 @@ class UserData extends GetxController {
       "full_name": name,
       "bio": bio,
     };
-
-    PostController postController = PostController();
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? email = prefs.getString("email");
@@ -114,6 +113,7 @@ class UserData extends GetxController {
         .instance
         .collection("users")
         .where("email", isEqualTo: email)
+        .limit(1)
         .get();
     return querySnapshot;
   }

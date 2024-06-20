@@ -2,6 +2,7 @@ import 'package:aksi_seru_app/shared/style.dart';
 import 'package:aksi_seru_app/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get.dart';
 
 class ListFollowers extends StatelessWidget {
   const ListFollowers({super.key});
