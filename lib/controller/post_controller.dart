@@ -118,7 +118,6 @@ class PostController extends GetxController {
   }
 
   static Stream<List<PostModel>> getRandomPost() async* {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
     try {
       yield* FirebaseFirestore.instance
           .collection("postUsers")
