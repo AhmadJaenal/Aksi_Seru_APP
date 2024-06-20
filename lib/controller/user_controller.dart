@@ -118,7 +118,75 @@ class UserData extends GetxController {
     return querySnapshot;
   }
 
-  static Future getRandomUser() async {
-    return await FirebaseFirestore.instance.collection("users").limit(10).get();
+  static followUser({String? userFollowed}) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? email = prefs.getString("email");
+
+    final Map<String, dynamic> dataUserFollow = {
+      "user_id": userFollowed,
+    };
+
+    final Map<String, dynamic> dataFollowers = {
+      "user_id": email,
+    };
+
+    QuerySnapshot<Map<String, dynamic>> userSnapshot =
+        await UserData.getUserByEmail(email: email);
+
+    QuerySnapshot<Map<String, dynamic>> queryUserFollowedSnapshot =
+        await UserData.getUserByEmail(email: userFollowed);
+
+    if (userSnapshot.docs.isNotEmpty) {
+      String userdocId = userSnapshot.docs.first.id;
+      String followdocId = queryUserFollowedSnapshot.docs.first.id;
+
+      final FirebaseFirestore db = FirebaseFirestore.instance;
+      DocumentReference userRef = db.collection("users").doc(userdocId);
+      DocumentReference userFollowRef = db.collection("users").doc(followdocId);
+
+      userRef.update({
+        'following': FieldValue.arrayUnion([dataUserFollow])
+      });
+
+      userFollowRef.update({
+        'followers': FieldValue.arrayUnion([dataFollowers])
+      });
+    }
+  }
+
+  static unfollowUser({String? userFollowed}) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? email = prefs.getString("email");
+
+    final Map<String, dynamic> dataUserFollow = {
+      "user_id": userFollowed,
+    };
+
+    final Map<String, dynamic> dataFollowers = {
+      "user_id": email,
+    };
+
+    QuerySnapshot<Map<String, dynamic>> userSnapshot =
+        await UserData.getUserByEmail(email: email);
+
+    QuerySnapshot<Map<String, dynamic>> queryUserFollowedSnapshot =
+        await UserData.getUserByEmail(email: userFollowed);
+
+    if (userSnapshot.docs.isNotEmpty) {
+      String userdocId = userSnapshot.docs.first.id;
+      String followdocId = queryUserFollowedSnapshot.docs.first.id;
+
+      final FirebaseFirestore db = FirebaseFirestore.instance;
+      DocumentReference userRef = db.collection("users").doc(userdocId);
+      DocumentReference userFollowRef = db.collection("users").doc(followdocId);
+
+      userRef.update({
+        'following': FieldValue.arrayRemove([dataUserFollow])
+      });
+
+      userFollowRef.update({
+        'followers': FieldValue.arrayRemove([dataFollowers])
+      });
+    }
   }
 }
