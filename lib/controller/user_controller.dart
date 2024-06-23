@@ -16,7 +16,7 @@ class UserData extends GetxController {
     return token;
   }
 
-  Stream<UserModel?> getCurrentUser() async* {
+  static Stream<UserModel?> getCurrentUser({String emailUser = ""}) async* {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? email = prefs.getString("email");
 
@@ -27,7 +27,7 @@ class UserData extends GetxController {
 
     yield* FirebaseFirestore.instance
         .collection("users")
-        .where("email", isEqualTo: email)
+        .where("email", isEqualTo: emailUser != "" ? emailUser : email)
         .snapshots()
         .map((snapshot) {
       if (snapshot.docs.isEmpty) {
@@ -39,7 +39,7 @@ class UserData extends GetxController {
     }).handleError((e) {
       developer.log(e.toString(), name: 'catch error');
       return null;
-    });
+    }).asBroadcastStream();
   }
 
   static Stream<List<UserModel>?> getRandomUser() async* {
