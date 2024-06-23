@@ -103,9 +103,7 @@ class PostController extends GetxController {
     }
   }
 
-  static Stream<List<PostModel>> getPostByUser() async* {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? email = prefs.getString("email");
+  static Stream<List<PostModel>> getPostByUser({required String email}) async* {
     try {
       yield* FirebaseFirestore.instance
           .collection("postUsers")
