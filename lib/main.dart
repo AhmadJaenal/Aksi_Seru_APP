@@ -13,9 +13,6 @@ import 'package:aksi_seru_app/screens/home/article/edit_article.dart';
 import 'package:aksi_seru_app/screens/home/article/following_page.dart';
 import 'package:aksi_seru_app/screens/home/article/for_you_page.dart';
 import 'package:aksi_seru_app/screens/home/article/trending_page.dart';
-import 'package:aksi_seru_app/screens/home/chat/list_message.dart';
-import 'package:aksi_seru_app/screens/home/chat/message_page.dart';
-import 'package:aksi_seru_app/screens/home/chat/room_message.dart';
 import 'package:aksi_seru_app/screens/home/errors/check_connection.dart';
 import 'package:aksi_seru_app/screens/home/feed/create_post.dart';
 import 'package:aksi_seru_app/screens/home/feed/edit_post.dart';
@@ -197,18 +194,6 @@ class _MyAppState extends State<MyApp> {
           page: () => const CheckConnection(page: PublicProfile()),
         ),
         GetPage(
-          name: '/message',
-          page: () => CheckConnection(page: Message()),
-        ),
-        GetPage(
-          name: '/list-message',
-          page: () => const CheckConnection(page: ListMessage()),
-        ),
-        GetPage(
-          name: '/room-message',
-          page: () => const CheckConnection(page: RoomMessage()),
-        ),
-        GetPage(
           name: '/edit-profile',
           page: () => const CheckConnection(page: EditProfile()),
         ),
@@ -218,7 +203,7 @@ class _MyAppState extends State<MyApp> {
         ),
         GetPage(
           name: '/list-followers',
-          page: () => const CheckConnection(page: ListFollowers()),
+          page: () => CheckConnection(page: ListFollowers()),
         ),
         GetPage(
           name: '/edit-post',
