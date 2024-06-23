@@ -1,3 +1,5 @@
+import 'package:aksi_seru_app/getX/counter_follow.dart';
+import 'package:aksi_seru_app/models/user_model.dart';
 import 'package:aksi_seru_app/shared/style.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -143,36 +145,48 @@ class DangerMiniButton extends StatelessWidget {
   }
 }
 
-class FollowButton extends StatefulWidget {
-  final Function() onTap;
-  const FollowButton({super.key, required this.onTap});
+class FollowButton extends StatelessWidget {
+  bool isUnfollow;
+  bool isFollow;
+  final String email;
 
-  @override
-  State<FollowButton> createState() => _FollowButtonState();
-}
+  FollowButton({
+    super.key,
+    required this.email,
+    this.isUnfollow = false,
+    required this.isFollow,
+  });
 
-class _FollowButtonState extends State<FollowButton> {
+  FollowCounter followCounter = FollowCounter();
+
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton.icon(
-      onPressed: widget.onTap,
-      icon: Icon(Icons.add, color: AppColors.whiteColor),
-      style: ElevatedButton.styleFrom(
-        maximumSize: const Size(97, 40),
-        elevation: 0,
-        backgroundColor: AppColors.primary1,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      ),
-      label: Text(
-        'Ikuti',
-        style: AppTextStyle.paragraphL.copyWith(
-          color: AppColors.whiteColor,
-        ),
-      ),
-    );
+    followCounter.setFollowState(isFollowed: isFollow);
+    return Obx(() => ElevatedButton.icon(
+          onPressed: () {
+            followCounter.setFollowState(
+                isFollowed: isUnfollow ? false : !followCounter.getFollowState);
+            followCounter.setActionFollow(email: email);
+          },
+          icon: followCounter.getFollowState
+              ? Icon(Icons.remove, color: AppColors.whiteColor)
+              : Icon(Icons.add, color: AppColors.whiteColor),
+          style: ElevatedButton.styleFrom(
+            maximumSize: const Size(120, 40),
+            elevation: 0,
+            backgroundColor: AppColors.primary1,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          ),
+          label: Text(
+            followCounter.getFollowState ? 'Hapus' : 'Ikuti',
+            style: AppTextStyle.paragraphL.copyWith(
+              color: AppColors.whiteColor,
+            ),
+          ),
+        ));
   }
 }
 
