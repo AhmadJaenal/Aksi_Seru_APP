@@ -1,4 +1,5 @@
 import 'package:aksi_seru_app/controller/user_controller.dart';
+import 'package:aksi_seru_app/getX/counter_follow.dart';
 import 'package:aksi_seru_app/getX/counter_follow_user.dart';
 import 'package:aksi_seru_app/models/user_model.dart';
 import 'package:aksi_seru_app/shared/style.dart';
@@ -11,6 +12,7 @@ import 'dart:developer' as developer;
 
 class ListFollowing extends StatelessWidget {
   ListFollowing({super.key});
+  FollowCounter followCounter = FollowCounter();
 
   List<dynamic> listFollowing = Get.arguments;
   @override
