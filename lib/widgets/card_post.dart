@@ -1,6 +1,8 @@
 import 'package:aksi_seru_app/controller/date_controller.dart';
 import 'package:aksi_seru_app/controller/post_controller.dart';
+import 'package:aksi_seru_app/controller/user_controller.dart';
 import 'package:aksi_seru_app/models/post_model.dart';
+import 'package:aksi_seru_app/models/user_model.dart';
 import 'package:audioplayers/audioplayers.dart';
 
 import '../getX/post.dart';
@@ -43,135 +45,158 @@ class CardPost extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Image.asset('assets/user_profile.png', width: 48),
-              const Gap(8),
-              RichText(
-                text: TextSpan(
-                  style: AppTextStyle.paragraphL.copyWith(
-                    color: AppColors.blackColor,
-                  ),
-                  children: <TextSpan>[
-                    const TextSpan(
-                      text: 'Mavropanos\n',
-                    ),
-                    TextSpan(
-                      text: 'Artikel kreator',
-                      style: AppTextStyle.paragraphM.copyWith(
-                        color: AppColors.blackColor,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const Gap(4),
-              const Padding(
-                padding: EdgeInsets.only(bottom: 15),
-                child: Verified(),
-              ),
-              const Spacer(),
-              GestureDetector(
-                onTap: () {
-                  showModalBottomSheet(
-                    isScrollControlled: true,
-                    context: context,
-                    builder: (context) {
-                      return SizedBox(
-                        width: double.infinity,
-                        height: height * .65,
-                        child: Column(
-                          children: [
-                            const Gap(16),
-                            Container(
-                              width: 60,
-                              height: 5,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(12),
-                                color: AppColors.greyColor,
-                              ),
+          StreamBuilder(
+              stream: UserData.getCurrentUser(emailUser: postData.email),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  UserModel userData = snapshot.data!;
+                  return Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      userData.avatar != ""
+                          ? GestureDetector(
+                              onTap: () => Get.toNamed('/public-profile',
+                                  arguments: userData.email),
+                              child: CircleAvatar(
+                                  child: Image.network(userData.avatar,
+                                      width: 48)),
+                            )
+                          : Image.asset('assets/user_profile.png', width: 48),
+                      const Gap(8),
+                      RichText(
+                        text: TextSpan(
+                          style: AppTextStyle.paragraphL.copyWith(
+                            color: AppColors.blackColor,
+                          ),
+                          children: <TextSpan>[
+                            TextSpan(
+                              text: '${userData.username}\n',
                             ),
-                            const Gap(24),
-                            Text(
-                              'Postingan',
-                              style: AppTextStyle.paragraphL.copyWith(
+                            TextSpan(
+                              text: userData.bio != "" ? userData.bio : "",
+                              style: AppTextStyle.paragraphM.copyWith(
                                 color: AppColors.blackColor,
-                              ),
-                            ),
-                            const Gap(24),
-                            Container(
-                              width: double.infinity,
-                              padding: EdgeInsets.all(AppMargin.defaultMargin),
-                              decoration: BoxDecoration(
-                                border: Border.symmetric(
-                                  horizontal: BorderSide(
-                                    color: AppColors.greyColor.withOpacity(.2),
-                                    width: 1,
-                                  ),
-                                ),
-                              ),
-                              child: Column(
-                                children: [
-                                  SizedBox(
-                                    width: width * .7,
-                                    child: MiniButton(
-                                      icon: 'icon_block.png',
-                                      title: 'Edit Postingan',
-                                      ontap: () {
-                                        Get.toNamed('/edit-post',
-                                            arguments: postData);
-                                      },
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: width * .7,
-                                    child: MiniButton(
-                                      icon: 'icon_block.png',
-                                      title: 'Hapus Postingan',
-                                      ontap: () {
-                                        showDialog(
-                                          context: context,
-                                          builder: (context) => AlertDialog(
-                                            title: const Text(
-                                                'Yakin hapus postingan ini?'),
-                                            alignment: Alignment.center,
-                                            actions: [
-                                              MiniButton(
-                                                  icon: 'icon_block.png',
-                                                  title: 'Kembali',
-                                                  ontap: () {
-                                                    Get.back();
-                                                  }),
-                                              DangerMiniButton(
-                                                icon: 'icon_block.png',
-                                                title: 'Hapus',
-                                                ontap: () {
-                                                  Get.back();
-                                                  Get.back();
-                                                  PostController.deletePost(
-                                                      docId: postData.docId);
-                                                },
-                                              ),
-                                            ],
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                ],
                               ),
                             ),
                           ],
                         ),
-                      );
-                    },
+                      ),
+                      const Gap(4),
+                      const Padding(
+                        padding: EdgeInsets.only(bottom: 15),
+                        child: Verified(),
+                      ),
+                      const Spacer(),
+                      GestureDetector(
+                        onTap: () {
+                          showModalBottomSheet(
+                            isScrollControlled: true,
+                            context: context,
+                            builder: (context) {
+                              return SizedBox(
+                                width: double.infinity,
+                                height: height * .65,
+                                child: Column(
+                                  children: [
+                                    const Gap(16),
+                                    Container(
+                                      width: 60,
+                                      height: 5,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(12),
+                                        color: AppColors.greyColor,
+                                      ),
+                                    ),
+                                    const Gap(24),
+                                    Text(
+                                      'Postingan',
+                                      style: AppTextStyle.paragraphL.copyWith(
+                                        color: AppColors.blackColor,
+                                      ),
+                                    ),
+                                    const Gap(24),
+                                    Container(
+                                      width: double.infinity,
+                                      padding: EdgeInsets.all(
+                                          AppMargin.defaultMargin),
+                                      decoration: BoxDecoration(
+                                        border: Border.symmetric(
+                                          horizontal: BorderSide(
+                                            color: AppColors.greyColor
+                                                .withOpacity(.2),
+                                            width: 1,
+                                          ),
+                                        ),
+                                      ),
+                                      child: Column(
+                                        children: [
+                                          SizedBox(
+                                            width: width * .7,
+                                            child: MiniButton(
+                                              icon: 'icon_block.png',
+                                              title: 'Edit Postingan',
+                                              ontap: () {
+                                                Get.toNamed('/edit-post',
+                                                    arguments: postData);
+                                              },
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: width * .7,
+                                            child: MiniButton(
+                                              icon: 'icon_block.png',
+                                              title: 'Hapus Postingan',
+                                              ontap: () {
+                                                showDialog(
+                                                  context: context,
+                                                  builder: (context) =>
+                                                      AlertDialog(
+                                                    title: const Text(
+                                                        'Yakin hapus postingan ini?'),
+                                                    alignment: Alignment.center,
+                                                    actions: [
+                                                      MiniButton(
+                                                          icon:
+                                                              'icon_block.png',
+                                                          title: 'Kembali',
+                                                          ontap: () {
+                                                            Get.back();
+                                                          }),
+                                                      DangerMiniButton(
+                                                        icon: 'icon_block.png',
+                                                        title: 'Hapus',
+                                                        ontap: () {
+                                                          Get.back();
+                                                          Get.back();
+                                                          PostController
+                                                              .deletePost(
+                                                                  docId: postData
+                                                                      .docId);
+                                                        },
+                                                      ),
+                                                    ],
+                                                  ),
+                                                );
+                                              },
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          );
+                        },
+                        child: Image.asset('assets/icon_option.png', width: 24),
+                      )
+                    ],
                   );
-                },
-                child: Image.asset('assets/icon_option.png', width: 24),
-              )
-            ],
-          ),
+                } else {
+                  return const SizedBox();
+                }
+              }),
           const Gap(12),
           SizedBox(
             width: double.infinity,
