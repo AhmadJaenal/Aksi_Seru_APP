@@ -7,7 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ListPost extends StatelessWidget {
-  ListPost({super.key});
+  final String email;
+  bool isPublicProfile;
+  ListPost({super.key, required this.email, this.isPublicProfile = false});
 
   final TextEditingController _captionC = TextEditingController();
 
@@ -20,50 +22,53 @@ class ListPost extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    PostController.getPostByUser();
+    // PostController.getPostByUser();
     return Scaffold(
       backgroundColor: AppColors.whiteColor,
       body: CustomScrollView(
         slivers: [
           SliverToBoxAdapter(
-            child: Container(
-              padding: EdgeInsets.all(AppMargin.defaultMargin),
-              decoration: BoxDecoration(
-                color: AppColors.whiteColor,
-                border: Border(
-                  bottom: BorderSide(
-                    color: AppColors.greyColor.withOpacity(.2),
-                    width: 1,
+            child: Visibility(
+              visible: isPublicProfile,
+              child: Container(
+                padding: EdgeInsets.all(AppMargin.defaultMargin),
+                decoration: BoxDecoration(
+                  color: AppColors.whiteColor,
+                  border: Border(
+                    bottom: BorderSide(
+                      color: AppColors.greyColor.withOpacity(.2),
+                      width: 1,
+                    ),
                   ),
                 ),
-              ),
-              child: Form(
-                child: Row(
-                  children: [
-                    SizedBox(
-                      width: width * .7,
-                      child: CustomTextField(
-                          textController: _captionC,
-                          hintText: 'Share hal seru kalian hari ini, yuk!'),
-                    ),
-                    const Spacer(),
-                    IconButton(
-                      style: ButtonStyle(
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                        backgroundColor:
-                            MaterialStatePropertyAll(AppColors.primary1),
-                        padding:
-                            const MaterialStatePropertyAll(EdgeInsets.all(12)),
+                child: Form(
+                  child: Row(
+                    children: [
+                      SizedBox(
+                        width: width * .7,
+                        child: CustomTextField(
+                            textController: _captionC,
+                            hintText: 'Share hal seru kalian hari ini, yuk!'),
                       ),
-                      onPressed: () => Get.toNamed('/create-post'),
-                      icon: Image.asset('assets/icon_image.png', width: 24),
-                    )
-                  ],
+                      const Spacer(),
+                      IconButton(
+                        style: ButtonStyle(
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                          backgroundColor:
+                              MaterialStatePropertyAll(AppColors.primary1),
+                          padding: const MaterialStatePropertyAll(
+                              EdgeInsets.all(12)),
+                        ),
+                        onPressed: () => Get.toNamed('/create-post'),
+                        icon: Image.asset('assets/icon_image.png', width: 24),
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -73,7 +78,7 @@ class ListPost extends StatelessWidget {
               width: double.infinity,
               height: MediaQuery.of(context).size.height * .7,
               child: StreamBuilder<List<PostModel>>(
-                stream: PostController.getPostByUser(),
+                stream: PostController.getPostByUser(email: email),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     return ListView.builder(
