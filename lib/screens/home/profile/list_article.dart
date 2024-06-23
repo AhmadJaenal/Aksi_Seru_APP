@@ -9,7 +9,8 @@ import 'package:get/get.dart';
 import 'dart:developer' as developer;
 
 class ListArticle extends StatelessWidget {
-  const ListArticle({super.key});
+  bool isPublicProfile;
+  ListArticle({super.key, this.isPublicProfile = false});
 
   @override
   Widget build(BuildContext context) {
@@ -20,13 +21,16 @@ class ListArticle extends StatelessWidget {
           SliverToBoxAdapter(
             child: Padding(
               padding: EdgeInsets.all(AppMargin.defaultMargin),
-              child: MiniButton(
-                icon: 'icon_pen.png',
-                ontap: () => Get.toNamed('/create-article'),
-                title: 'Tulis artikel',
-                color: AppColors.primary1,
-                titleColor: AppColors.primary1,
-                iconColor: AppColors.primary1,
+              child: Visibility(
+                visible: isPublicProfile,
+                child: MiniButton(
+                  icon: 'icon_pen.png',
+                  ontap: () => Get.toNamed('/create-article'),
+                  title: 'Tulis artikel',
+                  color: AppColors.primary1,
+                  titleColor: AppColors.primary1,
+                  iconColor: AppColors.primary1,
+                ),
               ),
             ),
           ),
