@@ -1,9 +1,7 @@
 import 'package:aksi_seru_app/controller/auth_controller.dart';
 import 'package:aksi_seru_app/controller/user_controller.dart';
-import 'package:aksi_seru_app/getX/counter_follow_user.dart';
 import 'package:aksi_seru_app/models/user_model.dart';
 import 'package:aksi_seru_app/screens/home/profile/list_article.dart';
-import 'package:aksi_seru_app/screens/home/profile/list_following.dart';
 import 'package:aksi_seru_app/screens/home/profile/list_post.dart';
 import 'package:aksi_seru_app/shared/style.dart';
 import 'package:aksi_seru_app/widgets/custom_button.dart';
@@ -33,8 +31,6 @@ class _VerifiedProfileState extends State<VerifiedProfile>
     _tabController.dispose();
     super.dispose();
   }
-
-  final ListFollowersCounter listFollowers = ListFollowersCounter();
 
   final UserData userData = UserData();
 
@@ -87,7 +83,7 @@ class _VerifiedProfileState extends State<VerifiedProfile>
     return Scaffold(
       backgroundColor: AppColors.whiteColor,
       body: StreamBuilder(
-        stream: userData.getCurrentUser(),
+        stream: UserData.getCurrentUser(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             UserModel user = snapshot.data!;
@@ -295,8 +291,9 @@ class _VerifiedProfileState extends State<VerifiedProfile>
                                         ],
                                       ),
                                       GestureDetector(
-                                        onTap: () =>
-                                            Get.toNamed('/list-followers'),
+                                        onTap: () => Get.toNamed(
+                                            '/list-followers',
+                                            arguments: user.followers),
                                         child: Column(
                                           children: [
                                             Text(
@@ -388,8 +385,8 @@ class _VerifiedProfileState extends State<VerifiedProfile>
                 body: TabBarView(
                   controller: _tabController,
                   children: [
-                    ListPost(),
-                    const ListArticle(),
+                    ListPost(email: user.email, isPublicProfile: true),
+                    ListArticle(),
                   ],
                 ),
               ),
