@@ -1,4 +1,4 @@
-import 'package:aksi_seru_app/controller/user_controller.dart';
+import 'package:aksi_seru_app/getX/counter_follow.dart';
 import 'package:aksi_seru_app/models/user_model.dart';
 import 'package:aksi_seru_app/shared/style.dart';
 import 'package:aksi_seru_app/widgets/custom_button.dart';
@@ -6,19 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
-class UserProfile extends StatefulWidget {
+class UserProfile extends StatelessWidget {
   final UserModel userData;
 
-  const UserProfile({
-    required this.userData,
-    super.key,
-  });
+  const UserProfile({required this.userData, super.key});
 
-  @override
-  State<UserProfile> createState() => _UserProfileState();
-}
-
-class _UserProfileState extends State<UserProfile> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -32,7 +24,7 @@ class _UserProfileState extends State<UserProfile> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                widget.userData.username,
+                userData.username,
                 style: AppTextStyle.paragraphL.copyWith(
                   color: AppColors.blackColor,
                 ),
@@ -42,13 +34,7 @@ class _UserProfileState extends State<UserProfile> {
             ],
           ),
           const Gap(8),
-          FollowButton(
-            onTap: () {
-              UserData.followUser(
-                userFollowed: widget.userData.email,
-              );
-            },
-          ),
+          FollowButton(email: userData.email, isFollow: true),
         ],
       ),
     );
@@ -252,13 +238,7 @@ class _OtherUserProfileWidgetState extends State<OtherUserProfileWidget> {
             ],
           ),
           const Spacer(),
-          // FollowButton(
-          //   onTap: () {
-          //     setState(() {
-          //       UserData.followUser(userData: widget.userData);
-          //     });
-          //   },
-          // ),
+          FollowButton(email: widget.userData.email, isFollow: true),
         ],
       ),
     );
@@ -267,7 +247,10 @@ class _OtherUserProfileWidgetState extends State<OtherUserProfileWidget> {
 
 class CardUser extends StatelessWidget {
   UserModel userData;
-  CardUser({super.key, required this.userData});
+  bool isUnfollow;
+  CardUser({super.key, required this.userData, this.isUnfollow = false});
+
+  FollowCounter followCounter = FollowCounter();
 
   @override
   Widget build(BuildContext context) {
@@ -297,20 +280,20 @@ class CardUser extends StatelessWidget {
                     const Verified(),
                   ],
                 ),
-                Text(
-                  userData.bio,
-                  style: AppTextStyle.paragraphL.copyWith(
-                    color: AppColors.blackColor,
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * .2,
+                  child: Text(
+                    userData.bio,
+                    style: AppTextStyle.paragraphL.copyWith(
+                      color: AppColors.blackColor,
+                    ),
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
               ],
             ),
             const Spacer(),
-            UnFollowButton(
-              onTap: () {
-                UserData.unfollowUser(userFollowed: userData.email);
-              },
-            ),
+            FollowButton(email: userData.email, isFollow: isUnfollow),
           ],
         ),
       ),
