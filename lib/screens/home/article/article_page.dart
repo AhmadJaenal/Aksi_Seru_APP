@@ -26,17 +26,21 @@ class ArticlePage extends StatelessWidget {
       length: 3,
       child: Scaffold(
         appBar: AppBar(
-          title: Text(
-            'Artikel',
-            style: AppTextStyle.appbarTitle.copyWith(
-              color: AppColors.primary1,
-            ),
-            overflow: TextOverflow.ellipsis,
-          ),
           bottom: PreferredSize(
-            preferredSize: const Size.fromHeight(210),
+            preferredSize: const Size.fromHeight(230),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Padding(
+                  padding: EdgeInsets.only(left: AppMargin.defaultMargin),
+                  child: Text(
+                    'Artikel',
+                    style: AppTextStyle.appbarTitle.copyWith(
+                      color: AppColors.primary1,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
                 Container(
                   padding: EdgeInsetsDirectional.all(AppMargin.defaultMargin),
                   decoration: BoxDecoration(
