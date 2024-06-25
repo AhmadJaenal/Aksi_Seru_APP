@@ -80,7 +80,6 @@ class _PublicProfileState extends State<PublicProfile>
         ),
       ],
     );
-    final double height = MediaQuery.of(context).size.height;
 
     return SafeArea(
       child: Scaffold(
