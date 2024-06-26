@@ -163,7 +163,7 @@ class _MyAppState extends State<MyApp> {
         ),
         GetPage(
           name: '/article-page',
-          page: () => CheckConnection(page: ArticlePage()),
+          page: () => const CheckConnection(page: ArticlePage()),
         ),
         GetPage(
           name: '/detail-article',
