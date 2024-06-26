@@ -34,7 +34,7 @@ class UserProfile extends StatelessWidget {
             ],
           ),
           const Gap(8),
-          FollowButton(email: userData.email, isFollow: true),
+          FollowButton(email: userData.email, isFollow: false),
         ],
       ),
     );
