@@ -1,3 +1,4 @@
+import 'package:aksi_seru_app/getX/search_state.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
@@ -9,17 +10,24 @@ import 'following_page.dart';
 import 'for_you_page.dart';
 import 'trending_page.dart';
 
-class ArticlePage extends StatelessWidget {
-  ArticlePage({super.key});
+class ArticlePage extends StatefulWidget {
+  const ArticlePage({super.key});
 
+  @override
+  State<ArticlePage> createState() => _ArticlePageState();
+}
+
+class _ArticlePageState extends State<ArticlePage> {
   final TextEditingController _searchC = TextEditingController();
 
   final formKey = GlobalKey<FormState>();
 
+  @override
   void dispose() {
     _searchC.dispose();
   }
 
+  SearcArticlehState searcArticlehState = SearcArticlehState();
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -31,6 +39,7 @@ class ArticlePage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                const Gap(20),
                 Padding(
                   padding: EdgeInsets.only(left: AppMargin.defaultMargin),
                   child: Text(
@@ -41,25 +50,44 @@ class ArticlePage extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
-                Container(
-                  padding: EdgeInsetsDirectional.all(AppMargin.defaultMargin),
-                  decoration: BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(
-                        color: AppColors.greyColor.withOpacity(.2),
-                        width: 1,
-                      ),
-                    ),
-                  ),
-                  child: CustomTextFieldIcon(
-                    textController: _searchC,
-                    hintText: 'Cari inspirasi di sini!',
-                    icon: const Icon(
-                      Icons.search,
-                      color: AppColors.greyColor,
+                const Gap(20),
+                Form(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: AppMargin.defaultMargin),
+                    child: Row(
+                      children: [
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * .7,
+                          child: CustomTextField(
+                              textController: _searchC,
+                              hintText: 'Cari inpirasi!'),
+                        ),
+                        const Spacer(),
+                        IconButton(
+                          style: ButtonStyle(
+                            shape: MaterialStateProperty.all<
+                                RoundedRectangleBorder>(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
+                            backgroundColor:
+                                MaterialStatePropertyAll(AppColors.primary1),
+                            padding: const MaterialStatePropertyAll(
+                                EdgeInsets.all(12)),
+                          ),
+                          onPressed: () {
+                            searcArticlehState.searchArticles(
+                                keyword: _searchC.text);
+                          },
+                          icon: Image.asset('assets/icon_image.png', width: 24),
+                        )
+                      ],
                     ),
                   ),
                 ),
+                const Gap(20),
                 TabBar(
                   padding: EdgeInsets.zero,
                   labelStyle: AppTextStyle.paragraphM
