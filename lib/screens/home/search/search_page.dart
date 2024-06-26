@@ -178,44 +178,6 @@ class _SearchPageState extends State<SearchPage> {
                   : Container(),
             ),
           ),
-          // SliverToBoxAdapter(
-          //   child: Padding(
-          //     padding:
-          //         EdgeInsets.symmetric(horizontal: AppMargin.defaultMargin),
-          //     child: StreamBuilder(
-          //       stream: UserData.searchUser(username: _searchC.text),
-          //       builder: (context, snapshot) {
-          //         if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-          //           return SizedBox(
-          //             height: MediaQuery.of(context).size.height * .65,
-          //             child: ListView.builder(
-          //               physics: const BouncingScrollPhysics(),
-          //               itemCount: snapshot.data!.length,
-          //               itemBuilder: (context, index) {
-          //                 UserModel userData = snapshot.data![index];
-          //                 return Padding(
-          //                   padding: const EdgeInsets.symmetric(vertical: 5),
-          //                   child: OtherUserProfileWidget(
-          //                     userData: userData,
-          //                   ),
-          //                 );
-          //               },
-          //             ),
-          //           );
-          //         } else {
-          //           return Center(
-          //             child: Text(
-          //               'Pengguna tidak ditemukan',
-          //               style: AppTextStyle.paragraphL.copyWith(
-          //                 color: AppColors.blackColor,
-          //               ),
-          //             ),
-          //           );
-          //         }
-          //       },
-          //     ),
-          //   ),
-          // ),
         ],
       ),
     );
