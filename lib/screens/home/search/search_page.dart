@@ -31,6 +31,8 @@ class _SearchPageState extends State<SearchPage> {
   final ShowRecommendUserState showRecommendUser =
       Get.put(ShowRecommendUserState());
 
+
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -164,7 +166,9 @@ class _SearchPageState extends State<SearchPage> {
                               itemCount: snapshot.data!.length,
                               itemBuilder: (context, index) {
                                 UserModel userData = snapshot.data![index];
-                                return UserProfile(userData: userData);
+
+                                return UserProfile(
+                                    userData: userData);
                               },
                             );
                           } else {

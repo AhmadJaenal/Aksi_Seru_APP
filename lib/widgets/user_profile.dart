@@ -8,8 +8,9 @@ import 'package:get/get.dart';
 
 class UserProfile extends StatelessWidget {
   final UserModel userData;
+  final bool isFollow;
 
-  const UserProfile({required this.userData, super.key});
+  const UserProfile({required this.userData, super.key, this.isFollow = false});
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +35,7 @@ class UserProfile extends StatelessWidget {
             ],
           ),
           const Gap(8),
-          FollowButton(email: userData.email, isFollow: false),
+          FollowButton(email: userData.email, isFollow: isFollow),
         ],
       ),
     );

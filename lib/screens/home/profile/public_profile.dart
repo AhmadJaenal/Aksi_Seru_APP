@@ -9,6 +9,10 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
+import 'dart:developer' as developer;
+
+import 'package:shared_preferences/shared_preferences.dart';
+
 class PublicProfile extends StatefulWidget {
   const PublicProfile({super.key});
 
@@ -26,17 +30,26 @@ class _PublicProfileState extends State<PublicProfile>
     _tabController = TabController(length: 2, vsync: this, initialIndex: 0);
   }
 
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
-  }
-
-  final UserData userData = UserData();
-
   LogoutController logoutController = LogoutController();
 
   String email = Get.arguments;
+
+  String myId = '';
+  Future<void> getEmailId() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var email = prefs.getString("token");
+
+    setState(() {
+      myId = email!;
+    });
+  }
+
+  @override
+  void dispose() {
+    getEmailId();
+    _tabController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -89,6 +102,9 @@ class _PublicProfileState extends State<PublicProfile>
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               UserModel user = snapshot.data!;
+
+              bool isFollowing =
+                  user.followers.any((user) => user['user_id'] == myId);
 
               return DefaultTabController(
                 length: 2,
@@ -295,7 +311,7 @@ class _PublicProfileState extends State<PublicProfile>
                                         Expanded(
                                             child: FollowButton(
                                           email: email,
-                                          isFollow: false,
+                                          isFollow: isFollowing,
                                         )),
                                       ],
                                     ),

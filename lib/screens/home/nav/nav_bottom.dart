@@ -74,19 +74,6 @@ class CustomNavBottom extends StatelessWidget {
               ),
               BottomNavigationBarItem(
                 icon: Image.asset(
-                  'assets/icon_shop.png',
-                  width: 24,
-                  color: AppColors.greyColor,
-                ),
-                activeIcon: Image.asset(
-                  'assets/icon_shop.png',
-                  width: 24,
-                  color: AppColors.primary1,
-                ),
-                label: '',
-              ),
-              BottomNavigationBarItem(
-                icon: Image.asset(
                   'assets/icon_user.png',
                   width: 24,
                   color: AppColors.greyColor,
@@ -119,8 +106,7 @@ class CustomNavBottom extends StatelessWidget {
             children: [
               FeedPage(),
               const SearchPage(),
-              ArticlePage(),
-              FeedPage(),
+              const ArticlePage(),
               const VerifiedProfile(),
             ],
           ),

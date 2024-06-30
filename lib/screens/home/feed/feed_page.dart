@@ -28,7 +28,7 @@ class FeedPage extends StatelessWidget {
         body: CustomScrollView(
           slivers: [
             SliverAppBar(
-              expandedHeight: 310,
+              expandedHeight: 180,
               automaticallyImplyLeading: false,
               collapsedHeight: 80,
               flexibleSpace: Container(
@@ -96,41 +96,41 @@ class FeedPage extends StatelessWidget {
                   ],
                 ),
               ),
-              bottom: PreferredSize(
-                preferredSize: Size(width, 140),
-                child: Container(
-                  width: double.infinity,
-                  height: 140,
-                  padding: const EdgeInsets.only(top: 14),
-                  decoration: BoxDecoration(
-                    color: AppColors.whiteColor,
-                    border: Border.symmetric(
-                      horizontal: BorderSide(
-                        color: AppColors.greyColor.withOpacity(.2),
-                        width: 1,
-                      ),
-                    ),
-                  ),
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    physics: const BouncingScrollPhysics(),
-                    itemCount: 10,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: index == 0
-                            ? EdgeInsets.only(left: AppMargin.defaultMargin)
-                            : index == 9
-                                ? EdgeInsets.only(
-                                    left: 8, right: AppMargin.defaultMargin)
-                                : const EdgeInsets.only(left: 8),
-                        child: index == 0
-                            ? const CardCreateStories()
-                            : const CardStories(),
-                      );
-                    },
-                  ),
-                ),
-              ),
+              // bottom: PreferredSize(
+              //   preferredSize: Size(width, 140),
+              //   child: Container(
+              //     width: double.infinity,
+              //     height: 140,
+              //     padding: const EdgeInsets.only(top: 14),
+              //     decoration: BoxDecoration(
+              //       color: AppColors.whiteColor,
+              //       border: Border.symmetric(
+              //         horizontal: BorderSide(
+              //           color: AppColors.greyColor.withOpacity(.2),
+              //           width: 1,
+              //         ),
+              //       ),
+              //     ),
+              //     child: ListView.builder(
+              //       scrollDirection: Axis.horizontal,
+              //       physics: const BouncingScrollPhysics(),
+              //       itemCount: 10,
+              //       itemBuilder: (context, index) {
+              //         return Padding(
+              //           padding: index == 0
+              //               ? EdgeInsets.only(left: AppMargin.defaultMargin)
+              //               : index == 9
+              //                   ? EdgeInsets.only(
+              //                       left: 8, right: AppMargin.defaultMargin)
+              //                   : const EdgeInsets.only(left: 8),
+              //           child: index == 0
+              //               ? const CardCreateStories()
+              //               : const CardStories(),
+              //         );
+              //       },
+              //     ),
+              //   ),
+              // ),
             ),
             const SliverToBoxAdapter(
               child: Gap(24),
