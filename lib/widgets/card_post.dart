@@ -4,6 +4,7 @@ import 'package:aksi_seru_app/controller/user_controller.dart';
 import 'package:aksi_seru_app/models/post_model.dart';
 import 'package:aksi_seru_app/models/user_model.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../getX/post.dart';
 import '../shared/style.dart';
@@ -57,9 +58,14 @@ class CardPost extends StatelessWidget {
                           ? GestureDetector(
                               onTap: () => Get.toNamed('/public-profile',
                                   arguments: userData.email),
-                              child: CircleAvatar(
-                                  child: Image.network(userData.avatar,
-                                      width: 48)),
+                              child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(20),
+                                  child: Image.network(
+                                    userData.avatar,
+                                    width: 36,
+                                    height: 36,
+                                    fit: BoxFit.cover,
+                                  )),
                             )
                           : Image.asset('assets/user_profile.png', width: 48),
                       const Gap(8),
@@ -360,6 +366,7 @@ class CardPost extends StatelessWidget {
                                             DetailCommentPost detailComment =
                                                 snapshot.data;
                                             return CardComment(
+                                              email: detailComment.email,
                                               comment: detailComment.comment,
                                               createdAt: detailComment.createAt,
                                             );
@@ -496,6 +503,7 @@ class CardPost extends StatelessWidget {
                                       DetailCommentPost detailComment =
                                           snapshot.data;
                                       return CardComment(
+                                        email: detailComment.email,
                                         comment: detailComment.comment,
                                         createdAt: detailComment.createAt,
                                       );
@@ -633,8 +641,12 @@ class CardCaption extends StatelessWidget {
 class CardComment extends StatelessWidget {
   final String comment;
   final String createdAt;
+  final String email;
   const CardComment(
-      {super.key, required this.comment, required this.createdAt});
+      {super.key,
+      required this.comment,
+      required this.createdAt,
+      required this.email});
 
   @override
   Widget build(BuildContext context) {
@@ -643,76 +655,104 @@ class CardComment extends StatelessWidget {
     return Container(
       color: AppColors.whiteColor,
       padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Image.asset('assets/user_profile.png', width: 48),
-          const Gap(8),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    width: 120,
-                    child: Text(
-                      'Gionna Van Den Berg',
-                      style: AppTextStyle.paragraphL.copyWith(
-                          color: AppColors.blackColor,
-                          fontWeight: AppFontWeight.medium),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                  const Gap(4),
-                  const Verified(width: 12),
-                  const Gap(10),
-                  Text(
-                    date.checkDifferenceTime(date: createdAt),
-                    style: AppTextStyle.paragraphL.copyWith(
-                      color: AppColors.greyColor,
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ],
-              ),
-              const Gap(2),
-              SizedBox(
-                width: width * .6,
-                child: Text(
-                  comment,
-                  style: AppTextStyle.paragraphL.copyWith(
-                      color: AppColors.blackColor,
-                      fontWeight: AppFontWeight.reguler),
+      child: StreamBuilder(
+        stream: UserData.getCurrentUser(emailUser: email),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            UserModel userData = snapshot.data!;
+            return Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ClipRRect(
+                  borderRadius: const BorderRadius.all(Radius.circular(100)),
+                  child: userData.avatar != ''
+                      ? Image.network(
+                          userData.avatar,
+                          fit: BoxFit.cover,
+                          width: 38,
+                          height: 38,
+                        )
+                      : Image.asset(
+                          'assets/default_profile.png',
+                          fit: BoxFit.cover,
+                          width: 70,
+                          height: 70,
+                        ),
                 ),
-              ),
-              // const Gap(8),
-              // Row(
-              //   children: [
-              //     Text(
-              //       'Suka',
-              //       style: AppTextStyle.paragraphL
-              //           .copyWith(color: AppColors.greyColor),
-              //     ),
-              //     const Gap(16),
-              //     Text(
-              //       'Balas',
-              //       style: AppTextStyle.paragraphL
-              //           .copyWith(color: AppColors.greyColor),
-              //     )
-              //   ],
-              // ),
-              // const Gap(8),
-              // Text(
-              //   'Lihat 1 balasan',
-              //   style: AppTextStyle.paragraphL
-              //       .copyWith(color: AppColors.blackColor),
-              // )
-            ],
-          ),
-        ],
+                const Gap(8),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width / 1.3,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            width: 70,
+                            child: Text(
+                              userData.username,
+                              style: AppTextStyle.paragraphL.copyWith(
+                                  color: AppColors.blackColor,
+                                  fontWeight: AppFontWeight.medium),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          const Gap(4),
+                          const Verified(width: 12),
+                          const Gap(10),
+                          Text(
+                            date.checkDifferenceTime(date: createdAt),
+                            style: AppTextStyle.paragraphL.copyWith(
+                              color: AppColors.greyColor,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
+                      ),
+                      const Gap(2),
+                      SizedBox(
+                        width: width * .6,
+                        child: Text(
+                          comment,
+                          style: AppTextStyle.paragraphL.copyWith(
+                              color: AppColors.blackColor,
+                              fontWeight: AppFontWeight.reguler),
+                        ),
+                      ),
+                      // const Gap(8),
+                      // Row(
+                      //   children: [
+                      //     Text(
+                      //       'Suka',
+                      //       style: AppTextStyle.paragraphL
+                      //           .copyWith(color: AppColors.greyColor),
+                      //     ),
+                      //     const Gap(16),
+                      //     Text(
+                      //       'Balas',
+                      //       style: AppTextStyle.paragraphL
+                      //           .copyWith(color: AppColors.greyColor),
+                      //     )
+                      //   ],
+                      // ),
+                      // const Gap(8),
+                      // Text(
+                      //   'Lihat 1 balasan',
+                      //   style: AppTextStyle.paragraphL
+                      //       .copyWith(color: AppColors.blackColor),
+                      // )
+                    ],
+                  ),
+                ),
+              ],
+            );
+          } else {
+            return const Text("Belum ada komentar");
+          }
+        },
       ),
     );
   }
