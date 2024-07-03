@@ -24,29 +24,31 @@ class _PublicProfileState extends State<PublicProfile>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
-  @override
-  void initState() {
-    super.initState();
-    _tabController = TabController(length: 2, vsync: this, initialIndex: 0);
-  }
-
   LogoutController logoutController = LogoutController();
 
   String email = Get.arguments;
 
-  String myId = '';
+  static String myId = '';
   Future<void> getEmailId() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    var email = prefs.getString("token");
+    String? email = prefs.getString("email");
+
+    developer.log(email!, name: "sdfsdfsdf");
 
     setState(() {
-      myId = email!;
+      myId = email;
     });
   }
 
   @override
-  void dispose() {
+  void initState() {
+    super.initState();
     getEmailId();
+    _tabController = TabController(length: 2, vsync: this, initialIndex: 0);
+  }
+
+  @override
+  void dispose() {
     _tabController.dispose();
     super.dispose();
   }
