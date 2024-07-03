@@ -293,6 +293,7 @@ class DetailArticle extends StatelessWidget {
                                   DetailCommentPost detailComment =
                                       snapshot.data;
                                   return CardComment(
+                                    email: detailComment.email,
                                     comment: detailComment.comment,
                                     createdAt: detailComment.createAt,
                                   );
@@ -301,11 +302,6 @@ class DetailArticle extends StatelessWidget {
                                 }
                               },
                             );
-
-                            // return CardComment(
-                            //   comment: commentModel.idComment,
-                            //   createdAt: commentModel.createdAt,
-                            // );
                           },
                         ),
                       ),
