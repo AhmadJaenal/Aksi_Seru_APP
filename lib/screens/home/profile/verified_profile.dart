@@ -203,7 +203,7 @@ class _VerifiedProfileState extends State<VerifiedProfile>
                                               height: 70,
                                             )
                                           : Image.asset(
-                                              'assets/user_profile.png',
+                                              'assets/default_profile.png',
                                               fit: BoxFit.cover,
                                               width: 70,
                                               height: 70,
