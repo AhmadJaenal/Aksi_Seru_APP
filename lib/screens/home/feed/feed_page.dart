@@ -1,9 +1,10 @@
+import 'package:aksi_seru_app/widgets/card_shimmer.dart';
+
 import '../../../controller/post_controller.dart';
 import '../../../models/post_model.dart';
 import '../../../shared/style.dart';
 import '../../../widgets/card_post.dart';
 import '../../../widgets/custom_textfield.dart';
-import '../../../widgets/user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
@@ -30,7 +31,7 @@ class FeedPage extends StatelessWidget {
             SliverAppBar(
               expandedHeight: 180,
               automaticallyImplyLeading: false,
-              collapsedHeight: 80,
+              collapsedHeight: 180,
               flexibleSpace: Container(
                 decoration: BoxDecoration(
                   border: Border(
@@ -96,41 +97,6 @@ class FeedPage extends StatelessWidget {
                   ],
                 ),
               ),
-              // bottom: PreferredSize(
-              //   preferredSize: Size(width, 140),
-              //   child: Container(
-              //     width: double.infinity,
-              //     height: 140,
-              //     padding: const EdgeInsets.only(top: 14),
-              //     decoration: BoxDecoration(
-              //       color: AppColors.whiteColor,
-              //       border: Border.symmetric(
-              //         horizontal: BorderSide(
-              //           color: AppColors.greyColor.withOpacity(.2),
-              //           width: 1,
-              //         ),
-              //       ),
-              //     ),
-              //     child: ListView.builder(
-              //       scrollDirection: Axis.horizontal,
-              //       physics: const BouncingScrollPhysics(),
-              //       itemCount: 10,
-              //       itemBuilder: (context, index) {
-              //         return Padding(
-              //           padding: index == 0
-              //               ? EdgeInsets.only(left: AppMargin.defaultMargin)
-              //               : index == 9
-              //                   ? EdgeInsets.only(
-              //                       left: 8, right: AppMargin.defaultMargin)
-              //                   : const EdgeInsets.only(left: 8),
-              //           child: index == 0
-              //               ? const CardCreateStories()
-              //               : const CardStories(),
-              //         );
-              //       },
-              //     ),
-              //   ),
-              // ),
             ),
             const SliverToBoxAdapter(
               child: Gap(24),
@@ -152,13 +118,12 @@ class FeedPage extends StatelessWidget {
                         },
                       );
                     } else {
-                      return Center(
-                        child: Text(
-                          'Belum ada postingan',
-                          style: AppTextStyle.h2.copyWith(
-                            color: AppColors.blackColor,
-                          ),
-                        ),
+                      return ListView.builder(
+                        physics: const BouncingScrollPhysics(),
+                        itemCount: 5,
+                        itemBuilder: (context, index) {
+                          return const CardShimmerPost();
+                        },
                       );
                     }
                   },
