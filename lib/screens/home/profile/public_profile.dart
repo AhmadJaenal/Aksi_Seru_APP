@@ -118,6 +118,8 @@ class _PublicProfileState extends State<PublicProfile>
                         child: Gap(12),
                       ),
                       SliverAppBar(
+                        collapsedHeight: 120,
+                        expandedHeight: 120,
                         leading: Container(),
                         leadingWidth: 10,
                         title: Text(
@@ -136,7 +138,7 @@ class _PublicProfileState extends State<PublicProfile>
                           ),
                         ],
                         bottom: PreferredSize(
-                          preferredSize: const Size.fromHeight(440),
+                          preferredSize: const Size.fromHeight(350),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [

@@ -7,6 +7,9 @@ import 'package:aksi_seru_app/widgets/user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../../getX/search_state.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
@@ -31,7 +34,23 @@ class _SearchPageState extends State<SearchPage> {
   final ShowRecommendUserState showRecommendUser =
       Get.put(ShowRecommendUserState());
 
+  static String myId = '';
+  Future<void> getEmailId() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? email = prefs.getString("email");
 
+    setState(() {
+      myId = email!;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getEmailId();
+  }
+
+  SearchState searchUsers = SearchState();
 
   @override
   Widget build(BuildContext context) {
@@ -94,7 +113,9 @@ class _SearchPageState extends State<SearchPage> {
                                 padding: const MaterialStatePropertyAll(
                                     EdgeInsets.all(12)),
                               ),
-                              onPressed: () {},
+                              onPressed: () {
+                                searchUsers.searchUser(keyword: _searchC.text);
+                              },
                               icon: Image.asset(
                                 'assets/icon_search.png',
                                 width: 24,
@@ -166,9 +187,10 @@ class _SearchPageState extends State<SearchPage> {
                               itemCount: snapshot.data!.length,
                               itemBuilder: (context, index) {
                                 UserModel userData = snapshot.data![index];
-
+                                bool isFollowing = userData.followers
+                                    .any((user) => user['user_id'] == myId);
                                 return UserProfile(
-                                    userData: userData);
+                                    userData: userData, isFollow: isFollowing);
                               },
                             );
                           } else {
@@ -180,6 +202,26 @@ class _SearchPageState extends State<SearchPage> {
                       ),
                     )
                   : Container(),
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: SizedBox(
+              width: double.infinity,
+              height: MediaQuery.of(context).size.height * .5,
+              child: Obx(() {
+                if (SearchState.listUsers.isEmpty) {
+                  return const Center(
+                      child: Text("Tidak ditemukan username tersebut"));
+                } else {
+                  return ListView.builder(
+                    itemCount: SearchState.listUsers.length,
+                    itemBuilder: (context, index) {
+                      UserModel userData = SearchState.listUsers[index];
+                      return CardUser(userData: userData, isUnfollow: true);
+                    },
+                  );
+                }
+              }),
             ),
           ),
         ],
