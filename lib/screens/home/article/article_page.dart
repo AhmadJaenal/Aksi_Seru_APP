@@ -24,10 +24,11 @@ class _ArticlePageState extends State<ArticlePage> {
 
   @override
   void dispose() {
+    super.dispose();
     _searchC.dispose();
   }
 
-  SearcArticlehState searcArticlehState = SearcArticlehState();
+  SearchState searchArticle = SearchState();
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -61,7 +62,7 @@ class _ArticlePageState extends State<ArticlePage> {
                           width: MediaQuery.of(context).size.width * .7,
                           child: CustomTextField(
                               textController: _searchC,
-                              hintText: 'Cari inpirasi!'),
+                              hintText: 'Cari inspirasi!'),
                         ),
                         const Spacer(),
                         IconButton(
@@ -78,10 +79,10 @@ class _ArticlePageState extends State<ArticlePage> {
                                 EdgeInsets.all(12)),
                           ),
                           onPressed: () {
-                            searcArticlehState.searchArticles(
+                            searchArticle.searchArticles(
                                 keyword: _searchC.text);
                           },
-                          icon: Image.asset('assets/icon_image.png', width: 24),
+                          icon: Icon(Icons.search, color: AppColors.whiteColor),
                         )
                       ],
                     ),
