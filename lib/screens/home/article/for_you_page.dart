@@ -23,7 +23,7 @@ class ForYouPage extends StatelessWidget {
               width: double.infinity,
               height: MediaQuery.of(context).size.height * .5,
               child: Obx(() {
-                if (SearcArticlehState.listArticle.isEmpty) {
+                if (SearchState.listArticle.isEmpty) {
                   return FutureBuilder<List<ArticleModel>>(
                     future: ArticleController.getRecommendArticle(),
                     builder: (context, snapshot) {
@@ -52,10 +52,9 @@ class ForYouPage extends StatelessWidget {
                   );
                 } else {
                   return ListView.builder(
-                    itemCount: SearcArticlehState.listArticle.length,
+                    itemCount: SearchState.listArticle.length,
                     itemBuilder: (context, index) {
-                      ArticleModel dataArticle =
-                          SearcArticlehState.listArticle[index];
+                      ArticleModel dataArticle = SearchState.listArticle[index];
                       return CardArticle(article: dataArticle);
                     },
                   );
