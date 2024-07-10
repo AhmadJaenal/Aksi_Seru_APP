@@ -1,13 +1,14 @@
+import 'dart:developer' as developer;
 import 'dart:io';
 
-import 'package:aksi_seru_app/controller/post_controller.dart';
-import 'package:aksi_seru_app/models/user_model.dart';
-import 'package:aksi_seru_app/widgets/custom_popup.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:developer' as developer;
+
+import '../models/user_model.dart';
+import '../widgets/custom_popup.dart';
+import 'upload_image_controller.dart';
 
 class UserData extends GetxController {
   static Future<String?> getToken() async {
@@ -65,8 +66,9 @@ class UserData extends GetxController {
 
     try {
       if (image != null) {
-        String imageUrl = await PostController.uploadImage(image);
-        updatedData["avatar"] = imageUrl;
+        String urlImage =
+            await UploadImage.uploadImage(image: image, path: 'usersProfile');
+        updatedData["avatar"] = urlImage;
 
         QuerySnapshot querySnapshot = await FirebaseFirestore.instance
             .collection("users")
@@ -74,32 +76,30 @@ class UserData extends GetxController {
             .get();
 
         if (querySnapshot.docs.isNotEmpty) {
-          if (querySnapshot.docs.isNotEmpty) {
-            for (QueryDocumentSnapshot doc in querySnapshot.docs) {
-              await doc.reference.update(updatedData);
-            }
-
-            customPopUp(
-              icon: Icons.check_circle_outline_rounded,
-              message: 'Berhasil update profile',
-              onTap: () {
-                Get.back();
-                Get.back();
-              },
-              titleButton: 'Kembali',
-            );
-          } else {
-            customPopUp(
-              icon: Icons.cancel_outlined,
-              message: 'Gagal update profile',
-              isSuccess: false,
-              onTap: () {
-                Get.back();
-                Get.back();
-              },
-              titleButton: 'Kembali',
-            );
+          for (QueryDocumentSnapshot doc in querySnapshot.docs) {
+            await doc.reference.update(updatedData);
           }
+
+          customPopUp(
+            icon: Icons.check_circle_outline_rounded,
+            message: 'Berhasil update profile',
+            onTap: () {
+              Get.back();
+              Get.back();
+            },
+            titleButton: 'Kembali',
+          );
+        } else {
+          customPopUp(
+            icon: Icons.cancel_outlined,
+            message: 'Gagal update profile',
+            isSuccess: false,
+            onTap: () {
+              Get.back();
+              Get.back();
+            },
+            titleButton: 'Kembali',
+          );
         }
       }
     } catch (e) {
