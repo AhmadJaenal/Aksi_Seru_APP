@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:aksi_seru_app/controller/article_controller.dart';
 import 'package:aksi_seru_app/models/article_model.dart';
 import 'package:aksi_seru_app/shared/style.dart';
 import 'package:aksi_seru_app/widgets/custom_button.dart';
@@ -27,14 +28,13 @@ class _CreateArticleState extends State<EditArticle> {
 
   File? _image;
 
-  String? imagebase64;
-
   Future<void> _getImageFromGallery() async {
     final picker = ImagePicker();
     final pickedImage = await picker.pickImage(source: ImageSource.gallery);
     int fileSizeInBytes = await pickedImage!.length();
     double fileSizeInKB = fileSizeInBytes / 1024;
 
+    // ignore: unnecessary_null_comparison
     if (pickedImage != null && fileSizeInKB < 2000) {
       setState(() {
         _image = File(pickedImage.path);
@@ -50,9 +50,6 @@ class _CreateArticleState extends State<EditArticle> {
         titleButton: 'Kembali',
       );
     }
-    List<int> imageBytes = File(_image!.path).readAsBytesSync();
-    var base64StringImage = base64Encode(imageBytes);
-    imagebase64 = base64StringImage;
   }
 
   final ArticleModel articleModel = Get.arguments;
@@ -191,16 +188,23 @@ class _CreateArticleState extends State<EditArticle> {
                         .copyWith(color: AppColors.greyColor),
                   ),
                 ),
-                _image != null
+                _image == null
                     ? ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Image.network(
+                          articleModel.urlImage,
+                          height: 400,
+                          fit: BoxFit.cover,
+                        ),
+                      )
+                    : ClipRRect(
                         borderRadius: BorderRadius.circular(10),
                         child: Image.file(
                           _image!,
                           height: 400,
                           fit: BoxFit.cover,
                         ),
-                      )
-                    : const SizedBox(),
+                      ),
                 SizedBox(
                   width: double.infinity,
                   child: MiniButton(
@@ -215,14 +219,13 @@ class _CreateArticleState extends State<EditArticle> {
                 PrimaryButton(
                   ontap: () {
                     if (formKey.currentState!.validate() && _image != null) {
-                      // ArticleController.editArticle(
-                      //   id: articleModel.id,
-                      //   title: titleController.text,
-                      //   subtitle: subtitleController.text,
-                      //   content: contentController.text,
-                      //   image64: imagebase64,
-                      //   category: '',
-                      // );
+                      ArticleController.updateArticle(
+                        title: titleController.text,
+                        subtitle: subtitleController.text,
+                        content: contentController.text,
+                        image: _image,
+                        docId: articleModel.docId,
+                      );
                     }
                   },
                   title: 'Simpan Perubahan',

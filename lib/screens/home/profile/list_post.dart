@@ -28,7 +28,7 @@ class ListPost extends StatelessWidget {
         slivers: [
           SliverToBoxAdapter(
             child: Visibility(
-              visible: isPublicProfile,
+              visible: !isPublicProfile,
               child: Container(
                 padding: EdgeInsets.all(AppMargin.defaultMargin),
                 decoration: BoxDecoration(

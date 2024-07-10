@@ -22,7 +22,7 @@ class ListArticle extends StatelessWidget {
             child: Padding(
               padding: EdgeInsets.all(AppMargin.defaultMargin),
               child: Visibility(
-                visible: isPublicProfile,
+                visible: !isPublicProfile,
                 child: MiniButton(
                   icon: 'icon_pen.png',
                   ontap: () => Get.toNamed('/create-article'),

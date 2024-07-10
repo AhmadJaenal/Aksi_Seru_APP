@@ -1,5 +1,5 @@
-import 'package:aksi_seru_app/models/article_model.dart';
-import 'package:aksi_seru_app/models/user_model.dart';
+import '../models/article_model.dart';
+import '../models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 
