@@ -194,7 +194,7 @@ class ArticleController extends GetxController {
         message: 'Berhasil menghapus artikel',
         onTap: () {
           Get.offAllNamed('/nav-bar');
-          landingPageController.changeTabIndex(4);
+          landingPageController.changeTabIndex(3);
         },
         titleButton: 'Kembali',
       );
