@@ -41,13 +41,13 @@ class SearchState extends GetxController {
       QuerySnapshot<Map<String, dynamic>> usernameSnapshot =
           await FirebaseFirestore.instance
               .collection('users')
-              .where('username', isLessThanOrEqualTo: keyword)
+              .where('username', isEqualTo: keyword)
               .get();
 
       QuerySnapshot<Map<String, dynamic>> fullNameSnapshot =
           await FirebaseFirestore.instance
               .collection('users')
-              .where('full_name', isLessThanOrEqualTo: keyword)
+              .where('full_name', isEqualTo: keyword)
               .get();
 
       List<UserModel> users = [
@@ -55,10 +55,7 @@ class SearchState extends GetxController {
         ...UserModel.fromJsonList(fullNameSnapshot),
       ];
 
-      List<UserModel> test = UserModel.fromJsonList(usernameSnapshot);
-
       listUsers.assignAll(users.toSet().toList());
-      developer.log(test.toString(), name: 'result search');
     } catch (e) {
       developer.log(e.toString(), name: 'error get articles by keyword');
     }
