@@ -25,15 +25,15 @@ class UserModel {
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
+      avatar: json['avatar'] != null ? json['avatar'].toString() : '',
+      bio: json['bio'] != null ? json['bio'].toString() : '',
       username: json['username'].toString(),
       name: json['full_name'].toString(),
       email: json['email'].toString(),
-      avatar: json['avatar'] != null ? json['avatar'].toString() : '',
       countPost: json['count_post'],
       countArticle: json['count_article'],
       followers: json['followers'],
       following: json['following'],
-      bio: json['bio'] != null ? json['bio'].toString() : '',
     );
   }
 
