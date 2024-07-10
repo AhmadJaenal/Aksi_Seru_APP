@@ -1,11 +1,13 @@
 import 'package:aksi_seru_app/models/article_model.dart';
+import 'package:aksi_seru_app/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 
 import 'dart:developer' as developer;
 
-class SearcArticlehState extends GetxController {
+class SearchState extends GetxController {
   static RxList<ArticleModel> listArticle = <ArticleModel>[].obs;
+  static RxList<UserModel> listUsers = <UserModel>[].obs;
 
   Future<void> searchArticles({required String keyword}) async {
     try {
@@ -29,6 +31,34 @@ class SearcArticlehState extends GetxController {
       listArticle.assignAll(articles.toSet().toList());
 
       developer.log(listArticle.toString(), name: 'result search');
+    } catch (e) {
+      developer.log(e.toString(), name: 'error get articles by keyword');
+    }
+  }
+
+  Future<void> searchUser({String? keyword}) async {
+    try {
+      QuerySnapshot<Map<String, dynamic>> usernameSnapshot =
+          await FirebaseFirestore.instance
+              .collection('users')
+              .where('username', isEqualTo: keyword)
+              .get();
+
+      QuerySnapshot<Map<String, dynamic>> fullNameSnapshot =
+          await FirebaseFirestore.instance
+              .collection('users')
+              .where('full_name', isEqualTo: keyword)
+              .get();
+
+      List<UserModel> users = [
+        ...UserModel.fromJsonList(usernameSnapshot),
+        ...UserModel.fromJsonList(fullNameSnapshot),
+      ];
+
+      List<UserModel> test = UserModel.fromJsonList(usernameSnapshot);
+
+      listUsers.assignAll(users.toSet().toList());
+      developer.log(test.toString(), name: 'result search');
     } catch (e) {
       developer.log(e.toString(), name: 'error get articles by keyword');
     }
