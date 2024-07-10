@@ -14,13 +14,13 @@ class SearchState extends GetxController {
       QuerySnapshot<Map<String, dynamic>> titleSnapshot =
           await FirebaseFirestore.instance
               .collection('articles')
-              .where('title', isEqualTo: keyword)
+              .where('title', isLessThanOrEqualTo: keyword)
               .get();
 
       QuerySnapshot<Map<String, dynamic>> subtitleSnapshot =
           await FirebaseFirestore.instance
               .collection('articles')
-              .where('subtitle', isEqualTo: keyword)
+              .where('subtitle', isLessThanOrEqualTo: keyword)
               .get();
 
       List<ArticleModel> articles = [
@@ -41,13 +41,13 @@ class SearchState extends GetxController {
       QuerySnapshot<Map<String, dynamic>> usernameSnapshot =
           await FirebaseFirestore.instance
               .collection('users')
-              .where('username', isEqualTo: keyword)
+              .where('username', isLessThanOrEqualTo: keyword)
               .get();
 
       QuerySnapshot<Map<String, dynamic>> fullNameSnapshot =
           await FirebaseFirestore.instance
               .collection('users')
-              .where('full_name', isEqualTo: keyword)
+              .where('full_name', isLessThanOrEqualTo: keyword)
               .get();
 
       List<UserModel> users = [
