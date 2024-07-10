@@ -1,7 +1,8 @@
 import 'dart:developer' as developer;
 import 'dart:io';
 
-import 'package:aksi_seru_app/controller/date_controller.dart';
+import 'date_controller.dart';
+import 'upload_image_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -248,7 +249,8 @@ class PostController extends GetxController {
 
     try {
       if (image != null) {
-        String imageUrl = await uploadImage(image);
+        String imageUrl =
+            await UploadImage.uploadImage(image: image, path: 'postImage');
         updatedData["urlimage"] = imageUrl;
       }
 
@@ -278,16 +280,6 @@ class PostController extends GetxController {
         titleButton: 'Kembali',
       );
     }
-  }
-
-  static Future<String> uploadImage(File image) async {
-    final storageRef = FirebaseStorage.instance.ref();
-    final imageRef = storageRef
-        .child('postImage/${DateTime.now().millisecondsSinceEpoch}.jpg');
-
-    await imageRef.putFile(image);
-    String urlImage = await imageRef.getDownloadURL();
-    return urlImage;
   }
 
   static Future<void> likePost({String? idPost}) async {
