@@ -1,13 +1,13 @@
 import 'dart:io';
 
-import 'package:aksi_seru_app/controller/date_controller.dart';
-import 'package:aksi_seru_app/controller/user_controller.dart';
-import 'package:aksi_seru_app/getX/nav_bottom_state.dart';
-import 'package:aksi_seru_app/models/article_model.dart';
-import 'package:aksi_seru_app/models/user_model.dart';
-import 'package:aksi_seru_app/widgets/custom_popup.dart';
+import 'date_controller.dart';
+import 'upload_image_controller.dart';
+import 'user_controller.dart';
+import '../getX/nav_bottom_state.dart';
+import '../models/article_model.dart';
+import '../models/user_model.dart';
+import '../widgets/custom_popup.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -76,13 +76,8 @@ class ArticleController extends GetxController {
     final LandingPageController landingPageController =
         Get.put(LandingPageController(), permanent: false);
 
-    final storageRef = FirebaseStorage.instance.ref();
-    final imageRef = storageRef
-        .child('articlImage/${DateTime.now().millisecondsSinceEpoch}.jpg');
-
-    await imageRef.putFile(image);
-
-    final imageUrl = await imageRef.getDownloadURL();
+    String imageUrl =
+        await UploadImage.uploadImage(image: image, path: "articleImage");
 
     final FirebaseFirestore db = FirebaseFirestore.instance;
     final CollectionReference ref = db.collection("articles");
@@ -206,6 +201,43 @@ class ArticleController extends GetxController {
         onTap: () => Get.back(),
         titleButton: 'Kembali',
       );
+    }
+  }
+
+  static Future<void> updateArticle(
+      {String? title, subtitle, content, docId, File? image}) async {
+    Map<String, dynamic> updatedData = {
+      "title": title,
+      "subtitle": subtitle,
+      "content": content,
+    };
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? email = prefs.getString("email");
+
+    try {
+      if (image != null) {
+        String imageUrl =
+            await UploadImage.uploadImage(image: image, path: "articleImage");
+        updatedData["urlimage"] = imageUrl;
+
+        await FirebaseFirestore.instance
+            .collection('articles')
+            .doc(docId)
+            .update(updatedData);
+
+        customPopUp(
+          icon: Icons.check_circle_outline_rounded,
+          message: 'Berhasil update article',
+          onTap: () {
+            Get.back();
+            Get.back();
+            Get.back();
+          },
+          titleButton: 'Kembali',
+        );
+      }
+    } catch (e) {
+      developer.log(e.toString());
     }
   }
 
