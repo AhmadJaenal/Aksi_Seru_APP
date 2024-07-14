@@ -1,13 +1,41 @@
-import 'package:aksi_seru_app/controller/user_controller.dart';
-import 'package:aksi_seru_app/models/user_model.dart';
-import 'package:aksi_seru_app/shared/style.dart';
-import 'package:aksi_seru_app/widgets/user_profile.dart';
+import '../../../controller/user_controller.dart';
+import '../../../getX/show_recommend_user.dart';
+import '../../../models/user_model.dart';
+import '../../../shared/style.dart';
+import '../../../widgets/user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class RecommendationPage extends StatelessWidget {
+class RecommendationPage extends StatefulWidget {
   const RecommendationPage({super.key});
+
+  static String myId = '';
+
+  @override
+  State<RecommendationPage> createState() => _RecommendationPageState();
+}
+
+class _RecommendationPageState extends State<RecommendationPage> {
+  final ShowRecommendUserState showRecommendUser =
+      Get.put(ShowRecommendUserState());
+
+  String myId = "";
+  Future<void> getEmailId() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? email = prefs.getString("email");
+
+    setState(() {
+      myId = email!;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getEmailId();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -73,50 +101,27 @@ class RecommendationPage extends StatelessWidget {
                     ),
                   ),
                 ),
-                // child: FutureBuilder(
-                //   future: UserData.getRandomUser(),
-                //   builder: (context, snapshot) {
-                //     if (snapshot.connectionState == ConnectionState.done) {
-                //       if (snapshot.hasData) {
-                //         return ListView.builder(
-                //           scrollDirection: Axis.horizontal,
-                //           physics: const BouncingScrollPhysics(),
-                //           itemCount: snapshot.data!.length,
-                //           itemBuilder: (context, index) {
-                //             UserModel userData = snapshot.data![index];
-                //             return Padding(
-                //               padding: index == 0
-                //                   ? EdgeInsets.only(
-                //                       left: AppMargin.defaultMargin)
-                //                   : index == 9
-                //                       ? EdgeInsets.only(
-                //                           left: 8,
-                //                           right: AppMargin.defaultMargin)
-                //                       : const EdgeInsets.only(left: 8),
-                //               child: UserProfile(
-                //                 userData: userData,
-                //               ),
-                //             );
-                //           },
-                //         );
-                //       } else {
-                //         return const Text('Tidak ada data');
-                //       }
-                //     } else {
-                //       return const Center(child: CircularProgressIndicator());
-                //     }
-                //   },
-                // ),
-              ),
-              const Gap(8),
-              Padding(
-                padding: EdgeInsets.only(left: AppMargin.defaultMargin),
-                child: Text(
-                  'Rekomendasi Artikel',
-                  style: AppTextStyle.h3.copyWith(
-                    color: AppColors.blackColor,
-                    fontWeight: AppFontWeight.bold,
-                  ),
+                child: StreamBuilder(
+                  stream: UserData.getRandomUser(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: snapshot.data!.length,
+                        itemBuilder: (context, index) {
+                          UserModel userData = snapshot.data![index];
+                          bool isFollowing = userData.followers.any((user) =>
+                              user['user_id'] == RecommendationPage.myId);
+                          return UserProfile(
+                              userData: userData, isFollow: isFollowing);
+                        },
+                      );
+                    } else {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                  },
                 ),
               ),
               const Gap(8),
