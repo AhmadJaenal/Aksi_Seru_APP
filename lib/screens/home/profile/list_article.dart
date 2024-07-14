@@ -6,8 +6,6 @@ import 'package:aksi_seru_app/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'dart:developer' as developer;
-
 class ListArticle extends StatelessWidget {
   bool isPublicProfile;
   ListArticle({super.key, this.isPublicProfile = false});

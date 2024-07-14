@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:aksi_seru_app/controller/user_controller.dart';
@@ -6,7 +5,6 @@ import 'package:aksi_seru_app/models/user_model.dart';
 import 'package:aksi_seru_app/shared/style.dart';
 import 'package:aksi_seru_app/widgets/custom_button.dart';
 import 'package:aksi_seru_app/widgets/custom_textfield.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -34,7 +32,7 @@ class _EditProfileState extends State<EditProfile> {
     int fileSizeInBytes = await pickedImage!.length();
     double fileSizeInKB = fileSizeInBytes / 1024;
 
-    if (pickedImage != null && fileSizeInKB < 2000) {
+    if (fileSizeInKB < 2000) {
       setState(() {
         _image = File(pickedImage.path);
       });

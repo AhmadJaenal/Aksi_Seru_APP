@@ -1,7 +1,5 @@
-import 'package:aksi_seru_app/models/article_model.dart';
 import 'package:aksi_seru_app/models/post_model.dart';
 import 'package:aksi_seru_app/shared/style.dart';
-import 'package:aksi_seru_app/widgets/card_post.dart';
 import 'package:flutter/material.dart';
 
 import 'package:gap/gap.dart';
