@@ -47,7 +47,7 @@ class _EditPostState extends State<EditPost> {
     int fileSizeInBytes = await pickedImage!.length();
     double fileSizeInKB = fileSizeInBytes / 1024;
 
-    if (pickedImage != null && fileSizeInKB < 2000) {
+    if (fileSizeInKB < 2000) {
       setState(() {
         image = File(pickedImage.path);
       });

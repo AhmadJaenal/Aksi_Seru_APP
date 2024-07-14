@@ -1,5 +1,4 @@
 import 'package:aksi_seru_app/getX/counter_follow.dart';
-import 'package:aksi_seru_app/models/user_model.dart';
 import 'package:aksi_seru_app/shared/style.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';

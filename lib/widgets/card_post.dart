@@ -4,7 +4,6 @@ import 'package:aksi_seru_app/controller/user_controller.dart';
 import 'package:aksi_seru_app/models/post_model.dart';
 import 'package:aksi_seru_app/models/user_model.dart';
 import 'package:audioplayers/audioplayers.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../getX/post.dart';
 import '../shared/style.dart';
