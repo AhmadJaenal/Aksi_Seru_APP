@@ -525,32 +525,64 @@ class CardPost extends StatelessWidget {
                 },
               );
             },
-            child: Row(
-              children: [
-                Image.asset('assets/user_profile.png', width: 32),
-                const Gap(6),
-                Text(
-                  'Gionna Van Den Berg',
-                  style: AppTextStyle.paragraphL.copyWith(
-                    color: AppColors.blackColor,
-                    fontWeight: AppFontWeight.bold,
-                  ),
-                ),
-                const Gap(2),
-                const Verified(width: 12),
-                const Gap(8),
-                Expanded(
-                  child: Text(
-                    'Keren sekali bunggggggggggggggggggggggggggg',
-                    style: AppTextStyle.paragraphL.copyWith(
-                      color: AppColors.blackColor,
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-              ],
-            ),
+            child: postData.comments.isNotEmpty
+                ? FutureBuilder(
+                    future: UserData.getUserByEmail(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState != ConnectionState.waiting) {
+                        UserModel userData =
+                            UserModel.fromJson(snapshot.data!.docs[0].data());
+                        return Row(
+                          children: [
+                            userData.avatar != ""
+                                ? ClipRRect(
+                                    borderRadius: BorderRadius.circular(50),
+                                    child: Image.network(userData.avatar,
+                                        width: 32, height: 32),
+                                  )
+                                : Image.asset('assets/user_profile.png',
+                                    width: 32),
+                            const Gap(6),
+                            Text(
+                              userData.username,
+                              style: AppTextStyle.paragraphL.copyWith(
+                                color: AppColors.blackColor,
+                                fontWeight: AppFontWeight.bold,
+                              ),
+                            ),
+                            const Gap(2),
+                            const Verified(width: 12),
+                            const Gap(8),
+                            StreamBuilder(
+                              stream: PostController.getCommentPost(
+                                  postData.comments[0].idComment),
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData) {
+                                  DetailCommentPost detailComment =
+                                      snapshot.data;
+                                  return Expanded(
+                                    child: Text(
+                                      detailComment.comment,
+                                      style: AppTextStyle.paragraphL.copyWith(
+                                        color: AppColors.blackColor,
+                                      ),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  );
+                                } else {
+                                  return const Text("Belum ada komentar");
+                                }
+                              },
+                            )
+                          ],
+                        );
+                      } else {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+                    },
+                  )
+                : Container(),
           ),
           const Gap(16),
           Form(
