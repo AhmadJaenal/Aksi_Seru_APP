@@ -1,19 +1,18 @@
+import 'dart:developer' as developer;
 import 'dart:io';
 
-import 'date_controller.dart';
-import 'upload_image_controller.dart';
-import 'user_controller.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import '../getX/nav_bottom_state.dart';
 import '../models/article_model.dart';
 import '../models/user_model.dart';
 import '../widgets/custom_popup.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-
-import 'dart:developer' as developer;
-
-import 'package:shared_preferences/shared_preferences.dart';
+import 'date_controller.dart';
+import 'upload_image_controller.dart';
+import 'user_controller.dart';
 
 class ArticleController extends GetxController {
   static Stream<List<ArticleModel>?> getArticleByUser(
@@ -206,10 +205,12 @@ class ArticleController extends GetxController {
 
   static Future<void> updateArticle(
       {String? title, subtitle, content, docId, File? image}) async {
+    DateController date = DateController();
     Map<String, dynamic> updatedData = {
       "title": title,
       "subtitle": subtitle,
       "content": content,
+      "updated_at": date.getDateNow(),
     };
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? email = prefs.getString("email");
