@@ -138,7 +138,7 @@ class CardPost extends StatelessWidget {
                                           SizedBox(
                                             width: width * .7,
                                             child: MiniButton(
-                                              icon: 'icon_block.png',
+                                              icon: 'icon_edit.png',
                                               title: 'Edit Postingan',
                                               ontap: () {
                                                 Get.toNamed('/edit-post',
@@ -148,8 +148,8 @@ class CardPost extends StatelessWidget {
                                           ),
                                           SizedBox(
                                             width: width * .7,
-                                            child: MiniButton(
-                                              icon: 'icon_block.png',
+                                            child: DangerMiniButton(
+                                              icon: 'icon_delete.png',
                                               title: 'Hapus Postingan',
                                               ontap: () {
                                                 showDialog(
@@ -161,14 +161,16 @@ class CardPost extends StatelessWidget {
                                                     alignment: Alignment.center,
                                                     actions: [
                                                       MiniButton(
+                                                          iconColor: AppColors
+                                                              .greyColor,
                                                           icon:
-                                                              'icon_block.png',
-                                                          title: 'Kembali',
+                                                              'icon_close.png',
+                                                          title: 'Batal',
                                                           ontap: () {
                                                             Get.back();
                                                           }),
                                                       DangerMiniButton(
-                                                        icon: 'icon_block.png',
+                                                        icon: 'icon_check.png',
                                                         title: 'Hapus',
                                                         ontap: () {
                                                           Get.back();
