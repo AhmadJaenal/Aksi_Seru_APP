@@ -109,10 +109,10 @@ class _VerifiedProfileState extends State<VerifiedProfile>
                         overflow: TextOverflow.ellipsis,
                       ),
                       actions: [
-                        IconButton(
-                          onPressed: () {},
-                          icon: Image.asset('assets/icon_share.png', width: 24),
-                        ),
+                        // IconButton(
+                        //   onPressed: () {},
+                        //   icon: Image.asset('assets/icon_share.png', width: 24),
+                        // ),
                         IconButton(
                           onPressed: () {
                             showModalBottomSheet(
@@ -156,7 +156,7 @@ class _VerifiedProfileState extends State<VerifiedProfile>
                                           ),
                                         ),
                                         child: DangerMiniButton(
-                                          icon: 'icon_block.png',
+                                          icon: 'icon_logout.png',
                                           title: 'Keluar dari akun anda?',
                                           ontap: () {
                                             logoutController

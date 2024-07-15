@@ -130,13 +130,6 @@ class _PublicProfileState extends State<PublicProfile>
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
-                        actions: [
-                          IconButton(
-                            onPressed: () {},
-                            icon:
-                                Image.asset('assets/icon_share.png', width: 24),
-                          ),
-                        ],
                         bottom: PreferredSize(
                           preferredSize: const Size.fromHeight(350),
                           child: Column(
