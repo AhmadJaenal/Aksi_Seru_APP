@@ -92,7 +92,8 @@ class MiniButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton.icon(
       onPressed: ontap,
-      icon: Image.asset('assets/$icon', width: 24, color: iconColor),
+      icon:
+          Image.asset('assets/$icon', width: 24, height: 24, color: iconColor),
       style: ElevatedButton.styleFrom(
         elevation: 0,
         backgroundColor: color.withOpacity(.2),
@@ -115,17 +116,19 @@ class DangerMiniButton extends StatelessWidget {
   final String icon;
   final String title;
   final Function() ontap;
-  const DangerMiniButton(
-      {super.key,
-      required this.icon,
-      required this.title,
-      required this.ontap});
+  const DangerMiniButton({
+    super.key,
+    required this.icon,
+    required this.title,
+    required this.ontap,
+  });
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton.icon(
       onPressed: ontap,
-      icon: Image.asset('assets/$icon', width: 24),
+      icon: Image.asset('assets/$icon',
+          width: 24, height: 24, color: AppColors.redColor),
       style: ElevatedButton.styleFrom(
         elevation: 0,
         backgroundColor: AppColors.roseColor,
