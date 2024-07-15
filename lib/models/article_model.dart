@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ArticleModel {
   final String docId;
-  final int userId;
+  final String userId;
   final String title;
   final String subtitle;
   final String content;
