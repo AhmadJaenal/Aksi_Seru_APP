@@ -1,5 +1,7 @@
 import 'package:aksi_seru_app/controller/article_controller.dart';
+import 'package:aksi_seru_app/controller/user_controller.dart';
 import 'package:aksi_seru_app/models/article_model.dart';
+import 'package:aksi_seru_app/models/user_model.dart';
 import 'package:aksi_seru_app/shared/style.dart';
 import 'package:aksi_seru_app/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
@@ -38,12 +40,33 @@ class CardArticle extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    Image.asset('assets/user_profile.png', width: 24),
+                    FutureBuilder(
+                      future: UserData.getUserByEmail(email: article.userId),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          UserModel userData =
+                              UserModel.fromJson(snapshot.data!.docs[0].data());
+                          return Container(
+                            width: 24,
+                            height: 24,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(2),
+                              image: DecorationImage(
+                                image: NetworkImage(userData.avatar),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          );
+                        } else {
+                          return const SizedBox();
+                        }
+                      },
+                    ),
                     const Gap(4),
                     SizedBox(
                       width: width * .3,
                       child: Text(
-                        article.docId,
+                        article.title,
                         style: AppTextStyle.paragraphL.copyWith(
                           color: AppColors.blackColor,
                         ),
@@ -72,7 +95,7 @@ class CardArticle extends StatelessWidget {
                   width: 160,
                   height: 62,
                   child: Text(
-                    article.title,
+                    article.content,
                     maxLines: 4,
                     overflow: TextOverflow.ellipsis,
                     style: AppTextStyle.paragraphL.copyWith(
@@ -80,32 +103,23 @@ class CardArticle extends StatelessWidget {
                     ),
                   ),
                 ),
-                Text(
-                  article.updatedAt,
-                  style: AppTextStyle.paragraphM.copyWith(
-                    color: AppColors.greyColor,
-                  ),
-                ),
                 const Gap(5),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
+                      width: 75,
                       height: 26,
                       padding: const EdgeInsets.symmetric(
                           horizontal: 8, vertical: 2),
-                      decoration: BoxDecoration(
-                        color: AppColors.greyColor.withOpacity(.3),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
                       child: Text(
-                        'Edukasi',
-                        style: AppTextStyle.paragraphL.copyWith(
+                        article.updatedAt,
+                        style: AppTextStyle.paragraphM.copyWith(
                           color: AppColors.greyColor,
                         ),
                       ),
                     ),
-                    const Gap(50),
-                    Image.asset('assets/icon_bookmark.png', width: 24),
+                    const Gap(70),
                     GestureDetector(
                         onTap: () {
                           showModalBottomSheet(
@@ -151,7 +165,7 @@ class CardArticle extends StatelessWidget {
                                             CrossAxisAlignment.start,
                                         children: [
                                           MiniButton(
-                                            icon: 'icon_bookmark.png',
+                                            icon: 'icon_edit.png',
                                             title: 'Edit Article',
                                             ontap: () {
                                               Get.toNamed('/edit-article',
