@@ -13,16 +13,27 @@ import '../widgets/custom_popup.dart';
 import 'date_controller.dart';
 import 'upload_image_controller.dart';
 import 'user_controller.dart';
+import 'dart:developer' as developer;
 
 class ArticleController extends GetxController {
-  static Stream<List<ArticleModel>?> getArticleByUser(
+  static Stream<List<ArticleModel>> getArticleByUser(
       {required int idUser}) async* {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? email = prefs.getString("email");
     try {
       yield* FirebaseFirestore.instance
           .collection("articles")
-          .where("idUser", isEqualTo: idUser)
+          .where("idUser", isEqualTo: email)
           .snapshots()
-          .map((snapshot) => ArticleModel.fromJsonList(snapshot));
+          .map((snapshot) {
+        if (snapshot.docs.isEmpty) {
+          developer.log("No articles found for user with id: $idUser");
+          return [];
+        } else {
+          developer.log("Articles found for user with id: $idUser");
+          return ArticleModel.fromJsonList(snapshot);
+        }
+      });
     } catch (e) {
       developer.log(e.toString(), name: 'error get article by user');
     }
@@ -81,9 +92,12 @@ class ArticleController extends GetxController {
     final FirebaseFirestore db = FirebaseFirestore.instance;
     final CollectionReference ref = db.collection("articles");
 
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? email = prefs.getString("email");
+
     DateController date = DateController();
     final Map<String, dynamic> articleField = {
-      "idUser": id,
+      "idUser": email,
       "title": title,
       "subtitle": subtitle,
       "content": content,
@@ -94,9 +108,6 @@ class ArticleController extends GetxController {
       "countlike": 0,
       "updated_at": date.getDateNow(),
     };
-
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? email = prefs.getString("email");
 
     await ref.add(articleField).then((docRef) async {
       try {
@@ -123,8 +134,10 @@ class ArticleController extends GetxController {
             icon: Icons.check_circle_outline_rounded,
             message: 'Berhasil mengunggah artikel',
             onTap: () {
-              Get.offAllNamed('/nav-bar');
-              landingPageController.changeTabIndex(4);
+              // Get.offAllNamed('/nav-bar');
+              // landingPageController.changeTabIndex(3);
+              Get.back();
+              Get.back();
             },
             titleButton: 'Kembali',
           );

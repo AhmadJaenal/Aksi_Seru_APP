@@ -72,7 +72,7 @@ class PostController extends GetxController {
               message: 'Berhasil mengunggah artikel',
               onTap: () {
                 Get.offAllNamed('/nav-bar');
-                landingPageController.changeTabIndex(4);
+                landingPageController.changeTabIndex(3);
               },
               titleButton: 'Kembali',
             );
