@@ -35,7 +35,7 @@ class _CreateArticleState extends State<CreateArticle> {
     int fileSizeInBytes = await pickedImage!.length();
     double fileSizeInKB = fileSizeInBytes / 1024;
 
-    if (pickedImage.isNull && fileSizeInKB < 2000) {
+    if (pickedImage != null && fileSizeInKB < 2000) {
       setState(() {
         _image = File(pickedImage.path);
       });

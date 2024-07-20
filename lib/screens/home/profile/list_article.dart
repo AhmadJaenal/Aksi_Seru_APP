@@ -5,6 +5,7 @@ import 'package:aksi_seru_app/widgets/card_article.dart';
 import 'package:aksi_seru_app/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'dart:developer' as developer;
 
 class ListArticle extends StatelessWidget {
   bool isPublicProfile;
@@ -36,10 +37,10 @@ class ListArticle extends StatelessWidget {
             child: SizedBox(
               width: double.infinity,
               height: MediaQuery.of(context).size.height * .7,
-              child: StreamBuilder<List<dynamic>?>(
+              child: StreamBuilder<List<ArticleModel>>(
                 stream: ArticleController.getArticleByUser(idUser: 1),
                 builder: (context, snapshot) {
-                  if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                  if (snapshot.hasData) {
                     return ListView.builder(
                       physics: const BouncingScrollPhysics(),
                       itemCount: snapshot.data!.length,

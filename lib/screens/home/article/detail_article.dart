@@ -275,36 +275,36 @@ class DetailArticle extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Container(
-                        width: double.infinity,
-                        height: 400,
-                        margin: const EdgeInsets.only(bottom: 60),
-                        child: ListView.builder(
-                          itemCount: dataArticle.comments.length,
-                          itemBuilder: (context, index) {
-                            CommentArticleModel commentModel =
-                                dataArticle.comments[index];
+                      // Container(
+                      //   width: double.infinity,
+                      //   height: 400,
+                      //   margin: const EdgeInsets.only(bottom: 60),
+                      //   child: ListView.builder(
+                      //     itemCount: dataArticle.comments.length,
+                      //     itemBuilder: (context, index) {
+                      //       CommentArticleModel commentModel =
+                      //           dataArticle.comments[index];
 
-                            return StreamBuilder(
-                              stream: ArticleController.getDetailCommentArticle(
-                                  docId: commentModel.idComment),
-                              builder: (context, snapshot) {
-                                if (snapshot.hasData) {
-                                  DetailCommentPost detailComment =
-                                      snapshot.data;
-                                  return CardComment(
-                                    email: detailComment.email,
-                                    comment: detailComment.comment,
-                                    createdAt: detailComment.createAt,
-                                  );
-                                } else {
-                                  return const Text("Belum ada komentar");
-                                }
-                              },
-                            );
-                          },
-                        ),
-                      ),
+                      //       return StreamBuilder(
+                      //         stream: ArticleController.getDetailCommentArticle(
+                      //             docId: commentModel.idComment),
+                      //         builder: (context, snapshot) {
+                      //           if (snapshot.hasData) {
+                      //             DetailCommentPost detailComment =
+                      //                 snapshot.data;
+                      //             return CardComment(
+                      //               email: detailComment.email,
+                      //               comment: detailComment.comment,
+                      //               createdAt: detailComment.createAt,
+                      //             );
+                      //           } else {
+                      //             return const Text("Belum ada komentar");
+                      //           }
+                      //         },
+                      //       );
+                      //     },
+                      //   ),
+                      // ),
                     ],
                   );
                 } else {
