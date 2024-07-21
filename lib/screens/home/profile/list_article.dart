@@ -9,7 +9,8 @@ import 'dart:developer' as developer;
 
 class ListArticle extends StatelessWidget {
   bool isPublicProfile;
-  ListArticle({super.key, this.isPublicProfile = false});
+  final String email;
+  ListArticle({super.key, this.isPublicProfile = true, required this.email});
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +39,7 @@ class ListArticle extends StatelessWidget {
               width: double.infinity,
               height: MediaQuery.of(context).size.height * .7,
               child: StreamBuilder<List<ArticleModel>>(
-                stream: ArticleController.getArticleByUser(idUser: 1),
+                stream: ArticleController.getArticleByUser(email: email),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     return ListView.builder(
@@ -46,7 +47,7 @@ class ListArticle extends StatelessWidget {
                       itemCount: snapshot.data!.length,
                       itemBuilder: (context, index) {
                         ArticleModel dataArticle = snapshot.data![index];
-                        return CardArticle(article: dataArticle);
+                        return CardArticle(article: dataArticle, email: email);
                       },
                     );
                   } else {

@@ -34,7 +34,8 @@ class FollowingPage extends StatelessWidget {
                         itemBuilder: (context, index) {
                           ArticleModel dataArticle = snapshot.data![index];
 
-                          return CardArticle(article: dataArticle);
+                          return CardArticle(
+                              article: dataArticle, email: dataArticle.userId);
                         },
                       );
                     } else {

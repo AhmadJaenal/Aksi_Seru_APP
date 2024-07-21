@@ -38,8 +38,8 @@ class RegisterationController extends GetxController {
         "count_article": 0,
         "avatar": "",
         "bio": "",
-        "followers": 0,
-        "following": 0,
+        "followers": [],
+        "following": [],
       };
 
       await ref.add(userData).then((docRef) {

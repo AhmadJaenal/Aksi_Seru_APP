@@ -1,16 +1,23 @@
-import 'package:aksi_seru_app/controller/article_controller.dart';
-import 'package:aksi_seru_app/controller/user_controller.dart';
-import 'package:aksi_seru_app/models/article_model.dart';
-import 'package:aksi_seru_app/models/user_model.dart';
-import 'package:aksi_seru_app/shared/style.dart';
-import 'package:aksi_seru_app/widgets/custom_button.dart';
+import '../controller/article_controller.dart';
+import '../controller/user_controller.dart';
+import '../models/article_model.dart';
+import '../models/user_model.dart';
+import '../shared/style.dart';
+import 'custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CardArticle extends StatelessWidget {
   final ArticleModel article;
-  const CardArticle({super.key, required this.article});
+  final String email;
+  const CardArticle({super.key, required this.article, required this.email});
+
+  Future<String?> getMyEmail() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString("email");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -133,82 +140,95 @@ class CardArticle extends StatelessWidget {
                     ),
                     const Gap(70),
                     GestureDetector(
-                        onTap: () {
-                          showModalBottomSheet(
-                            context: context,
-                            builder: (context) {
-                              return SizedBox(
-                                width: double.infinity,
-                                height: height * .4,
-                                child: Column(
-                                  children: [
-                                    const Gap(16),
-                                    Container(
-                                      width: 60,
-                                      height: 5,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(12),
-                                        color: AppColors.greyColor,
-                                      ),
+                      onTap: () {
+                        showModalBottomSheet(
+                          context: context,
+                          builder: (context) {
+                            return SizedBox(
+                              width: double.infinity,
+                              height: height * .4,
+                              child: Column(
+                                children: [
+                                  const Gap(16),
+                                  Container(
+                                    width: 60,
+                                    height: 5,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(12),
+                                      color: AppColors.greyColor,
                                     ),
-                                    const Gap(24),
-                                    Text(
-                                      'Opsi',
-                                      style: AppTextStyle.paragraphL.copyWith(
-                                        color: AppColors.blackColor,
-                                      ),
+                                  ),
+                                  const Gap(24),
+                                  Text(
+                                    'Opsi',
+                                    style: AppTextStyle.paragraphL.copyWith(
+                                      color: AppColors.blackColor,
                                     ),
-                                    const Gap(24),
-                                    Container(
-                                      width: double.infinity,
-                                      padding: EdgeInsets.all(
-                                          AppMargin.defaultMargin),
-                                      decoration: BoxDecoration(
-                                        border: Border.symmetric(
-                                          horizontal: BorderSide(
-                                            color: AppColors.greyColor
-                                                .withOpacity(.2),
-                                            width: 1,
-                                          ),
+                                  ),
+                                  const Gap(24),
+                                  Container(
+                                    width: double.infinity,
+                                    padding:
+                                        EdgeInsets.all(AppMargin.defaultMargin),
+                                    decoration: BoxDecoration(
+                                      border: Border.symmetric(
+                                        horizontal: BorderSide(
+                                          color: AppColors.greyColor
+                                              .withOpacity(.2),
+                                          width: 1,
                                         ),
                                       ),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          MiniButton(
-                                            icon: 'icon_edit.png',
-                                            title: 'Edit Article',
-                                            ontap: () {
-                                              Get.toNamed('/edit-article',
-                                                  arguments: article);
-                                            },
-                                          ),
-                                        ],
-                                      ),
                                     ),
-                                    Padding(
-                                      padding: EdgeInsets.all(
-                                          AppMargin.defaultMargin),
-                                      child: Align(
-                                        alignment: Alignment.bottomLeft,
-                                        child: DangerMiniButton(
-                                          icon: 'icon_delete.png',
-                                          title: 'Hapus Artikel',
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        MiniButton(
+                                          icon: 'icon_edit.png',
+                                          title: 'Edit Article',
                                           ontap: () {
-                                            confirmDeletePost(context);
+                                            Get.toNamed('/edit-article',
+                                                arguments: article);
                                           },
                                         ),
+                                      ],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding:
+                                        EdgeInsets.all(AppMargin.defaultMargin),
+                                    child: Align(
+                                      alignment: Alignment.bottomLeft,
+                                      child: DangerMiniButton(
+                                        icon: 'icon_delete.png',
+                                        title: 'Hapus Artikel',
+                                        ontap: () {
+                                          confirmDeletePost(context);
+                                        },
                                       ),
                                     ),
-                                  ],
-                                ),
-                              );
-                            },
-                          );
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        );
+                      },
+                      child: FutureBuilder<String?>(
+                        future: getMyEmail(),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            String? myEmail = snapshot.data;
+                            return email == myEmail
+                                ? Image.asset('assets/icon_option.png',
+                                    width: 24)
+                                : const SizedBox();
+                          } else {
+                            return const SizedBox();
+                          }
                         },
-                        child:
-                            Image.asset('assets/icon_option.png', width: 24)),
+                      ),
+                    ),
                   ],
                 ),
               ],

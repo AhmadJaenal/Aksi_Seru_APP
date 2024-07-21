@@ -120,7 +120,6 @@ class PostController extends GetxController {
     try {
       yield* FirebaseFirestore.instance
           .collection("postUsers")
-          .limit(10)
           .snapshots()
           .map((snapshot) => PostModel.fromJsonList(snapshot));
     } catch (e) {

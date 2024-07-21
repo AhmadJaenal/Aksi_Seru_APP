@@ -35,7 +35,9 @@ class ForYouPage extends StatelessWidget {
                           itemCount: snapshot.data!.length,
                           itemBuilder: (context, index) {
                             ArticleModel dataArticle = snapshot.data![index];
-                            return CardArticle(article: dataArticle);
+                            return CardArticle(
+                                article: dataArticle,
+                                email: dataArticle.userId);
                           },
                         );
                       } else {
@@ -55,7 +57,8 @@ class ForYouPage extends StatelessWidget {
                     itemCount: SearchState.listArticle.length,
                     itemBuilder: (context, index) {
                       ArticleModel dataArticle = SearchState.listArticle[index];
-                      return CardArticle(article: dataArticle);
+                      return CardArticle(
+                          article: dataArticle, email: dataArticle.userId);
                     },
                   );
                 }

@@ -16,9 +16,7 @@ import 'user_controller.dart';
 
 class ArticleController extends GetxController {
   static Stream<List<ArticleModel>> getArticleByUser(
-      {required int idUser}) async* {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? email = prefs.getString("email");
+      {required String email}) async* {
     try {
       yield* FirebaseFirestore.instance
           .collection("articles")
@@ -26,10 +24,8 @@ class ArticleController extends GetxController {
           .snapshots()
           .map((snapshot) {
         if (snapshot.docs.isEmpty) {
-          developer.log("No articles found for user with id: $idUser");
           return [];
         } else {
-          developer.log("Articles found for user with id: $idUser");
           return ArticleModel.fromJsonList(snapshot);
         }
       });

@@ -29,9 +29,9 @@ class FeedPage extends StatelessWidget {
         body: CustomScrollView(
           slivers: [
             SliverAppBar(
-              expandedHeight: 180,
+              expandedHeight: 110,
               automaticallyImplyLeading: false,
-              collapsedHeight: 180,
+              collapsedHeight: 110,
               flexibleSpace: Container(
                 decoration: BoxDecoration(
                   border: Border(
@@ -44,23 +44,6 @@ class FeedPage extends StatelessWidget {
                 padding: EdgeInsets.all(AppMargin.defaultMargin),
                 child: Column(
                   children: [
-                    Row(
-                      children: [
-                        Text(
-                          'Beranda',
-                          style: AppTextStyle.appbarTitle.copyWith(
-                            color: AppColors.primary1,
-                          ),
-                        ),
-                        const Spacer(),
-                        IconButton(
-                          onPressed: () => Get.toNamed('/notification-page'),
-                          icon: Image.asset('assets/icon_notification.png',
-                              width: 24),
-                        ),
-                      ],
-                    ),
-                    const Gap(24),
                     Form(
                       child: Row(
                         children: [

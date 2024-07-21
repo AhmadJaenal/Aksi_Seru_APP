@@ -118,6 +118,7 @@ class _PublicProfileState extends State<PublicProfile>
                         child: Gap(12),
                       ),
                       SliverAppBar(
+                        pinned: true,
                         collapsedHeight: 120,
                         expandedHeight: 120,
                         leading: Container(),
@@ -340,7 +341,7 @@ class _PublicProfileState extends State<PublicProfile>
                     controller: _tabController,
                     children: [
                       ListPost(email: user.email),
-                      ListArticle(),
+                      ListArticle(email: user.email),
                     ],
                   ),
                 ),

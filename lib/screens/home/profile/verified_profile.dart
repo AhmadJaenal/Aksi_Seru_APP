@@ -385,8 +385,8 @@ class _VerifiedProfileState extends State<VerifiedProfile>
                 body: TabBarView(
                   controller: _tabController,
                   children: [
-                    ListPost(email: user.email),
-                    ListArticle(),
+                    ListPost(email: user.email, isPublicProfile: false),
+                    ListArticle(email: user.email, isPublicProfile: false),
                   ],
                 ),
               ),

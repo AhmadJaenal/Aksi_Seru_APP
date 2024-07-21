@@ -204,7 +204,7 @@ class CardPost extends StatelessWidget {
                           builder: (context, snapshot) {
                             if (snapshot.hasData) {
                               String? email = snapshot.data;
-                              return email != null
+                              return email == postData.email
                                   ? Image.asset('assets/icon_option.png',
                                       width: 24)
                                   : const SizedBox();

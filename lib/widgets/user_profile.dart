@@ -3,6 +3,7 @@ import 'package:aksi_seru_app/models/user_model.dart';
 import 'package:aksi_seru_app/shared/style.dart';
 import 'package:aksi_seru_app/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
@@ -29,10 +30,14 @@ class UserProfile extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
-                userData.username,
-                style: AppTextStyle.paragraphL.copyWith(
-                  color: AppColors.blackColor,
+              SizedBox(
+                width: 50,
+                child: Text(
+                  userData.username,
+                  style: AppTextStyle.paragraphL.copyWith(
+                    color: AppColors.blackColor,
+                  ),
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
               const Gap(7),
