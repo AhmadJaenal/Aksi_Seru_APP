@@ -46,19 +46,31 @@ class CardArticle extends StatelessWidget {
                         if (snapshot.hasData) {
                           UserModel userData =
                               UserModel.fromJson(snapshot.data!.docs[0].data());
-                          return Container(
+                          return userData.avatar != ""
+                              ? Container(
+                                  width: 24,
+                                  height: 24,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(2),
+                                    image: DecorationImage(
+                                      image: NetworkImage(userData.avatar),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                )
+                              : Image.asset(
+                                  'assets/default_profile.png',
+                                  fit: BoxFit.cover,
+                                  width: 24,
+                                  height: 24,
+                                );
+                        } else {
+                          return Image.asset(
+                            'assets/default_profile.png',
+                            fit: BoxFit.cover,
                             width: 24,
                             height: 24,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(2),
-                              image: DecorationImage(
-                                image: NetworkImage(userData.avatar),
-                                fit: BoxFit.cover,
-                              ),
-                            ),
                           );
-                        } else {
-                          return const SizedBox();
                         }
                       },
                     ),
@@ -109,14 +121,14 @@ class CardArticle extends StatelessWidget {
                   children: [
                     Container(
                       width: 75,
-                      height: 26,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 8, vertical: 2),
+                      height: 40,
+                      padding: const EdgeInsets.symmetric(vertical: 2),
                       child: Text(
                         article.updatedAt,
                         style: AppTextStyle.paragraphM.copyWith(
                           color: AppColors.greyColor,
                         ),
+                        textAlign: TextAlign.start,
                       ),
                     ),
                     const Gap(70),
@@ -181,7 +193,7 @@ class CardArticle extends StatelessWidget {
                                       child: Align(
                                         alignment: Alignment.bottomLeft,
                                         child: DangerMiniButton(
-                                          icon: 'icon_dislike.png',
+                                          icon: 'icon_delete.png',
                                           title: 'Hapus Artikel',
                                           ontap: () {
                                             confirmDeletePost(context);

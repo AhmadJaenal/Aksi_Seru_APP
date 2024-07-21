@@ -1,5 +1,3 @@
-import 'dart:developer' as developer;
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class PostModel {
@@ -78,7 +76,6 @@ class DetailCommentPost {
     required this.postId,
   });
   factory DetailCommentPost.fromJson(Map<String, dynamic> json) {
-    developer.log(json['comment'], name: 'read comment');
     return DetailCommentPost(
       comment: json['comment'],
       email: json['email'],

@@ -13,7 +13,6 @@ import '../widgets/custom_popup.dart';
 import 'date_controller.dart';
 import 'upload_image_controller.dart';
 import 'user_controller.dart';
-import 'dart:developer' as developer;
 
 class ArticleController extends GetxController {
   static Stream<List<ArticleModel>> getArticleByUser(
@@ -83,9 +82,6 @@ class ArticleController extends GetxController {
       subtitle,
       content,
       required File image}) async {
-    final LandingPageController landingPageController =
-        Get.put(LandingPageController(), permanent: false);
-
     String imageUrl =
         await UploadImage.uploadImage(image: image, path: "articleImage");
 
@@ -134,8 +130,6 @@ class ArticleController extends GetxController {
             icon: Icons.check_circle_outline_rounded,
             message: 'Berhasil mengunggah artikel',
             onTap: () {
-              // Get.offAllNamed('/nav-bar');
-              // landingPageController.changeTabIndex(3);
               Get.back();
               Get.back();
             },
@@ -225,8 +219,6 @@ class ArticleController extends GetxController {
       "content": content,
       "updated_at": date.getDateNow(),
     };
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? email = prefs.getString("email");
 
     try {
       if (image != null) {

@@ -19,7 +19,12 @@ class UserProfile extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Image.asset('assets/user_profile.png', width: 80),
+          userData.avatar != ""
+              ? ClipRRect(
+                  borderRadius: BorderRadius.circular(50),
+                  child: Image.network(userData.avatar, width: 80, height: 80),
+                )
+              : Image.asset('assets/default_profile.png', width: 80),
           const Gap(8),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,

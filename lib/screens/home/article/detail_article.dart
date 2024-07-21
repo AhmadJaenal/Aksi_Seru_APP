@@ -1,6 +1,7 @@
-import 'package:aksi_seru_app/controller/article_controller.dart';
-import 'package:aksi_seru_app/widgets/card_post.dart';
-import 'package:aksi_seru_app/widgets/custom_textfield.dart';
+import '../../../controller/article_controller.dart';
+import '../../../widgets/card_post.dart';
+import '../../../widgets/custom_textfield.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../models/article_model.dart';
 import '../../../shared/style.dart';
@@ -15,6 +16,12 @@ class DetailArticle extends StatelessWidget {
   final TextEditingController _commentArticle = TextEditingController();
 
   final formKey = GlobalKey<FormState>();
+
+  Future<String?> getMyEmail() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString("email");
+  }
+
   @override
   Widget build(BuildContext context) {
     ArticleModel articleModel = Get.arguments;
@@ -128,7 +135,19 @@ class DetailArticle extends StatelessWidget {
                       },
                     );
                   },
-                  icon: Image.asset('assets/icon_option.png'),
+                  icon: FutureBuilder<String?>(
+                    future: getMyEmail(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        String? email = snapshot.data;
+                        return email != null
+                            ? Image.asset('assets/icon_option.png', width: 24)
+                            : const SizedBox();
+                      } else {
+                        return const SizedBox();
+                      }
+                    },
+                  ),
                 ),
               ],
             ),
@@ -275,36 +294,37 @@ class DetailArticle extends StatelessWidget {
                           ),
                         ),
                       ),
-                      // Container(
-                      //   width: double.infinity,
-                      //   height: 400,
-                      //   margin: const EdgeInsets.only(bottom: 60),
-                      //   child: ListView.builder(
-                      //     itemCount: dataArticle.comments.length,
-                      //     itemBuilder: (context, index) {
-                      //       CommentArticleModel commentModel =
-                      //           dataArticle.comments[index];
+                      Container(
+                        width: double.infinity,
+                        height: 400,
+                        margin: const EdgeInsets.only(bottom: 60),
+                        child: ListView.builder(
+                          itemCount: dataArticle.comments.length,
+                          itemBuilder: (context, index) {
+                            CommentArticleModel commentModel =
+                                dataArticle.comments[index];
 
-                      //       return StreamBuilder(
-                      //         stream: ArticleController.getDetailCommentArticle(
-                      //             docId: commentModel.idComment),
-                      //         builder: (context, snapshot) {
-                      //           if (snapshot.hasData) {
-                      //             DetailCommentPost detailComment =
-                      //                 snapshot.data;
-                      //             return CardComment(
-                      //               email: detailComment.email,
-                      //               comment: detailComment.comment,
-                      //               createdAt: detailComment.createAt,
-                      //             );
-                      //           } else {
-                      //             return const Text("Belum ada komentar");
-                      //           }
-                      //         },
-                      //       );
-                      //     },
-                      //   ),
-                      // ),
+                            return StreamBuilder(
+                              stream: ArticleController.getDetailCommentArticle(
+                                  docId: commentModel.idComment),
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData) {
+                                  DetailCommentPost detailComment =
+                                      snapshot.data;
+                                  return CardComment(
+                                    email: detailComment.email,
+                                    comment: detailComment.comment,
+                                    createdAt: detailComment.createAt,
+                                  );
+                                } else {
+                                  return const Center(
+                                      child: CircularProgressIndicator());
+                                }
+                              },
+                            );
+                          },
+                        ),
+                      ),
                     ],
                   );
                 } else {

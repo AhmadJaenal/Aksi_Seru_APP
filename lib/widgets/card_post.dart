@@ -3,7 +3,7 @@ import 'package:aksi_seru_app/controller/post_controller.dart';
 import 'package:aksi_seru_app/controller/user_controller.dart';
 import 'package:aksi_seru_app/models/post_model.dart';
 import 'package:aksi_seru_app/models/user_model.dart';
-import 'package:audioplayers/audioplayers.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../getX/post.dart';
 import '../shared/style.dart';
@@ -29,7 +29,10 @@ class CardPost extends StatelessWidget {
 
   LikeUnlikePost likeUnlikePost = LikeUnlikePost();
 
-  AudioPlayer player = AudioPlayer();
+  Future<String?> getMyEmail() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString("email");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,20 +56,20 @@ class CardPost extends StatelessWidget {
                   return Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      userData.avatar != ""
-                          ? GestureDetector(
-                              onTap: () => Get.toNamed('/public-profile',
-                                  arguments: userData.email),
-                              child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(20),
-                                  child: Image.network(
-                                    userData.avatar,
-                                    width: 36,
-                                    height: 36,
-                                    fit: BoxFit.cover,
-                                  )),
-                            )
-                          : Image.asset('assets/user_profile.png', width: 48),
+                      GestureDetector(
+                          onTap: () => Get.toNamed('/public-profile',
+                              arguments: userData.email),
+                          child: ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: userData.avatar != ""
+                                  ? Image.network(
+                                      userData.avatar,
+                                      width: 36,
+                                      height: 36,
+                                      fit: BoxFit.cover,
+                                    )
+                                  : Image.asset('assets/default_profile.png',
+                                      width: 48))),
                       const Gap(8),
                       RichText(
                         text: TextSpan(
@@ -196,8 +199,21 @@ class CardPost extends StatelessWidget {
                             },
                           );
                         },
-                        child: Image.asset('assets/icon_option.png', width: 24),
-                      )
+                        child: FutureBuilder<String?>(
+                          future: getMyEmail(),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              String? email = snapshot.data;
+                              return email != null
+                                  ? Image.asset('assets/icon_option.png',
+                                      width: 24)
+                                  : const SizedBox();
+                            } else {
+                              return const SizedBox();
+                            }
+                          },
+                        ),
+                      ),
                     ],
                   );
                 } else {
@@ -221,7 +237,6 @@ class CardPost extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
             child: GestureDetector(
               onDoubleTap: () {
-                player.play(AssetSource("audio/tombol_ditekan.mp3"));
                 likeUnlikePost.setLikeUnlike(idPost: postData.docId);
               },
               child: Image.network(postData.urlImage),
@@ -303,14 +318,30 @@ class CardPost extends StatelessWidget {
                                           ),
                                         ),
                                         const Gap(24),
-                                        Center(
-                                          child: Text(
-                                            'Postingan dfgdfg',
-                                            style: AppTextStyle.paragraphL
-                                                .copyWith(
-                                              color: AppColors.blackColor,
-                                            ),
-                                          ),
+                                        FutureBuilder(
+                                          future: UserData.getUserByEmail(
+                                              email: postData.email),
+                                          builder: ((context, snapshot) {
+                                            if (snapshot.hasData) {
+                                              UserModel userData =
+                                                  UserModel.fromJson(snapshot
+                                                      .data!.docs[0]
+                                                      .data());
+                                              return Center(
+                                                child: Text(
+                                                  'Postingan ${userData.username}',
+                                                  style: AppTextStyle.paragraphL
+                                                      .copyWith(
+                                                    color: AppColors.blackColor,
+                                                  ),
+                                                ),
+                                              );
+                                            } else {
+                                              return const Center(
+                                                  child:
+                                                      CircularProgressIndicator());
+                                            }
+                                          }),
                                         ),
                                       ],
                                     ),
@@ -337,7 +368,9 @@ class CardPost extends StatelessWidget {
                                           CrossAxisAlignment.start,
                                       children: [
                                         CardCaption(
-                                            datePost: postData.updatedAt),
+                                          datePost: postData.updatedAt,
+                                          email: postData.email,
+                                        ),
                                         const Gap(12),
                                         Text(
                                           postData.caption,
@@ -445,13 +478,27 @@ class CardPost extends StatelessWidget {
                                     ),
                                   ),
                                   const Gap(24),
-                                  Center(
-                                    child: Text(
-                                      'Postingan Mavropanos',
-                                      style: AppTextStyle.paragraphL.copyWith(
-                                        color: AppColors.blackColor,
-                                      ),
-                                    ),
+                                  FutureBuilder(
+                                    future: UserData.getUserByEmail(
+                                        email: postData.email),
+                                    builder: ((context, snapshot) {
+                                      if (snapshot.hasData) {
+                                        UserModel userData = UserModel.fromJson(
+                                            snapshot.data!.docs[0].data());
+                                        return Center(
+                                          child: Text(
+                                            'Postingan ${userData.username}',
+                                            style: AppTextStyle.paragraphL
+                                                .copyWith(
+                                              color: AppColors.blackColor,
+                                            ),
+                                          ),
+                                        );
+                                      } else {
+                                        return const Center(
+                                            child: CircularProgressIndicator());
+                                      }
+                                    }),
                                   ),
                                 ],
                               ),
@@ -475,7 +522,9 @@ class CardPost extends StatelessWidget {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  CardCaption(datePost: postData.updatedAt),
+                                  CardCaption(
+                                      datePost: postData.updatedAt,
+                                      email: postData.email),
                                   const Gap(12),
                                   Text(
                                     postData.caption,
@@ -503,6 +552,7 @@ class CardPost extends StatelessWidget {
                                     if (snapshot.hasData) {
                                       DetailCommentPost detailComment =
                                           snapshot.data;
+
                                       return CardComment(
                                         email: detailComment.email,
                                         comment: detailComment.comment,
@@ -540,7 +590,7 @@ class CardPost extends StatelessWidget {
                                     child: Image.network(userData.avatar,
                                         width: 32, height: 32),
                                   )
-                                : Image.asset('assets/user_profile.png',
+                                : Image.asset('assets/default_profile.png',
                                     width: 32),
                             const Gap(6),
                             Text(
@@ -555,7 +605,7 @@ class CardPost extends StatelessWidget {
                             const Gap(8),
                             StreamBuilder(
                               stream: PostController.getCommentPost(
-                                  postData.comments[0].idComment),
+                                  postData.comments.last.idComment),
                               builder: (context, snapshot) {
                                 if (snapshot.hasData) {
                                   DetailCommentPost detailComment =
@@ -619,9 +669,11 @@ class CardPost extends StatelessWidget {
 
 class CardCaption extends StatelessWidget {
   String datePost;
+  String email;
   CardCaption({
     super.key,
     required this.datePost,
+    required this.email,
   });
 
   @override
@@ -629,42 +681,63 @@ class CardCaption extends StatelessWidget {
     DateController date = DateController();
     return Row(
       children: [
-        Image.asset('assets/user_profile.png', width: 48),
-        const Gap(8),
-        RichText(
-          text: TextSpan(
-            style: AppTextStyle.paragraphL.copyWith(
-              color: AppColors.blackColor,
-            ),
-            children: <TextSpan>[
-              const TextSpan(
-                text: 'Mavropanos\n',
-              ),
-              TextSpan(
-                text: 'Artikel kreator',
-                style: AppTextStyle.paragraphM.copyWith(
-                  color: AppColors.blackColor,
-                ),
-              ),
-            ],
-          ),
-        ),
-        const Gap(4),
-        const Padding(
-          padding: EdgeInsets.only(bottom: 15),
-          child: Verified(),
-        ),
-        const Gap(12),
-        Padding(
-          padding: const EdgeInsets.only(bottom: 15),
-          child: Text(
-            date.checkDifferenceTime(date: datePost),
-            style: AppTextStyle.paragraphL.copyWith(
-              color: AppColors.greyColor,
-            ),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
+        FutureBuilder(
+          future: UserData.getUserByEmail(email: email),
+          builder: ((context, snapshot) {
+            if (snapshot.hasData) {
+              UserModel userData =
+                  UserModel.fromJson(snapshot.data!.docs[0].data());
+              return Row(
+                children: [
+                  userData.avatar != ""
+                      ? ClipRRect(
+                          borderRadius: BorderRadius.circular(50),
+                          child: Image.network(userData.avatar,
+                              width: 48, height: 48),
+                        )
+                      : Image.asset('assets/default_profile.png', width: 48),
+                  const Gap(8),
+                  RichText(
+                    text: TextSpan(
+                      style: AppTextStyle.paragraphL.copyWith(
+                        color: AppColors.blackColor,
+                      ),
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: '${userData.username}\n',
+                        ),
+                        TextSpan(
+                          text: userData.bio,
+                          style: AppTextStyle.paragraphM.copyWith(
+                            color: AppColors.blackColor,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const Gap(4),
+                  const Padding(
+                    padding: EdgeInsets.only(bottom: 15),
+                    child: Verified(),
+                  ),
+                  const Gap(12),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 15),
+                    child: Text(
+                      date.checkDifferenceTime(date: datePost),
+                      style: AppTextStyle.paragraphL.copyWith(
+                        color: AppColors.greyColor,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
+              );
+            } else {
+              return const Center(child: CircularProgressIndicator());
+            }
+          }),
         ),
       ],
     );
@@ -708,8 +781,8 @@ class CardComment extends StatelessWidget {
                       : Image.asset(
                           'assets/default_profile.png',
                           fit: BoxFit.cover,
-                          width: 70,
-                          height: 70,
+                          width: 42,
+                          height: 42,
                         ),
                 ),
                 const Gap(8),
