@@ -33,10 +33,8 @@ class _PublicProfileState extends State<PublicProfile>
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? email = prefs.getString("email");
 
-    developer.log(email!, name: "sdfsdfsdf");
-
     setState(() {
-      myId = email;
+      myId = email!;
     });
   }
 
@@ -120,7 +118,7 @@ class _PublicProfileState extends State<PublicProfile>
                       SliverAppBar(
                         pinned: true,
                         collapsedHeight: 120,
-                        expandedHeight: 120,
+                        expandedHeight: 50,
                         leading: Container(),
                         leadingWidth: 10,
                         title: Text(
@@ -340,7 +338,7 @@ class _PublicProfileState extends State<PublicProfile>
                   body: TabBarView(
                     controller: _tabController,
                     children: [
-                      ListPost(email: user.email),
+                      ListPost(email: user.email, height: .97),
                       ListArticle(email: user.email),
                     ],
                   ),

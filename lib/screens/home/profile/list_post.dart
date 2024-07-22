@@ -9,7 +9,12 @@ import 'package:get/get.dart';
 class ListPost extends StatelessWidget {
   final String email;
   bool isPublicProfile;
-  ListPost({super.key, required this.email, this.isPublicProfile = true});
+  final double height;
+  ListPost(
+      {super.key,
+      required this.email,
+      this.isPublicProfile = true,
+      this.height = .7});
 
   final TextEditingController _captionC = TextEditingController();
 
@@ -75,7 +80,7 @@ class ListPost extends StatelessWidget {
           SliverToBoxAdapter(
             child: SizedBox(
               width: double.infinity,
-              height: MediaQuery.of(context).size.height * .8,
+              height: MediaQuery.of(context).size.height * height,
               child: StreamBuilder<List<PostModel>>(
                 stream: PostController.getPostByUser(email: email),
                 builder: (context, snapshot) {

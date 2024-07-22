@@ -273,7 +273,26 @@ class CardUser extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Image.asset('assets/user_profile.png', width: 60),
+            GestureDetector(
+              onTap: () =>
+                  Get.toNamed('/public-profile', arguments: userData.email),
+              child: ClipRRect(
+                borderRadius: const BorderRadius.all(Radius.circular(100)),
+                child: userData.avatar != ''
+                    ? Image.network(
+                        userData.avatar,
+                        fit: BoxFit.cover,
+                        width: 70,
+                        height: 70,
+                      )
+                    : Image.asset(
+                        'assets/default_profile.png',
+                        fit: BoxFit.cover,
+                        width: 70,
+                        height: 70,
+                      ),
+              ),
+            ),
             const Gap(8),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
