@@ -59,8 +59,26 @@ class RegisterationController extends GetxController {
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         developer.log('The password provided is too weak.');
+        customPopUp(
+          icon: Icons.cancel_outlined,
+          isSuccess: false,
+          message: 'Password terlalu lemah',
+          onTap: () {
+            Get.back();
+          },
+          titleButton: 'Kembali',
+        );
       } else if (e.code == 'email-already-in-use') {
         developer.log('The account already exists for that email.');
+        customPopUp(
+          icon: Icons.cancel_outlined,
+          isSuccess: false,
+          message: 'Email sudah terdaftar',
+          onTap: () {
+            Get.back();
+          },
+          titleButton: 'Kembali',
+        );
       }
     } catch (e) {
       developer.log(e.toString());
@@ -98,17 +116,38 @@ class LoginController extends GetxController {
       Get.offAllNamed("/recommendation-page");
     } on FirebaseAuthException catch (e) {
       String message = 'Login failed';
-      if (e.code == 'user-not-found') {
-        message = 'No user found for that email.';
-      } else if (e.code == 'wrong-password') {
-        message = 'Wrong password provided.';
-      } else if (e.code == 'invalid-email') {
-        message = 'Please enter a valid email address.';
-      } else if (e.code == 'network-request-failed') {
-        message = 'There was a network error. Please try again.';
+      if (e.code == 'user-not-found' || e.code == 'invalid-credential') {
+        customPopUp(
+          icon: Icons.cancel_outlined,
+          isSuccess: false,
+          message: 'User tidak ditemukan',
+          onTap: () {
+            Get.back();
+          },
+          titleButton: 'Kembali',
+        );
+      } else if (e.code == 'wrong-password' || e.code == 'invalid-email') {
+        customPopUp(
+          icon: Icons.cancel_outlined,
+          isSuccess: false,
+          message: 'Email atau password salah',
+          onTap: () {
+            Get.back();
+          },
+          titleButton: 'Kembali',
+        );
       } else {
-        developer.log('Login error: ${e.code} $message');
+        customPopUp(
+          icon: Icons.cancel_outlined,
+          isSuccess: false,
+          message: 'Terjadi kesalahan',
+          onTap: () {
+            Get.back();
+          },
+          titleButton: 'Kembali',
+        );
       }
+      developer.log(e.code);
     }
   }
 }
