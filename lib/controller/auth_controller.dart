@@ -65,6 +65,7 @@ class RegisterationController extends GetxController {
           message: 'Password terlalu lemah',
           onTap: () {
             Get.back();
+            Get.back();
           },
           titleButton: 'Kembali',
         );
