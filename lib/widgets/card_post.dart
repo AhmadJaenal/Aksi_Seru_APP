@@ -576,59 +576,66 @@ class CardPost extends StatelessWidget {
               );
             },
             child: postData.comments.isNotEmpty
-                ? FutureBuilder(
-                    future: UserData.getUserByEmail(),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState != ConnectionState.waiting) {
-                        UserModel userData =
-                            UserModel.fromJson(snapshot.data!.docs[0].data());
-                        return Row(
-                          children: [
-                            userData.avatar != ""
-                                ? ClipRRect(
-                                    borderRadius: BorderRadius.circular(50),
-                                    child: Image.network(userData.avatar,
-                                        width: 32, height: 32),
-                                  )
-                                : Image.asset('assets/default_profile.png',
-                                    width: 32),
-                            const Gap(6),
-                            Text(
-                              userData.username,
-                              style: AppTextStyle.paragraphL.copyWith(
-                                color: AppColors.blackColor,
-                                fontWeight: AppFontWeight.bold,
-                              ),
-                            ),
-                            const Gap(2),
-                            const Verified(width: 12),
-                            const Gap(8),
-                            StreamBuilder(
-                              stream: PostController.getCommentPost(
-                                  postData.comments.last.idComment),
-                              builder: (context, snapshot) {
-                                if (snapshot.hasData) {
-                                  DetailCommentPost detailComment =
-                                      snapshot.data;
-                                  return Expanded(
+                ? StreamBuilder(
+                    stream: PostController.getCommentPost(
+                        postData.comments.last.idComment),
+                    builder: (context, commentSnapshot) {
+                      if (commentSnapshot.hasData) {
+                        DetailCommentPost detailComment = commentSnapshot.data;
+
+                        return FutureBuilder(
+                          future: UserData.getUserByEmail(
+                              email: detailComment.email),
+                          builder: (context, userSnapshot) {
+                            if (userSnapshot.connectionState !=
+                                ConnectionState.waiting) {
+                              UserModel userDataComment = UserModel.fromJson(
+                                  userSnapshot.data!.docs[0].data());
+                              return Row(
+                                children: [
+                                  userDataComment.avatar != ""
+                                      ? ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(50),
+                                          child: Image.network(
+                                              userDataComment.avatar,
+                                              width: 32,
+                                              height: 32),
+                                        )
+                                      : Image.asset(
+                                          'assets/default_profile.png',
+                                          width: 32),
+                                  const Gap(6),
+                                  Text(
+                                    userDataComment.username,
+                                    style: AppTextStyle.paragraphL.copyWith(
+                                      color: AppColors.blackColor,
+                                      fontWeight: AppFontWeight.bold,
+                                    ),
+                                  ),
+                                  const Gap(2),
+                                  const Verified(width: 12),
+                                  const Gap(8),
+                                  Expanded(
                                     child: Text(
-                                      detailComment.comment,
+                                      detailComment.email,
                                       style: AppTextStyle.paragraphL.copyWith(
                                         color: AppColors.blackColor,
                                       ),
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                     ),
-                                  );
-                                } else {
-                                  return const Text("Belum ada komentar");
-                                }
-                              },
-                            )
-                          ],
+                                  ),
+                                ],
+                              );
+                            } else {
+                              return const Center(
+                                  child: CircularProgressIndicator());
+                            }
+                          },
                         );
                       } else {
-                        return const Center(child: CircularProgressIndicator());
+                        return const Text("Belum ada komentar");
                       }
                     },
                   )

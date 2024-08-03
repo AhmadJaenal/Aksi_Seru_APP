@@ -114,8 +114,6 @@ class _CreatePostState extends State<CreatePost> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const ProfileTile(),
-                const Gap(12),
                 CustomTextArea(
                   textController: _captionC,
                   hintText: 'Share hal seru kalian hari ini, yuk!',

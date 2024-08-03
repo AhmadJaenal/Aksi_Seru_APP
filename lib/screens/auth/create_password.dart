@@ -39,7 +39,7 @@ class CreatePassword extends StatelessWidget {
             children: [
               const Gap(160),
               Text(
-                'Daftar',
+                'Buat Password',
                 style: AppTextStyle.titlePrimary,
               ),
               const Gap(24),
